@@ -35,27 +35,25 @@ export class Dashboard implements OnInit {
 
   ngOnInit() {
 
-    this.empruntService.getEmpruntsActif().subscribe(data => {
+    this.empruntService.obtenirListeEmpruntsActifs().subscribe(data => {
       this.empruntsActif.set(data);
     });
 
-    this.empruntService.getEmpruntsRecent().subscribe(data => {
+    this.empruntService.obtenirListeEmpruntsRecents().subscribe(data => {
       this.empruntsRecent.set(data);
       console.log(this.empruntsRecent())
     });
 
-    this.materielService.getMateriels().subscribe(data => {
+    this.materielService.obtenirListeMateriels().subscribe(data => {
       this.materiels.set(data);
     });
 
-    this.empruntService.getDemandeEmprunt().subscribe(data => {
+    this.empruntService.obtenirListeDemandesEmprunt().subscribe(data => {
       this.empruntsDemande.set(data);
     })
 
-    this.empruntService.getEmpruntPanne().subscribe(data => {
+    this.empruntService.obtenirListePannesSignalees().subscribe(data => {
       this.incidents.set(data);
     })
   }
-
-
 }

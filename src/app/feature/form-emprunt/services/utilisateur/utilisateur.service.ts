@@ -11,7 +11,7 @@ export class UtilisateurService {
 
   constructor(private http: HttpClient) {}
 
-  getUtilisateur() {
+  obtenirListeUtilisateur() {
     return this.http.get<any[]>(`${this.baseApiUrl}/liste`);
   }
 }

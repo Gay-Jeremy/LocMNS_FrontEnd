@@ -10,7 +10,7 @@ export class MaterielService {
 
   constructor(private http: HttpClient) {}
 
-  getMateriels() {
+  obtenirListeMateriels() {
     return this.http.get<any[]>(`${this.baseApiUrl}/materiels/liste`);
   }
 }

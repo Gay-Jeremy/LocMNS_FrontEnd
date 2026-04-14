@@ -10,19 +10,19 @@ export class EmpruntService {
 
   constructor(private http: HttpClient) {}
 
-  getEmpruntsActif() {
+  obtenirListeEmpruntsActifs() {
     return this.http.get<any[]>(`${this.baseApiUrl}/emprunts/liste/actif`);
   }
 
-  getEmpruntsRecent() {
+  obtenirListeEmpruntsRecents() {
     return this.http.get<any[]>(`${this.baseApiUrl}/emprunts/liste/recent`);
   }
 
-  getDemandeEmprunt() {
+  obtenirListeDemandesEmprunt() {
     return this.http.get<any[]>(`${this.baseApiUrl}/emprunts/liste/demande`);
   }
 
-  getEmpruntPanne() {
+  obtenirListePannesSignalees() {
     return this.http.get<any[]>(`${this.baseApiUrl}/emprunts/liste/panne`);
   }
 }
