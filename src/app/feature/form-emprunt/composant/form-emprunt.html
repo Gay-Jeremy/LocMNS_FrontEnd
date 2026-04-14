@@ -1,1 +1,129 @@
-<p>form-emprunt works!</p>
+<div class="page-emprunt">
+
+  <!-- ── En-tête de page ── -->
+  <div class="page-header">
+    <h1 class="page-title">Enregistrer un emprunt</h1>
+    <p class="page-subtitle">Remplissez le formulaire pour créer un nouvel emprunt</p>
+  </div>
+
+  <!-- ── Carte formulaire ── -->
+  <div class="form-card">
+
+    <!-- En-tête de la carte -->
+    <div class="form-card-header">
+      <span class="form-card-title">Nouvel emprunt</span>
+      <span class="badge-obligatoire">* Champs obligatoires</span>
+    </div>
+
+    <!-- Corps du formulaire -->
+    <form class="form-body">
+
+      <!-- ── UtilisateurService ── -->
+      <div class="field-group">
+        <label class="field-label" for="utilisateur">
+          UTILISATEUR <span class="asterisque">*</span>
+        </label>
+        <select id="utilisateur" name="utilisateur" class="field-select">
+          <option value="" disabled selected>Sélectionner un utilisateur…</option>
+          @for (utilisateur of utilisateurs(); track utilisateur.id) {
+            <option [value]="utilisateur.id">
+              {{ utilisateur.nom }} {{ utilisateur.prenom }} — {{ utilisateur.promotion.libelle }}
+            </option>
+          }
+        </select>
+      </div>
+
+      <!-- ── Dates (2 colonnes) ── -->
+      <div class="field-row">
+
+        <div class="field-group">
+          <label class="field-label" for="dateDebut">
+            DATE DE DÉBUT <span class="asterisque">*</span>
+          </label>
+          <input
+            type="date"
+            id="dateDebut"
+            name="dateDebut"
+            class="field-input">
+        </div>
+
+        <div class="field-group">
+          <label class="field-label" for="dateFin">
+            DATE DE FIN PRÉVUE <span class="asterisque">*</span>
+          </label>
+          <input
+            type="date"
+            id="dateFin"
+            name="dateFin"
+            class="field-input">
+        </div>
+
+      </div>
+
+      <!-- ── Hint durée calculée (visible quand les 2 dates sont remplies) ── -->
+      <div class="hint-duree">
+        <span class="hint-icone">i</span>
+        <span class="hint-texte">
+          Durée calculée : <strong>14 jours</strong>
+        </span>
+      </div>
+
+      <!-- ── Catégorie de matériel ── -->
+      <div class="field-group">
+        <label class="field-label" for="categorie">
+          CATÉGORIE DE MATÉRIEL <span class="asterisque">*</span>
+        </label>
+        <select id="categorie" name="categorie" class="field-select">
+          <option value="" disabled selected>Sélectionner une catégorie…</option>
+          <option value="laptop">Ordinateur portable</option>
+          <option value="tablette">Tablette</option>
+          <option value="camera">Caméra</option>
+          <option value="peripherique">Périphérique</option>
+        </select>
+      </div>
+
+      <!-- ── Matériel disponible ── -->
+      <div class="field-group">
+        <label class="field-label" for="materiel">
+          MATÉRIEL DISPONIBLE <span class="asterisque">*</span>
+        </label>
+        <select id="materiel" name="materiel" class="field-select field-select--focus">
+          <option value="" disabled selected>Sélectionner un matériel…</option>
+          <option value="L1">ThinkPad X1 Carbon — SN-20240101</option>
+          <option value="L2">MacBook Pro 14" — SN-20240055</option>
+          <option value="L3">Dell XPS 15 — SN-20240088</option>
+        </select>
+        <p class="hint-dispo">
+          <span class="hint-dispo-dot"></span>
+          3 matériels disponibles pour cette période
+        </p>
+      </div>
+
+      <!-- ── Notes ── -->
+      <div class="field-group">
+        <label class="field-label" for="notes">
+          NOTES <span class="field-label-optional">— Optionnel</span>
+        </label>
+        <textarea
+          id="notes"
+          name="notes"
+          class="field-textarea"
+          rows="4"
+          placeholder="Ajouter une remarque ou instruction particulière…">
+        </textarea>
+      </div>
+
+      <!-- ── Séparateur ── -->
+      <hr class="form-divider">
+
+      <!-- ── Actions ── -->
+      <div class="form-actions">
+        <button type="button" class="btn-annuler">Annuler</button>
+        <button type="submit" class="btn-enregistrer">Enregistrer</button>
+      </div>
+
+    </form>
+  </div>
+
+</div>
+

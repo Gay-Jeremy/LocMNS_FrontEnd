@@ -1,0 +1,329 @@
+:host {
+  --bg-card:        #2e2183;
+  --bg-card-header: #1e1460;
+  --bg-input:       #180f52;
+  --border-subtle:  rgba(255, 255, 255, 0.12);
+  --border-input:   rgba(255, 255, 255, 0.15);
+  --accent:         #ff5d2d;
+  --accent-ring:    rgba(255, 93, 45, 0.3);
+  --text-primary:   #ffffff;
+  --text-muted:     rgba(255, 255, 255, 0.55);
+  --text-faint:     rgba(255, 255, 255, 0.3);
+  --warn:           #f5c542;
+}
+
+/* ── Zone de page ── */
+.page-emprunt {
+  padding: 32px 32px 48px;
+  max-width: 1000px;
+}
+
+/* ── En-tête de page ── */
+.page-header {
+  margin-bottom: 28px;
+}
+
+.page-title {
+  font-size: 26px;
+  font-weight: 700;
+  color: black;
+  letter-spacing: -0.5px;
+  margin: 0 0 6px;
+}
+
+.page-subtitle {
+  font-size: 13px;
+  color: rgba(0, 0, 0, 0.5);
+  margin: 0;
+}
+
+/* ── Carte formulaire ── */
+.form-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.form-card-header {
+  background: var(--bg-card-header);
+  border-bottom: 1px solid var(--border-subtle);
+  padding: 0 28px;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.form-card-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.badge-obligatoire {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--accent);
+  background: rgba(255, 93, 45, 0.12);
+  border: 1px solid rgba(255, 93, 45, 0.25);
+  border-radius: 11px;
+  padding: 3px 12px;
+  letter-spacing: 0.4px;
+}
+
+/* ── Corps du formulaire ── */
+.form-body {
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* ── Groupe de champ ── */
+.field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* ── Ligne 2 colonnes ── */
+.field-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+/* ── Labels ── */
+.field-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-muted);
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.field-label-optional {
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--text-faint);
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.asterisque {
+  color: var(--accent);
+  font-weight: 700;
+  margin-left: 2px;
+}
+
+/* ── Inputs, selects, textarea ── */
+.field-input,
+.field-select,
+.field-textarea {
+  background: var(--bg-input);
+  border: 1px solid var(--border-input);
+  border-radius: 6px;
+  color: var(--text-primary);
+  font-family: inherit;
+  font-size: 13px;
+  padding: 0 16px;
+  height: 42px;
+  width: 100%;
+  box-sizing: border-box;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  outline: none;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+/* Flèche custom pour les selects */
+.field-select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='rgba(255,255,255,0.4)' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 16px center;
+  padding-right: 40px;
+  cursor: pointer;
+}
+
+.field-select option {
+  background: #2e2183;
+  color: #ffffff;
+}
+
+/* Textarea */
+.field-textarea {
+  height: auto;
+  padding: 12px 16px;
+  resize: vertical;
+  min-height: 88px;
+  line-height: 1.6;
+}
+
+.field-textarea::placeholder {
+  color: rgba(255, 255, 255, 0.25);
+}
+
+/* Focus standard */
+.field-input:focus,
+.field-select:focus,
+.field-textarea:focus {
+  border-color: rgba(255, 255, 255, 0.4);
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.06);
+}
+
+/* Focus accent — champ matériel disponible */
+.field-select--focus,
+.field-select--focus:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-ring);
+}
+
+/* Désactivé */
+.field-select:disabled,
+.field-input:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* Icône calendrier */
+.field-input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(0.6);
+  cursor: pointer;
+}
+
+/* ── Hint durée calculée ── */
+.hint-duree {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 6px;
+  padding: 8px 14px;
+  margin-top: -4px;
+}
+
+.hint-icone {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.12);
+  display: grid;
+  place-items: center;
+  font-size: 10px;
+  font-weight: 700;
+  font-style: italic;
+  color: rgba(255, 255, 255, 0.5);
+  flex-shrink: 0;
+}
+
+.hint-texte {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.hint-texte strong {
+  color: rgba(255, 255, 255, 0.85);
+  font-weight: 600;
+}
+
+/* ── Hint disponibilité ── */
+.hint-dispo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.45);
+  margin: 0;
+}
+
+.hint-dispo-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.5);
+  flex-shrink: 0;
+}
+
+.hint-dispo-dot--warn {
+  background: var(--warn);
+}
+
+.hint-dispo--vide {
+  color: var(--warn);
+}
+
+/* ── Séparateur ── */
+.form-divider {
+  border: none;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  margin: 4px 0 0;
+}
+
+/* ── Boutons ── */
+.form-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.btn-annuler {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 6px;
+  color: rgba(255, 255, 255, 0.7);
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 0 28px;
+  height: 42px;
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s;
+}
+
+.btn-annuler:hover {
+  border-color: rgba(255, 255, 255, 0.4);
+  color: #ffffff;
+}
+
+.btn-enregistrer {
+  background: var(--accent);
+  border: none;
+  border-radius: 6px;
+  color: #ffffff;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 0 32px;
+  height: 42px;
+  cursor: pointer;
+  box-shadow: 0 0 0 3px var(--accent-ring);
+  transition: opacity 0.2s, box-shadow 0.2s;
+}
+
+.btn-enregistrer:hover {
+  opacity: 0.88;
+  box-shadow: 0 0 0 5px var(--accent-ring);
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .page-emprunt {
+    padding: 20px 16px 40px;
+  }
+
+  .field-row {
+    grid-template-columns: 1fr;
+  }
+
+  .form-actions {
+    flex-direction: column-reverse;
+    gap: 10px;
+  }
+
+  .btn-annuler,
+  .btn-enregistrer {
+    width: 100%;
+  }
+}
