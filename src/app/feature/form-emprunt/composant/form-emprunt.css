@@ -1,12 +1,12 @@
 :host {
   --bg-card:        #2e2183;
   --bg-card-header: #1e1460;
-  --bg-input:       #180f52;
+  --bg-input: #fafafa;
   --border-subtle:  rgba(255, 255, 255, 0.12);
   --border-input:   rgba(255, 255, 255, 0.15);
   --accent:         #ff5d2d;
   --accent-ring:    rgba(255, 93, 45, 0.3);
-  --text-primary:   #ffffff;
+  --text-primary: #000000;
   --text-muted:     rgba(255, 255, 255, 0.55);
   --text-faint:     rgba(255, 255, 255, 0.3);
   --warn:           #f5c542;
@@ -15,7 +15,7 @@
 /* ── Zone de page ── */
 .page-emprunt {
   padding: 32px 32px 48px;
-  max-width: 1000px;
+  max-width: 100%;
 }
 
 /* ── En-tête de page ── */
@@ -58,7 +58,7 @@
 .form-card-title {
   font-size: 15px;
   font-weight: 700;
-  color: var(--text-primary);
+  color: white;
 }
 
 .badge-obligatoire {

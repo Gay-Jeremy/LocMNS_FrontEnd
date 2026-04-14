@@ -2,12 +2,13 @@ import {Component, computed, OnInit, signal} from '@angular/core';
 import {Emprunts} from '../../../models/emprunt';
 import {EmpruntService} from '../../../../feature/emprunts/services/emprunt.service';
 import {MaterielService} from '../../../../feature/materiels/services/materiel.service';
-import {RouterLink} from '@angular/router';
+import {RouterLink, RouterLinkActive} from '@angular/router';
 
 @Component({
   selector: 'app-sidebar',
   imports: [
-    RouterLink
+    RouterLink,
+    RouterLinkActive
   ],
   templateUrl: './sidebar.html',
   styleUrl: './sidebar.css',
