@@ -1,0 +1,71 @@
+aside {
+  width: 240px;
+  height: 100%;
+  background: #24176c;
+  border-right: 1px solid rgba(255, 255, 255, 0.12);
+  overflow-y: auto;
+  flex-shrink: 0;
+  padding: 12px 0;
+}
+
+.nav-label {
+  padding: 10px 20px 4px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  color: rgba(255, 255, 255, 0.4);
+  text-transform: uppercase;
+  margin-top: 8px;
+}
+
+.nav-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 9px 20px 9px 32px;
+  font-size: 13px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.65);
+  text-decoration: none;
+  cursor: pointer;
+  position: relative;
+  transition: background 0.12s, color 0.12s;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.05);
+    color: #ffffff;
+  }
+
+  &.active {
+    background: rgba(255, 93, 45, 0.10);
+    color: #ffffff;
+    font-weight: 600;
+    padding-left: 20px;
+
+    &::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 3px;
+      background: #ff5d2d;
+      border-radius: 0 2px 2px 0;
+    }
+  }
+}
+
+.nav-badge {
+  padding: 2px 8px;
+  border-radius: 9px;
+  font-size: 10px;
+  font-weight: 700;
+
+  &.warn   { background: #ff5d2d; color: #ffffff; }
+  &.danger { background: #c0392b; color: #ffffff; }
+}
+
+:host {
+  position: sticky;
+  top: 0;
+  height: 100%;
+  overflow-y: auto;
+}
