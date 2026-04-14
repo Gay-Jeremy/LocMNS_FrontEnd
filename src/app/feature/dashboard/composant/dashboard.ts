@@ -9,7 +9,7 @@ import {Materiel} from '../../../core/models/materiel';
   selector: 'app-dashboard',
   imports: [CommonModule],  // ← CommonModule manquait
   templateUrl: './dashboard.html',
-  styleUrl: './dashboard.scss',
+  styleUrl: './dashboard.css',
 })
 
 export class Dashboard implements OnInit {
