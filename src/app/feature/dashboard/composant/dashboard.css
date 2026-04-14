@@ -1,0 +1,271 @@
+/* ===========================
+   dashboard.component.css
+   =========================== */
+
+h2 {
+  color: black;
+  font-weight: bold;
+  font-size: 28px;
+}
+
+.title-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.subtitle {
+  color : rgba(0, 0, 0, 0.5);
+}
+
+.dashboard-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 32px 36px;
+  background-color: white;
+  min-height: 100%;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+/* ---- Stat Cards ---- */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+.stat-card {
+  background-color: #1e1b4b;
+  border-radius: 10px;
+  padding: 24px 20px 18px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  color: white;
+}
+
+.stat-label {
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: #b0aee8;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+.stat-value {
+  font-size: 42px;
+  font-weight: 700;
+  line-height: 1;
+  margin: 4px 0 10px;
+}
+
+.stat-btn {
+  background-color: #4b48a5;
+  border: none;
+  color: white;
+  border-radius: 6px;
+  padding: 8px 16px;
+  font-size: 12px;
+  cursor: pointer;
+  width: 100%;
+  transition: background-color 0.2s;
+}
+
+.stat-btn:hover {
+  background-color: #5c59b8;
+}
+
+/* ---- Section Card ---- */
+.section-card {
+  background-color: #1e1b4b;
+  border-radius: 12px;
+  padding: 24px 28px;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.section-title {
+  color: #ffffff;
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.btn-outline {
+  background: transparent;
+  border: 1px solid #4b48a5;
+  color: #b0aee8;
+  border-radius: 6px;
+  padding: 7px 18px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-outline:hover {
+  background-color: #2d2a6e;
+  color: white;
+}
+
+/* ---- Table ---- */
+.loans-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.loans-table thead tr {
+  border-bottom: 1px solid #2d2a6e;
+}
+
+.loans-table th {
+  color: #8886c4;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  padding: 0 12px 12px;
+  text-align: left;
+}
+
+.loans-table tbody tr {
+  border-bottom: 1px solid #2a2760;
+  transition: background-color 0.15s;
+}
+
+.loans-table tbody tr:last-child {
+  border-bottom: none;
+}
+
+.loans-table tbody tr:hover {
+  background-color: #2d2a6e44;
+}
+
+.loans-table td {
+  padding: 14px 12px;
+  color: #d5d3f5;
+  vertical-align: middle;
+}
+
+.user-name {
+  display: block;
+  color: #ffffff;
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.user-dept {
+  display: block;
+  color: #7b78c4;
+  font-size: 12px;
+  margin-top: 2px;
+}
+
+/* ---- Badges ---- */
+.badge {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.badge--encours {
+  background-color: #2d6a4f33;
+  color: #52b788;
+  border: 1px solid #2d6a4f66;
+}
+
+.badge--retard {
+  background-color: #e63946cc;
+  color: #fff;
+}
+
+.badge--retourne {
+  background-color: #2d2a6e;
+  color: #b0aee8;
+  border: 1px solid #4b48a5;
+}
+
+.badge--attente {
+  background-color: #3d3a6e44;
+  color: #b0aee8;
+  border: 1px solid #4b48a555;
+}
+
+/* ---- Quick Actions ---- */
+.quick-actions {
+  background-color: white;
+  border-radius: 12px;
+  padding: 24px;
+  padding-left: 0;
+}
+
+.quick-actions .section-title {
+  color: #1e1b4b;
+  margin-bottom: 16px;
+}
+
+.actions-row {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.action-btn {
+  padding: 12px 22px;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.action-btn--primary {
+  background-color: #f4511e;
+  color: white;
+}
+
+.action-btn--primary:hover {
+  background-color: #d64016;
+  transform: translateY(-1px);
+}
+
+/* ---- Responsive ---- */
+@media (max-width: 1024px) {
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .dashboard-wrapper {
+    padding: 16px;
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .loans-table th:nth-child(3),
+  .loans-table td:nth-child(3) {
+    display: none;
+  }
+
+  .actions-row {
+    flex-direction: column;
+  }
+
+  .action-btn {
+    width: 100%;
+    text-align: center;
+  }
+}

@@ -1,1 +1,78 @@
-<p>dashboard works!</p>
+
+<div class="dashboard-wrapper">
+  <div class="title-group">
+    <h2>Tableau de bord</h2>
+    <span class="subtitle">{{ dateJour }}</span>
+  </div>
+  <!-- Stat Cards -->
+  <div class="stats-grid">
+    <div class="stat-card">
+      <span class="stat-label">MATÉRIEL</span>
+      <span class="stat-value">{{ nbMateriels() }}</span>
+      <button class="stat-btn">Voir le matériel</button>
+    </div>
+    <div class="stat-card">
+      <span class="stat-label">EMPRUNT ACTIF</span>
+      <span class="stat-value">{{ nbEmpruntsActif() }}</span>
+      <button class="stat-btn">Voir les emprunts</button>
+    </div>
+    <div class="stat-card">
+      <span class="stat-label">DEMANDE EN COURS</span>
+      <span class="stat-value">{{ nbEmpruntsDemande() }}</span>
+      <button class="stat-btn">Voir les demandes</button>
+    </div>
+    <div class="stat-card">
+      <span class="stat-label">INCIDENT SIGNALÉ</span>
+      <span class="stat-value">{{ nbIncidents() }}</span>
+      <button class="stat-btn">Voir les incidents</button>
+    </div>
+  </div>
+
+  <!-- Recent Loans Table -->
+  <div class="section-card">
+    <div class="section-header">
+      <h2 class="section-title">Emprunts récents</h2>
+      <button class="btn-outline">Voir tout</button>
+    </div>
+
+    <table class="loans-table">
+      <thead>
+      <tr>
+        <th>UTILISATEUR</th>
+        <th>MATÉRIEL</th>
+        <th>CATÉGORIE</th>
+        <th>DÉBUT</th>
+        <th>FIN PRÉVUE</th>
+        <th>STATUT</th>
+      </tr>
+      </thead>
+      <tbody>
+        @for (emprunt of empruntsRecent(); track emprunt.id) {
+          <tr>
+            <td>
+              <span class="user-name">{{ emprunt.utilisateur.prenom }} {{ emprunt.utilisateur.nom }}</span>
+              <span class="user-dept">{{ emprunt.utilisateur.categorieUtilisateur.libelle }}</span>
+            </td>
+            <td>{{ emprunt.materiel.modele.libelle }}</td>
+            <td>{{ emprunt.materiel.numSerie }}</td>
+            <td>{{ emprunt.dateDebut }}</td>
+            <td>{{ emprunt.dateFin }}</td>
+            <td><span class="badge">{{ emprunt.statutEmprunt.libelle }}</span></td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Quick Actions -->
+  <div class="quick-actions">
+    <h2 class="section-title">Actions rapides</h2>
+    <div class="actions-row">
+      <button class="action-btn action-btn--primary">+ Enregistrer un emprunt</button>
+      <button class="action-btn action-btn--primary">Voir le matériel</button>
+      <button class="action-btn action-btn--primary">Gérer les utilisateurs</button>
+    </div>
+  </div>
+
+</div>
+
