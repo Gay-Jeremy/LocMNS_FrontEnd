@@ -47,7 +47,7 @@
             name="dateDebut"
             class="field-input"
             [(ngModel)]="dateDebut"
-            (ngModelChange)="dateDebut.set($event)">
+            (ngModelChange)="dateDebutChange($event)" (change)="onRechercherMateriels()">
         </div>
 
         <div class="field-group">
@@ -60,7 +60,7 @@
             name="dateFin"
             class="field-input"
             [(ngModel)]="dateFin"
-            (ngModelChange)="dateFin.set($event)">
+            (ngModelChange)="dateFinChange($event)" (change)="onRechercherMateriels()">
         </div>
 
       </div>
@@ -79,11 +79,11 @@
           CATÉGORIE DE MATÉRIEL <span class="asterisque">*</span>
         </label>
         <select id="categorie" name="categorie" class="field-select" [ngModel]="categorieModeleId()"
-                (ngModelChange)="categorieModeleId.set($event)">
+                (ngModelChange)="categorieModeleChange($event)" (change)="onRechercherMateriels()">
           <option value="" disabled selected>Sélectionner une catégorie…</option>
-          @for (categoriemodele of listeCategorieModele(); track categoriemodele.id) {
-            <option [value]="categoriemodele.id">
-              {{ categoriemodele.libelle }}
+          @for (categorieModele of listeCategorieModele(); track categorieModele.id) {
+            <option [value]="categorieModele.id">
+              {{ categorieModele.libelle }}
             </option>
           }
         </select>
@@ -98,13 +98,13 @@
                 (ngModelChange)="materielId.set($event)">
           @for (materiel of listeMateriel(); track materiel.id) {
             <option [value]="materiel.id">
-              {{ materiel.modele}} — {{ materiel.numSerie }}
+              {{ materiel.modele.libelle}} — {{ materiel.numSerie }}
             </option>
           }
         </select>
         <p class="hint-dispo">
           <span class="hint-dispo-dot"></span>
-          3 matériels disponibles pour cette période
+          {{ nbMateriel() }} matériels disponibles pour cette période
         </p>
       </div>
 

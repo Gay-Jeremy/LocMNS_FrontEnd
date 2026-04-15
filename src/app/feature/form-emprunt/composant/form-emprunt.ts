@@ -23,6 +23,8 @@ export class FormEmprunt {
   listeCategorieModele = signal<CategorieModele[]>([])
   listeMateriel = signal<Materiel[]>([])
 
+  nbMateriel = computed(() => this.listeMateriel().length);
+
   utilisateurId = signal<number | null>(null);
   categorieModeleId = signal<number | null>(null);
   materielId  = signal<number | null>(null);
@@ -47,6 +49,21 @@ export class FormEmprunt {
     private categorieModeleService : CategorieModeleService
   ) {}
 
+  dateDebutChange(date: string): void {
+    this.dateDebut.set(date);
+    this.onRechercherMateriels();
+  }
+
+  dateFinChange(date: string): void {
+    this.dateFin.set(date);
+    this.onRechercherMateriels();
+  }
+
+  categorieModeleChange(id: number): void {
+    this.categorieModeleId.set(id);
+    this.onRechercherMateriels();
+  }
+
   ngOnInit() {
     this.utilisateurService.obtenirListeUtilisateur().subscribe(data => {
       this.listeUtilisateurs.set(data);
@@ -56,9 +73,19 @@ export class FormEmprunt {
       this.listeCategorieModele.set(data)
     })
 
-    this.materielService.obtenirListeMaterielsDisponiblePourPeridodeParIDCategorieModele().subscribe(data => {
-      this.listeMateriel.set(data)
-    })
+  }
+
+  onRechercherMateriels(): void {
+    if (!this.dateDebut() || !this.dateFin() || !this.categorieModeleId()) return;
+    console.log(this.categorieModeleId())
+    this.materielService.obtenirListeMaterielsDisponiblePourPeridodeParIDCategorieModele(
+      this.dateDebut(),
+      this.dateFin(),
+      this.categorieModeleId()!
+    ).subscribe(data => {
+      this.listeMateriel.set(data);
+      console.log(this.listeMateriel())
+    });
   }
 
   onSubmit(): void {

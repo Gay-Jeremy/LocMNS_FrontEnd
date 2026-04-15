@@ -10,8 +10,10 @@ export class MaterielService {
 
   constructor(private http: HttpClient) {}
 
-  obtenirListeMaterielsDisponiblePourPeridodeParIDCategorieModele() {
-    return this.http.get<any[]>(`${this.baseApiUrl}/liste/disponible/{dateDebut}/{dateFin}/{id}`);
+  obtenirListeMaterielsDisponiblePourPeridodeParIDCategorieModele( dateDebut: string,
+                                                                   dateFin: string,
+                                                                   id: number) {
+    return this.http.get<any[]>(`${this.baseApiUrl}/liste/disponible/${dateDebut}/${dateFin}/${id}`);
   }
 
   obtenirListeMateriel() {
