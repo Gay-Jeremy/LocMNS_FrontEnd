@@ -89,11 +89,22 @@ export class FormEmprunt {
   }
 
   onSubmit(): void {
-    console.log('ID utilisateur :', this.utilisateurId())
-    console.log('ID categorieModele :', this.categorieModeleId())
-    console.log('Début :', this.dateDebut());
-    console.log('Fin :', this.dateFin());
-    console.log('Emprunt à enregistrer :');
+    const utilisateurId = this.utilisateurId();
+    const materielId    = this.materielId();
+
+    if (!utilisateurId || !materielId || !this.dateDebut || !this.dateFin) {
+      alert('Veuillez remplir tous les champs obligatoires.');
+      return;
+    }
+    this.empruntService.creerEmprunt({
+      utilisateurId,
+      materielId,
+      dateDebut: this.dateDebut(),
+      dateFin:   this.dateFin()
+    }).subscribe({
+      next: () => console.log('Emprunt enregistré !'),
+      error: (err) => console.error('Erreur :', err)
+    });
   }
 
   // Annuler

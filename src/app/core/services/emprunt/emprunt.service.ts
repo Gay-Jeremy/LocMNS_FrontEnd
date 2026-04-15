@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import {EmpruntDto} from '../../models/empruntDto';
+import {Observable} from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -24,5 +26,9 @@ export class EmpruntService {
 
   obtenirListePannesSignalees() {
     return this.http.get<any[]>(`${this.baseApiUrl}/emprunts/liste/panne`);
+  }
+
+  creerEmprunt(empruntDto: EmpruntDto): Observable<void> {
+    return this.http.post<void>(`${this.baseApiUrl}/emprunts`, empruntDto);
   }
 }
