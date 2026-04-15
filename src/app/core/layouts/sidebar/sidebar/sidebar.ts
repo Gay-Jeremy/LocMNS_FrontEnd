@@ -1,7 +1,7 @@
 import {Component, computed, OnInit, signal} from '@angular/core';
 import {Emprunts} from '../../../models/emprunt';
-import {EmpruntService} from '../../../../feature/emprunts/services/emprunt.service';
-import {MaterielService} from '../../../../feature/materiels/services/materiel.service';
+import {EmpruntService} from '../../../services/emprunt/emprunt.service';
+import {MaterielService} from '../../../services/materiel/materiel.service';
 import {RouterLink, RouterLinkActive} from '@angular/router';
 
 @Component({
