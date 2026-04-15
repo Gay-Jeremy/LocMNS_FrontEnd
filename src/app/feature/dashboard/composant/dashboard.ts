@@ -44,7 +44,7 @@ export class Dashboard implements OnInit {
       console.log(this.empruntsRecent())
     });
 
-    this.materielService.obtenirListeMaterielsDisponiblePourPeridodeParIDCategorieModele().subscribe(data => {
+    this.materielService.obtenirListeMateriel().subscribe(data => {
       this.materiels.set(data);
     });
 
