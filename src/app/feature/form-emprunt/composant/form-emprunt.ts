@@ -1,5 +1,5 @@
 import {Component, computed, signal} from '@angular/core';
-import {FormsModule} from '@angular/forms';
+import {FormsModule, NgForm} from '@angular/forms';
 import {Utilisateur} from '../../../core/models/utilisateur';
 import {EmpruntService} from '../../../core/services/emprunt/emprunt.service';
 import {MaterielService} from '../../../core/services/materiel/materiel.service';
@@ -88,7 +88,7 @@ export class FormEmprunt {
     });
   }
 
-  onSubmit(): void {
+  onSubmit(form: NgForm): void {
     const utilisateurId = this.utilisateurId();
     const materielId    = this.materielId();
 
@@ -102,8 +102,9 @@ export class FormEmprunt {
       dateDebut: this.dateDebut(),
       dateFin:   this.dateFin()
     }).subscribe({
-      next: () => console.log('Emprunt enregistré !'),
-      error: (err) => console.error('Erreur :', err)
+      next: () => {alert('Emprunt enregistré');form.reset()},
+
+      error: (err) => alert(`Erreur : ${err}`)
     });
   }
 
