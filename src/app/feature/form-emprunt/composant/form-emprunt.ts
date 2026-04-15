@@ -1,9 +1,12 @@
 import {Component, computed, signal} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {Utilisateur} from '../../../core/models/utilisateur';
-import {EmpruntService} from '../../emprunts/services/emprunt.service';
-import {MaterielService} from '../../materiels/services/materiel.service';
-import {UtilisateurService} from '../services/utilisateur/utilisateur.service'
+import {EmpruntService} from '../../../core/services/emprunt/emprunt.service';
+import {MaterielService} from '../../../core/services/materiel/materiel.service';
+import {UtilisateurService} from '../../../core/services/utilisateur/utilisateur.service'
+import {CategorieModele} from '../../../core/models/categorieModele';
+import {CategorieModeleService} from '../../../core/services/categorie-modele/categorie-modele.service';
+import {Materiel} from '../../../core/models/materiel';
 
 @Component({
   selector: 'app-form-emprunt',
@@ -16,8 +19,14 @@ import {UtilisateurService} from '../services/utilisateur/utilisateur.service'
 
 export class FormEmprunt {
 
-  utilisateurs = signal<Utilisateur[]>([])
+  listeUtilisateurs = signal<Utilisateur[]>([])
+  listeCategorieModele = signal<CategorieModele[]>([])
+  listeMateriel = signal<Materiel[]>([])
+
   utilisateurId = signal<number | null>(null);
+  categorieModeleId = signal<number | null>(null);
+  materielId  = signal<number | null>(null);
+
   dateDebut = signal<string>('');
   dateFin = signal<string>('');
 
@@ -34,17 +43,27 @@ export class FormEmprunt {
   constructor(
     private empruntService : EmpruntService,
     private materielService : MaterielService,
-    private utilisateurService : UtilisateurService
+    private utilisateurService : UtilisateurService,
+    private categorieModeleService : CategorieModeleService
   ) {}
 
   ngOnInit() {
     this.utilisateurService.obtenirListeUtilisateur().subscribe(data => {
-      this.utilisateurs.set(data);
+      this.listeUtilisateurs.set(data);
     });
+
+    this.categorieModeleService.obtenirListeCategorieModele().subscribe(data => {
+      this.listeCategorieModele.set(data)
+    })
+
+    this.materielService.obtenirListeMaterielsDisponiblePourPeridodeParIDCategorieModele().subscribe(data => {
+      this.listeMateriel.set(data)
+    })
   }
 
   onSubmit(): void {
     console.log('ID utilisateur :', this.utilisateurId())
+    console.log('ID categorieModele :', this.categorieModeleId())
     console.log('Début :', this.dateDebut());
     console.log('Fin :', this.dateFin());
     console.log('Emprunt à enregistrer :');

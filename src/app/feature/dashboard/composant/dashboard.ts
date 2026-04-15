@@ -1,6 +1,6 @@
 import {Component, computed, OnInit, signal} from '@angular/core';
-import { EmpruntService } from '../../emprunts/services/emprunt.service';
-import { MaterielService } from '../../materiels/services/materiel.service';
+import { EmpruntService } from '../../../core/services/emprunt/emprunt.service';
+import { MaterielService } from '../../../core/services/materiel/materiel.service';
 import {CommonModule, DatePipe} from '@angular/common';
 import {Emprunts} from '../../../core/models/emprunt';
 import {Materiel} from '../../../core/models/materiel';
@@ -44,7 +44,7 @@ export class Dashboard implements OnInit {
       console.log(this.empruntsRecent())
     });
 
-    this.materielService.obtenirListeMateriels().subscribe(data => {
+    this.materielService.obtenirListeMaterielsDisponiblePourPeridodeParIDCategorieModele().subscribe(data => {
       this.materiels.set(data);
     });
 
