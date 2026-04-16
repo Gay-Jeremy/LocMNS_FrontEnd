@@ -63,7 +63,7 @@ h2 {
 
 .stat-btn {
   background-color: #4b48a5;
-  border: none;
+  border: 3px solid transparent;
   color: white;
   border-radius: 6px;
   padding: 8px 16px;
@@ -71,10 +71,12 @@ h2 {
   cursor: pointer;
   width: 100%;
   transition: background-color 0.2s;
+
 }
 
 .stat-btn:hover {
   background-color: #5c59b8;
+  border: 3px solid #ff5d2d;
 }
 
 /* ---- Section Card ---- */
@@ -99,19 +101,18 @@ h2 {
 }
 
 .btn-outline {
-  background: transparent;
-  border: 1px solid #4b48a5;
-  color: #b0aee8;
+  background-color: #5c59b8;
+  border: 3px solid transparent;
   border-radius: 6px;
   padding: 7px 18px;
   font-size: 13px;
   cursor: pointer;
   transition: all 0.2s;
+  color: white;
 }
 
 .btn-outline:hover {
-  background-color: #2d2a6e;
-  color: white;
+  border: 3px solid #ff5d2d;
 }
 
 /* ---- Table ---- */
@@ -236,7 +237,7 @@ h2 {
 
 .action-btn--primary:hover {
   background-color: #d64016;
-  transform: translateY(-1px);
+  transform: translateY(-3px);
 }
 
 /* ---- Responsive ---- */
