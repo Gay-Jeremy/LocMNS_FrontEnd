@@ -3,7 +3,7 @@
    =========================== */
 
 h2 {
-  color: black;
+  color: white;
   font-weight: bold;
   font-size: 28px;
 }
@@ -15,7 +15,7 @@ h2 {
 }
 
 .subtitle {
-  color : rgba(0, 0, 0, 0.5);
+  color : rgb(255, 255, 255);
 }
 
 .dashboard-wrapper {
@@ -23,7 +23,7 @@ h2 {
   flex-direction: column;
   gap: 24px;
   padding: 32px 36px;
-  background-color: white;
+  background-color: #100839;
   min-height: 100%;
   font-family: 'Segoe UI', sans-serif;
 }
@@ -36,7 +36,7 @@ h2 {
 }
 
 .stat-card {
-  background-color: #1e1b4b;
+  background-color: #2c1f6b;
   border-radius: 10px;
   padding: 24px 20px 18px;
   display: flex;
@@ -79,7 +79,7 @@ h2 {
 
 /* ---- Section Card ---- */
 .section-card {
-  background-color: #1e1b4b;
+  background-color: #2c1f6b;
   border-radius: 12px;
   padding: 24px 28px;
 }
@@ -202,14 +202,14 @@ h2 {
 
 /* ---- Quick Actions ---- */
 .quick-actions {
-  background-color: white;
+  background-color: #100839;
   border-radius: 12px;
   padding: 24px;
   padding-left: 0;
 }
 
 .quick-actions .section-title {
-  color: #1e1b4b;
+  color: #ffffff;
   margin-bottom: 16px;
 }
 
