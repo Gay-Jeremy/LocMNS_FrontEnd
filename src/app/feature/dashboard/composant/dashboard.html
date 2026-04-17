@@ -4,37 +4,20 @@
     <h2>Tableau de bord</h2>
     <span class="subtitle">{{ dateJour | date:'dd/MM/yyyy' }}</span>
   </div>
-  <!-- Stat Cards -->
   <div class="stats-grid">
-    <div class="stat-card">
-      <span class="stat-label">MATÉRIEL</span>
-      <span class="stat-value">{{ nbMateriels() }}</span>
-      <button class="stat-btn">Voir le matériel</button>
+    @for (card of listStatsCard(); track card.nomLabel) {
+      @if (card.cptValeur > 0) {
+        <app-stat-card [nomLabel]="card.nomLabel"
+                       [cptValeur]="card.cptValeur"
+                       [btnLabel] = "card.btnLabel"/>
+      }
+    }
     </div>
-    <div class="stat-card">
-      <span class="stat-label">EMPRUNT ACTIF</span>
-      <span class="stat-value">{{ nbEmpruntsActif() }}</span>
-      <button class="stat-btn">Voir les emprunts</button>
-    </div>
-    <div class="stat-card">
-      <span class="stat-label">DEMANDE EN COURS</span>
-      <span class="stat-value">{{ nbEmpruntsDemande() }}</span>
-      <button class="stat-btn">Voir les demandes</button>
-    </div>
-    <div class="stat-card">
-      <span class="stat-label">INCIDENT SIGNALÉ</span>
-      <span class="stat-value">{{ nbIncidents() }}</span>
-      <button class="stat-btn">Voir les incidents</button>
-    </div>
-  </div>
-
-  <!-- Recent Loans Table -->
   <div class="section-card">
     <div class="section-header">
       <h2 class="section-title">Emprunts récents</h2>
       <button class="btn-outline">Voir tout</button>
     </div>
-
     <table class="loans-table">
       <thead>
       <tr>
@@ -65,8 +48,6 @@
       </tbody>
     </table>
   </div>
-
-  <!-- Quick Actions -->
   <div class="quick-actions">
     <h2 class="section-title">Actions rapides</h2>
     <div class="actions-row">
@@ -75,6 +56,5 @@
       <button class="action-btn action-btn--primary">Gérer les utilisateurs</button>
     </div>
   </div>
-
 </div>
 

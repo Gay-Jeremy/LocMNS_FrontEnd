@@ -4,10 +4,12 @@ import { MaterielService } from '../../../core/services/materiel/materiel.servic
 import {CommonModule, DatePipe} from '@angular/common';
 import {Emprunts} from '../../../core/models/emprunt';
 import {Materiel} from '../../../core/models/materiel';
+import {StatCard} from '../../../shared/composant/stat-card/stat-card';
+import {StatCardData} from '../../../shared/models/stat-card.model';
 
 @Component({
   selector: 'app-dashboard',
-  imports: [CommonModule],  // ← CommonModule manquait
+  imports: [CommonModule, StatCard],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css',
 })
@@ -15,6 +17,8 @@ import {Materiel} from '../../../core/models/materiel';
 export class Dashboard implements OnInit {
 
   dateJour = new Date();
+
+
 
   empruntsActif = signal<Emprunts[]>([]);
   empruntsRecent = signal<Emprunts[]>([]);
@@ -26,6 +30,13 @@ export class Dashboard implements OnInit {
   nbEmpruntsActif = computed(() => this.empruntsActif().length);
   nbEmpruntsDemande = computed(() => this.empruntsDemande().length);
   nbIncidents = computed(() => this.incidents().length);
+
+  listStatsCard = computed<StatCardData[]>(() => [
+    { nomLabel: 'MATÉRIEL', cptValeur: this.nbMateriels(), btnLabel: 'Voir le matériel' },
+    { nomLabel: 'EMPRUNT ACTIF', cptValeur: this.nbEmpruntsActif(), btnLabel: 'Voir les emprunts' },
+    { nomLabel: 'DEMANDE EN COURS', cptValeur: this.nbEmpruntsDemande(), btnLabel: 'Voir les demandes' },
+    { nomLabel: 'INCIDENT SIGNALÉ', cptValeur: this.nbIncidents(), btnLabel: 'Voir les incidents' },
+  ])
 
   constructor(
     private empruntService: EmpruntService,
