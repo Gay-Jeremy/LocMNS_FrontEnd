@@ -2,7 +2,7 @@
 <div class="dashboard-wrapper">
   <div class="title-group">
     <h2>Tableau de bord</h2>
-    <span class="subtitle">{{ dateJour }}</span>
+    <span class="subtitle">{{ dateJour | date:'dd/MM/yyyy' }}</span>
   </div>
   <!-- Stat Cards -->
   <div class="stats-grid">
@@ -38,6 +38,7 @@
     <table class="loans-table">
       <thead>
       <tr>
+        <th>DATE CREATION</th>
         <th>UTILISATEUR</th>
         <th>MATÉRIEL</th>
         <th>CATÉGORIE</th>
@@ -49,14 +50,15 @@
       <tbody>
         @for (emprunt of empruntsRecent(); track emprunt.id) {
           <tr>
+            <td>{{ emprunt.dateCreation | date:'dd/MM/yyyy' }}</td>
             <td>
               <span class="user-name">{{ emprunt.utilisateur.prenom }} {{ emprunt.utilisateur.nom }}</span>
               <span class="user-dept">{{ emprunt.utilisateur.categorieUtilisateur.libelle }}</span>
             </td>
-            <td>{{ emprunt.materiel.modele.libelle }}</td>
-            <td>{{ emprunt.materiel.numSerie }}</td>
-            <td>{{ emprunt.dateDebut }}</td>
-            <td>{{ emprunt.dateFin }}</td>
+            <td>{{ emprunt.materiel.modele.libelle }} - {{ emprunt.materiel.numSerie }}</td>
+            <td>{{ emprunt.materiel.modele.categorieModele.libelle }}</td>
+            <td>{{ emprunt.dateDebut | date:'dd/MM/yyyy' }}</td>
+            <td>{{ emprunt.dateFin | date:'dd/MM/yyyy' }}</td>
             <td><span class="badge">{{ emprunt.statutEmprunt.libelle }}</span></td>
           </tr>
         }
