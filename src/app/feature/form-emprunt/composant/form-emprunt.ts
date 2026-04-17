@@ -4,7 +4,7 @@ import {Utilisateur} from '../../../core/models/utilisateur';
 import {EmpruntService} from '../../../core/services/emprunt/emprunt.service';
 import {MaterielService} from '../../../core/services/materiel/materiel.service';
 import {UtilisateurService} from '../../../core/services/utilisateur/utilisateur.service'
-import {CategorieModele} from '../../../core/models/categorieModele';
+import {CategorieModele} from '../../../core/models/categorie-modele';
 import {CategorieModeleService} from '../../../core/services/categorie-modele/categorie-modele.service';
 import {Materiel} from '../../../core/models/materiel';
 

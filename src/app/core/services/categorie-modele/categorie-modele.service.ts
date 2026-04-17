@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
+import {CategorieModele} from '../../models/categorie-modele';
 
 @Injectable({
   providedIn: 'root',
@@ -11,7 +12,7 @@ export class CategorieModeleService {
   constructor(private http: HttpClient) {}
 
   obtenirListeCategorieModele() {
-    return this.http.get<any[]>(`${this.baseApiUrl}/liste`);
+    return this.http.get<CategorieModele[]>(`${this.baseApiUrl}/liste`);
   }
 
 }

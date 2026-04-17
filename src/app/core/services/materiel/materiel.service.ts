@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
+import {Materiel} from '../../models/materiel';
 
 @Injectable({
   providedIn: 'root',
@@ -13,10 +14,10 @@ export class MaterielService {
   obtenirListeMaterielsDisponiblePourPeridodeParIDCategorieModele( dateDebut: string,
                                                                    dateFin: string,
                                                                    id: number) {
-    return this.http.get<any[]>(`${this.baseApiUrl}/liste/disponible/${dateDebut}/${dateFin}/${id}`);
+    return this.http.get<Materiel[]>(`${this.baseApiUrl}/liste/disponible/${dateDebut}/${dateFin}/${id}`);
   }
 
   obtenirListeMateriel() {
-    return this.http.get<any[]>(`${this.baseApiUrl}/liste`)
+    return this.http.get<Materiel[]>(`${this.baseApiUrl}/liste`)
   }
 }

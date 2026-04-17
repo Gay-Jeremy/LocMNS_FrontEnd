@@ -67,7 +67,7 @@ h2 {
   color: white;
   border-radius: 6px;
   padding: 8px 16px;
-  font-size: 12px;
+  font-size: 13px;
   cursor: pointer;
   width: 100%;
   transition: background-color 0.2s;
@@ -113,6 +113,7 @@ h2 {
 
 .btn-outline:hover {
   border: 3px solid #ff5d2d;
+  background-color: #5c59b8;
 }
 
 /* ---- Table ---- */
@@ -223,8 +224,8 @@ h2 {
 .action-btn {
   padding: 12px 22px;
   border: none;
-  border-radius: 8px;
-  font-size: 14px;
+  border-radius: 2em;
+  font-size: 13px;
   font-weight: 500;
   cursor: pointer;
   transition: all 0.2s;

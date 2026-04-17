@@ -27,14 +27,14 @@
 .page-title {
   font-size: 26px;
   font-weight: 700;
-  color: black;
+  color: white;
   letter-spacing: -0.5px;
   margin: 0 0 6px;
 }
 
 .page-subtitle {
   font-size: 13px;
-  color: rgba(0, 0, 0, 0.5);
+  color: white;
   margin: 0;
 }
 
