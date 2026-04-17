@@ -270,22 +270,22 @@
 }
 
 .btn-annuler {
-  background: transparent;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  background-color: #4b48a5;
+  border: 3px solid transparent;
+  color: white;
   border-radius: 6px;
-  color: rgba(255, 255, 255, 0.7);
   font-family: inherit;
   font-size: 13px;
   font-weight: 600;
   padding: 0 28px;
   height: 42px;
   cursor: pointer;
-  transition: border-color 0.2s, color 0.2s;
+  transition: background-color 0.2s;
 }
 
 .btn-annuler:hover {
-  border-color: rgba(255, 255, 255, 0.4);
-  color: #ffffff;
+  background-color: #5c59b8;
+  border: 3px solid #ff5d2d;
 }
 
 .btn-enregistrer {
