@@ -1,7 +1,7 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import {EmpruntDto} from '../../models/empruntDto';
-import {Observable} from 'rxjs';
+import {Observable, tap} from 'rxjs';
 import {Emprunts} from '../../models/emprunt';
 
 @Injectable({
@@ -11,25 +11,29 @@ import {Emprunts} from '../../models/emprunt';
 export class EmpruntService {
   private baseApiUrl = 'http://localhost:8080/api';
 
-  constructor(private http: HttpClient) {}
+  readonly listeEmpruntActif = signal<Emprunts[]>([])
+
+
+  httpClient = inject(HttpClient)
 
   obtenirListeEmpruntsActifs() {
-    return this.http.get<Emprunts[]>(`${this.baseApiUrl}/emprunts/liste/actif`);
+    return this.httpClient.get<Emprunts[]>(`${this.baseApiUrl}/emprunts/liste/actif`)
+    .pipe(tap((listeEmpruntActif) => this.listeEmpruntActif.set(listeEmpruntActif)));
   }
 
   obtenirListeEmpruntsRecents() {
-    return this.http.get<Emprunts[]>(`${this.baseApiUrl}/emprunts/liste/recent`);
+    return this.httpClient.get<Emprunts[]>(`${this.baseApiUrl}/emprunts/liste/recent`);
   }
 
   obtenirListeDemandesEmprunt() {
-    return this.http.get<Emprunts[]>(`${this.baseApiUrl}/emprunts/liste/demande`);
+    return this.httpClient.get<Emprunts[]>(`${this.baseApiUrl}/emprunts/liste/demande`);
   }
 
   obtenirListePannesSignalees() {
-    return this.http.get<Emprunts[]>(`${this.baseApiUrl}/emprunts/liste/panne`);
+    return this.httpClient.get<Emprunts[]>(`${this.baseApiUrl}/emprunts/liste/panne`);
   }
 
   creerEmprunt(empruntDto: EmpruntDto): Observable<EmpruntDto> {
-    return this.http.post<EmpruntDto>(`${this.baseApiUrl}/emprunts`, empruntDto);
+    return this.httpClient.post<EmpruntDto>(`${this.baseApiUrl}/emprunts`, empruntDto);
   }
 }
