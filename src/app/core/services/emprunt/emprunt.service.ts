@@ -12,7 +12,9 @@ export class EmpruntService {
   private baseApiUrl = 'http://localhost:8080/api';
 
   readonly listeEmpruntActif = signal<Emprunts[]>([])
-
+  readonly listeEmpruntRecent = signal<Emprunts[]>([])
+  readonly listeDemandeEmprunt = signal<Emprunts[]>([])
+  readonly listePanneSignalee = signal<Emprunts[]>([])
 
   httpClient = inject(HttpClient)
 
@@ -22,18 +24,22 @@ export class EmpruntService {
   }
 
   obtenirListeEmpruntsRecents() {
-    return this.httpClient.get<Emprunts[]>(`${this.baseApiUrl}/emprunts/liste/recent`);
+    return this.httpClient.get<Emprunts[]>(`${this.baseApiUrl}/emprunts/liste/recent`)
+      .pipe(tap((listeEmpruntRecent) => this.listeEmpruntRecent.set(listeEmpruntRecent)));
   }
 
   obtenirListeDemandesEmprunt() {
-    return this.httpClient.get<Emprunts[]>(`${this.baseApiUrl}/emprunts/liste/demande`);
+    return this.httpClient.get<Emprunts[]>(`${this.baseApiUrl}/emprunts/liste/demande`)
+      .pipe(tap((listeDemandeEmprunt) => this.listeDemandeEmprunt.set(listeDemandeEmprunt)))
   }
 
   obtenirListePannesSignalees() {
-    return this.httpClient.get<Emprunts[]>(`${this.baseApiUrl}/emprunts/liste/panne`);
+    return this.httpClient.get<Emprunts[]>(`${this.baseApiUrl}/emprunts/liste/panne`)
+      .pipe(tap((listePanneSignalee) => this.listePanneSignalee.set(listePanneSignalee)))
   }
 
-  creerEmprunt(empruntDto: EmpruntDto): Observable<EmpruntDto> {
-    return this.httpClient.post<EmpruntDto>(`${this.baseApiUrl}/emprunts`, empruntDto);
+  creerEmprunt(empruntDto: EmpruntDto) {
+    return this.httpClient.post<EmpruntDto>(`${this.baseApiUrl}/emprunts`, empruntDto)
+      .pipe(tap(() => this.obtenirListeEmpruntsActifs().subscribe()))
   }
 }

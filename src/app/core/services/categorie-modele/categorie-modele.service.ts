@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {inject, Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {CategorieModele} from '../../models/categorie-modele';
 
@@ -9,10 +9,10 @@ export class CategorieModeleService {
 
   private baseApiUrl = 'http://localhost:8080/api/categorie_modele';
 
-  constructor(private http: HttpClient) {}
+  httpClient = inject(HttpClient)
 
   obtenirListeCategorieModele() {
-    return this.http.get<CategorieModele[]>(`${this.baseApiUrl}/liste`);
+    return this.httpClient.get<CategorieModele[]>(`${this.baseApiUrl}/liste`);
   }
 
 }

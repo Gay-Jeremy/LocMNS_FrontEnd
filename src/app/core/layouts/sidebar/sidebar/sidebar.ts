@@ -19,9 +19,11 @@ export class Sidebar implements OnInit{
   nbEmpruntsDemande = computed(() => this.empruntsDemande().length);
   empruntsPanne  = signal<Emprunts[]>([]);
   nbPanneSignalee = computed(() => this.empruntsPanne().length);
+  empruntActif = signal<Emprunts[]>([])
+  nbEmpruntsActif = computed(() => this.empruntActif().length) ;
 
   constructor(
-    private empruntService: EmpruntService,
+    protected empruntService: EmpruntService,
   ) {};
 
   ngOnInit() {
@@ -33,5 +35,9 @@ export class Sidebar implements OnInit{
     this.empruntService.obtenirListePannesSignalees().subscribe(data => {
       this.empruntsPanne.set(data);
     });
+
+    this.empruntService.obtenirListeEmpruntsActifs().subscribe(data => {
+      this.empruntActif.set(data);
+    })
   }
 }

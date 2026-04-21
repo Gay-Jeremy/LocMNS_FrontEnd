@@ -4,7 +4,7 @@
 
   <div class="nav-label">Emprunts</div>
   <a class="nav-link">Demandes en cours <span class="nav-badge warn">{{ nbEmpruntsDemande() }}</span></a>
-  <a class="nav-link">Liste des emprunts</a>
+  <a class="nav-link" routerLink="/emprunt/liste" routerLinkActive="active">Liste des emprunts<span class="nav-badge warn">{{ empruntService.listeEmpruntActif().length }}</span></a>
   <a class="nav-link">Historique des emprunts</a>
   <a class="nav-link" routerLink="/enregistrer/emprunt" routerLinkActive="active">Enregistrer un emprunt</a>
 

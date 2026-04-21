@@ -1,0 +1,34 @@
+<div class="dashboard-wrapper">
+  <div class="section-card">
+    <div class="section-header">
+      <h2 class="section-title">Liste des Emprunts</h2>
+    </div>
+    <table class="loans-table">
+      <thead>
+      <tr>
+        <th>UTILISATEUR</th>
+        <th>MATÉRIEL</th>
+        <th>CATÉGORIE</th>
+        <th>DÉBUT</th>
+        <th>FIN PRÉVUE</th>
+        <th>STATUT</th>
+      </tr>
+      </thead>
+      <tbody>
+        @for (emprunt of empruntsActif(); track emprunt.id) {
+          <tr>
+            <td>
+              <span class="user-name">{{ emprunt.utilisateur.prenom }} {{ emprunt.utilisateur.nom }}</span>
+              <span class="user-dept">{{ emprunt.utilisateur.categorieUtilisateur.libelle }}</span>
+            </td>
+            <td>{{ emprunt.materiel.modele.libelle }}</td>
+            <td>{{ emprunt.materiel.numSerie }}</td>
+            <td>{{ emprunt.dateDebut }}</td>
+            <td>{{ emprunt.dateFin }}</td>
+            <td><span class="badge">{{ emprunt.statutEmprunt.libelle }}</span></td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>

@@ -1,4 +1,4 @@
-import {Component, computed, OnInit, signal} from '@angular/core';
+import {Component, computed, inject, OnInit, signal} from '@angular/core';
 import { EmpruntService } from '../../../core/services/emprunt/emprunt.service';
 import { MaterielService } from '../../../core/services/materiel/materiel.service';
 import {CommonModule, DatePipe} from '@angular/common';
@@ -18,6 +18,7 @@ export class Dashboard implements OnInit {
 
   dateJour = new Date();
 
+  empruntService = inject(EmpruntService)
 
 
   empruntsActif = signal<Emprunts[]>([]);
@@ -39,9 +40,8 @@ export class Dashboard implements OnInit {
   ])
 
   constructor(
-    private empruntService: EmpruntService,
     private materielService: MaterielService
-  ) {}; // ← type corrigé
+  ) {};
 
 
   ngOnInit() {
