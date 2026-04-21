@@ -73,59 +73,7 @@ h2 {
   background-color: #5c59b8;
 }
 
-/* ---- Table ---- */
-.loans-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 14px;
-}
 
-.loans-table thead tr {
-  border-bottom: 1px solid #2d2a6e;
-}
-
-.loans-table th {
-  color: #8886c4;
-  font-size: 11px;
-  font-weight: 500;
-  letter-spacing: 0.07em;
-  text-transform: uppercase;
-  padding: 0 12px 12px;
-  text-align: left;
-}
-
-.loans-table tbody tr {
-  border-bottom: 1px solid #2a2760;
-  transition: background-color 0.15s;
-}
-
-.loans-table tbody tr:last-child {
-  border-bottom: none;
-}
-
-.loans-table tbody tr:hover {
-  background-color: #2d2a6e44;
-}
-
-.loans-table td {
-  padding: 14px 12px;
-  color: #d5d3f5;
-  vertical-align: middle;
-}
-
-.user-name {
-  display: block;
-  color: #ffffff;
-  font-weight: 500;
-  font-size: 14px;
-}
-
-.user-dept {
-  display: block;
-  color: #7b78c4;
-  font-size: 12px;
-  margin-top: 2px;
-}
 
 /* ---- Badges ---- */
 .badge {

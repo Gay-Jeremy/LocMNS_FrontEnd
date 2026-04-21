@@ -1,4 +1,4 @@
-<div class="dashboard-wrapper">
+
   <div class="section-card">
     <div class="section-header">
       <h2 class="section-title">Liste des Emprunts</h2>
@@ -6,29 +6,20 @@
     <table class="loans-table">
       <thead>
       <tr>
-        <th>UTILISATEUR</th>
-        <th>MATÉRIEL</th>
-        <th>CATÉGORIE</th>
-        <th>DÉBUT</th>
-        <th>FIN PRÉVUE</th>
-        <th>STATUT</th>
+        @for (col of colonnes; track col.key) {
+          <th>{{ col.label }}</th>
+        }
       </tr>
       </thead>
       <tbody>
-        @for (emprunt of empruntsActif(); track emprunt.id) {
+        @for (row of data; track row.id) {
           <tr>
-            <td>
-              <span class="user-name">{{ emprunt.utilisateur.prenom }} {{ emprunt.utilisateur.nom }}</span>
-              <span class="user-dept">{{ emprunt.utilisateur.categorieUtilisateur.libelle }}</span>
-            </td>
-            <td>{{ emprunt.materiel.modele.libelle }}</td>
-            <td>{{ emprunt.materiel.numSerie }}</td>
-            <td>{{ emprunt.dateDebut }}</td>
-            <td>{{ emprunt.dateFin }}</td>
-            <td><span class="badge">{{ emprunt.statutEmprunt.libelle }}</span></td>
+            @for (col of colonnes; track col.key) {
+              <td>{{ getValeur(row, col.key) }}</td>
+            }
           </tr>
         }
       </tbody>
     </table>
   </div>
-</div>
+

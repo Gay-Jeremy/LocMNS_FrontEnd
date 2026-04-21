@@ -1,20 +1,33 @@
 import {Component, computed, inject, OnInit, signal} from '@angular/core';
-import { EmpruntService } from '../../../core/services/emprunt/emprunt.service';
-import { MaterielService } from '../../../core/services/materiel/materiel.service';
+import { EmpruntService } from '../../core/services/emprunt/emprunt.service';
+import { MaterielService } from '../../core/services/materiel/materiel.service';
 import {CommonModule, DatePipe} from '@angular/common';
-import {Emprunts} from '../../../core/models/emprunt';
-import {Materiel} from '../../../core/models/materiel';
-import {StatCard} from '../../../shared/composant/stat-card/stat-card';
-import {StatCardData} from '../../../shared/models/stat-card.model';
+import {Emprunts} from '../../core/models/emprunt';
+import {Materiel} from '../../core/models/materiel';
+import {StatCard} from '../../shared/composant/stat-card/stat-card';
+import {StatCardData} from '../../shared/models/stat-card.model';
+import {ColonneConfig} from '../../shared/models/colonne-config.model';
+import {Table} from '../../shared/composant/table/table';
 
 @Component({
   selector: 'app-dashboard',
-  imports: [CommonModule, StatCard],
-  templateUrl: './dashboard.html',
-  styleUrl: './dashboard.css',
+  imports: [CommonModule, StatCard, Table],
+  templateUrl: './list-emprunt.html',
+  styleUrl: './list-emprunt.css',
 })
 
-export class Dashboard implements OnInit {
+export class ListEmprunt implements OnInit {
+
+  colonnesEmpruntsRecent: ColonneConfig[] = [
+    { key: 'utilisateur.nom', label: 'NOM' },
+    { key: 'utilisateur.prenom', label: 'PRÉNOM' },
+    { key: 'utilisateur.promotion.libelle', label: 'PROMOTION' },
+    { key: 'materiel.modele.categorieModele.libelle', label: 'CATEGORIE' },
+    { key: 'materiel.numSerie', label: 'NUM SÉRIE' },
+    { key: 'dateDebut', label: 'DATE DE DÉBUT' },
+    { key: 'dateFin', label: 'DATE DE FIN PRÉVUE' },
+    { key: 'statutEmprunt.libelle', label: 'STATUT' },
+  ];
 
   dateJour = new Date();
 

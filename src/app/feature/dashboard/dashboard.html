@@ -1,0 +1,29 @@
+
+<div class="dashboard-wrapper">
+  <div class="title-group">
+    <h2>Tableau de bord</h2>
+    <span class="subtitle">{{ dateJour }}</span>
+  </div>
+  <div class="stats-grid">
+    @for (card of listStatsCard(); track card.nomLabel) {
+      @if (card.cptValeur > 0) {
+        <app-stat-card [nomLabel]="card.nomLabel"
+                       [cptValeur]="card.cptValeur"
+                       [btnLabel] = "card.btnLabel"/>
+      }
+    }
+    </div>
+      <app-table
+        [colonnes]="colonnesEmpruntsRecent"
+        [data]="empruntsRecent()"
+      />
+  <div class="quick-actions">
+    <h2 class="section-title">Actions rapides</h2>
+    <div class="actions-row">
+      <button class="action-btn action-btn--primary">+ Enregistrer un emprunt</button>
+      <button class="action-btn action-btn--primary">Voir le matériel</button>
+      <button class="action-btn action-btn--primary">Gérer les utilisateurs</button>
+    </div>
+  </div>
+</div>
+

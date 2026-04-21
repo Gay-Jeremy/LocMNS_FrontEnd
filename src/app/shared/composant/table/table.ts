@@ -1,6 +1,9 @@
-import {Component, inject, OnInit, signal} from '@angular/core';
+import {Component, inject, Input, OnInit, signal} from '@angular/core';
 import {EmpruntService} from '../../../core/services/emprunt/emprunt.service';
 import {Emprunts} from '../../../core/models/emprunt';
+import {Materiel} from '../../../core/models/materiel';
+import {Utilisateur} from '../../../core/models/utilisateur';
+import {ColonneConfig} from '../../models/colonne-config.model';
 
 @Component({
   selector: 'app-table',
@@ -10,6 +13,9 @@ import {Emprunts} from '../../../core/models/emprunt';
 })
 export class Table implements OnInit{
 
+  @Input() colonnes: ColonneConfig[] = [];
+  @Input() data : any[] = [];
+
   empruntService = inject(EmpruntService);
   empruntsActif = signal<Emprunts[]>([]);
 
@@ -18,6 +24,10 @@ export class Table implements OnInit{
     this.empruntService.obtenirListeEmpruntsActifs().subscribe(data => {
       this.empruntsActif.set(data);
     });
+
+  }
+  getValeur(row: any, key: string): any {
+    return key.split('.').reduce((obj, k) => obj?.[k], row);
   }
 
 }
