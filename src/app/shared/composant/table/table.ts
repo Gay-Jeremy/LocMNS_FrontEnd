@@ -1,6 +1,6 @@
 import {Component, inject, OnInit, signal} from '@angular/core';
-import {EmpruntService} from '../../../../core/services/emprunt/emprunt.service';
-import {Emprunts} from '../../../../core/models/emprunt';
+import {EmpruntService} from '../../../core/services/emprunt/emprunt.service';
+import {Emprunts} from '../../../core/models/emprunt';
 
 @Component({
   selector: 'app-table',
