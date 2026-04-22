@@ -9,11 +9,13 @@ import {Table} from '../../shared/components/table/table';
 @Component({
   selector: 'app-dashboard',
   imports: [CommonModule, Table],
-  templateUrl: './list-emprunt.html',
-  styleUrl: './list-emprunt.css',
+  templateUrl: './liste-emprunt.html',
+  styleUrl: './liste-emprunt.css',
 })
 
-export class ListEmprunt implements OnInit {
+export class ListeEmprunt implements OnInit {
+
+  titre: string = "Liste des emprunts";
 
   colonnesEmpruntsRecent: ColonneConfig[] = [
     { key: 'utilisateur.nom', label: 'NOM' },

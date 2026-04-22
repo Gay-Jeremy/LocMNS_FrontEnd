@@ -1,0 +1,19 @@
+<div class="dashboard-wrapper">
+  <div class="title-group">
+    <h2>Liste du Materiel</h2>
+    <span class="subtitle">{{ dateJour }}</span>
+  </div>
+  <app-table
+    [titre]= "titre"
+    [colonnes]="colonnesMateriel"
+    [data]="materielService.listeMateriel()"
+  />
+  <div class="quick-actions">
+    <h2 class="section-title">Actions rapides</h2>
+    <div class="actions-row">
+      <button class="action-btn action-btn--primary">+ Enregistrer un emprunt</button>
+      <button class="action-btn action-btn--primary">Voir les emprunts</button>
+      <button class="action-btn action-btn--primary">Gérer les utilisateurs</button>
+    </div>
+  </div>
+</div>
