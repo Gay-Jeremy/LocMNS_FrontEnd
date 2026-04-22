@@ -1,18 +1,17 @@
 import {inject, Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {CategorieModele} from '../../models/categorie-modele';
+import {ApiService} from '../api/api.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CategorieModeleService {
 
-  private baseApiUrl = 'http://localhost:8080/api/categorie_modele';
-
-  httpClient = inject(HttpClient)
+  apiService = inject(ApiService)
 
   obtenirListeCategorieModele() {
-    return this.httpClient.get<CategorieModele[]>(`${this.baseApiUrl}/liste`);
+    return this.apiService.get<CategorieModele[]>('categorie_modele/liste');
   }
 
 }
