@@ -1,12 +1,10 @@
-import {Component, computed, signal} from '@angular/core';
+import {Component, computed, inject, signal} from '@angular/core';
 import {FormsModule, NgForm} from '@angular/forms';
-import {Utilisateur} from '../../../core/models/utilisateur';
-import {EmpruntService} from '../../../core/services/emprunt/emprunt.service';
-import {MaterielService} from '../../../core/services/materiel/materiel.service';
-import {UtilisateurService} from '../../../core/services/utilisateur/utilisateur.service'
-import {CategorieModele} from '../../../core/models/categorie-modele';
-import {CategorieModeleService} from '../../../core/services/categorie-modele/categorie-modele.service';
-import {Materiel} from '../../../core/models/materiel';
+import {EmpruntService} from '../../core/services/emprunt/emprunt.service';
+import {MaterielService} from '../../core/services/materiel/materiel.service';
+import {UtilisateurService} from '../../core/services/utilisateur/utilisateur.service'
+import {CategorieModeleService} from '../../core/services/categorie-modele/categorie-modele.service';
+
 
 @Component({
   selector: 'app-form-emprunt',
@@ -19,11 +17,14 @@ import {Materiel} from '../../../core/models/materiel';
 
 export class FormEmprunt {
 
-  listeUtilisateurs = signal<Utilisateur[]>([])
-  listeCategorieModele = signal<CategorieModele[]>([])
-  listeMateriel = signal<Materiel[]>([])
+  materielService = inject(MaterielService);
+  utilisateurService = inject(UtilisateurService);
+  categorieModeleService = inject(CategorieModeleService);
+  empruntService = inject(EmpruntService);
 
-  nbMateriel = computed(() => this.listeMateriel().length);
+  nbMateriel = computed(() =>
+    this.materielService.listeMaterielDisponiblePourPeriodeParIdCategorie()
+      .length);
 
   utilisateurId = signal<number | null>(null);
   categorieModeleId = signal<number | null>(null);
@@ -42,13 +43,6 @@ export class FormEmprunt {
     return Math.ceil(diff / (1000 * 60 * 60 * 24));
   });
 
-  constructor(
-    private empruntService : EmpruntService,
-    private materielService : MaterielService,
-    private utilisateurService : UtilisateurService,
-    private categorieModeleService : CategorieModeleService
-  ) {}
-
   dateDebutChange(date: string): void {
     this.dateDebut.set(date);
     this.onRechercherMateriels();
@@ -66,13 +60,12 @@ export class FormEmprunt {
 
   ngOnInit() {
     this.utilisateurService.obtenirListeUtilisateur().subscribe(data => {
-      this.listeUtilisateurs.set(data);
+      this.utilisateurService.listeUtilisateur.set(data);
     });
 
     this.categorieModeleService.obtenirListeCategorieModele().subscribe(data => {
-      this.listeCategorieModele.set(data)
+      this.categorieModeleService.listeCategorieModele.set(data)
     })
-
   }
 
   onRechercherMateriels(): void {
@@ -83,8 +76,8 @@ export class FormEmprunt {
       this.dateFin(),
       this.categorieModeleId()!
     ).subscribe(data => {
-      this.listeMateriel.set(data);
-      console.log(this.listeMateriel())
+      this.materielService.listeMaterielDisponiblePourPeriodeParIdCategorie.set(data);
+      console.log( this.materielService.listeMaterielDisponiblePourPeriodeParIdCategorie())
     });
   }
 

@@ -4,10 +4,10 @@ import { MaterielService } from '../../core/services/materiel/materiel.service';
 import {CommonModule, DatePipe} from '@angular/common';
 import {Emprunts} from '../../core/models/emprunt';
 import {Materiel} from '../../core/models/materiel';
-import {StatCard} from '../../shared/composant/stat-card/stat-card';
+import {StatCard} from '../../shared/components/stat-card/stat-card';
 import {StatCardData} from '../../shared/models/stat-card.model';
 import {ColonneConfig} from '../../shared/models/colonne-config.model';
-import {Table} from '../../shared/composant/table/table';
+import {Table} from '../../shared/components/table/table';
 
 @Component({
   selector: 'app-dashboard',

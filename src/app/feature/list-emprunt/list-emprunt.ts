@@ -4,14 +4,14 @@ import { MaterielService } from '../../core/services/materiel/materiel.service';
 import {CommonModule, DatePipe} from '@angular/common';
 import {Emprunts} from '../../core/models/emprunt';
 import {Materiel} from '../../core/models/materiel';
-import {StatCard} from '../../shared/composant/stat-card/stat-card';
+import {StatCard} from '../../shared/components/stat-card/stat-card';
 import {StatCardData} from '../../shared/models/stat-card.model';
 import {ColonneConfig} from '../../shared/models/colonne-config.model';
-import {Table} from '../../shared/composant/table/table';
+import {Table} from '../../shared/components/table/table';
 
 @Component({
   selector: 'app-dashboard',
-  imports: [CommonModule, StatCard, Table],
+  imports: [CommonModule, Table],
   templateUrl: './list-emprunt.html',
   styleUrl: './list-emprunt.css',
 })
@@ -32,6 +32,7 @@ export class ListEmprunt implements OnInit {
   dateJour = new Date();
 
   empruntService = inject(EmpruntService)
+  materielService = inject(MaterielService)
 
 
   empruntsActif = signal<Emprunts[]>([]);
@@ -52,32 +53,28 @@ export class ListEmprunt implements OnInit {
     { nomLabel: 'INCIDENT SIGNALÉ', cptValeur: this.nbIncidents(), btnLabel: 'Voir les incidents' },
   ])
 
-  constructor(
-    private materielService: MaterielService
-  ) {};
-
 
   ngOnInit() {
 
     this.empruntService.obtenirListeEmpruntsActifs().subscribe(data => {
-      this.empruntsActif.set(data);
+      this.empruntService.listeEmpruntActif.set(data)
     });
 
     this.empruntService.obtenirListeEmpruntsRecents().subscribe(data => {
-      this.empruntsRecent.set(data);
+      this.empruntService.listeEmpruntRecent.set(data);
       console.log(this.empruntsRecent())
     });
 
     this.materielService.obtenirListeMateriel().subscribe(data => {
-      this.materiels.set(data);
+      this.materielService.listeMateriel.set(data);
     });
 
     this.empruntService.obtenirListeDemandesEmprunt().subscribe(data => {
-      this.empruntsDemande.set(data);
+      this.empruntService.listeDemandeEmprunt.set(data);
     })
 
     this.empruntService.obtenirListePannesSignalees().subscribe(data => {
-      this.incidents.set(data);
+      this.empruntService.listePanneSignalee.set(data);
     })
   }
 }
