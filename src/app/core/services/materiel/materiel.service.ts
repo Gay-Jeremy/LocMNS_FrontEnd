@@ -1,23 +1,33 @@
-import { Injectable } from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import {inject, Injectable, signal} from '@angular/core';
 import {Materiel} from '../../models/materiel';
+import {ApiService} from '../api/api.service';
+import {Emprunts} from '../../models/emprunt';
+import {tap} from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 
 export class MaterielService {
-  private baseApiUrl = 'http://localhost:8080/api/materiels';
 
-  constructor(private http: HttpClient) {}
+  apiService = inject(ApiService);
+
+  readonly listeMaterielDisponiblePourPeriodeParIdCategorie = signal<Materiel[]>([])
+  readonly listeMateriel = signal<Materiel[]>([])
+
 
   obtenirListeMaterielsDisponiblePourPeridodeParIDCategorieModele( dateDebut: string,
                                                                    dateFin: string,
                                                                    id: number) {
-    return this.http.get<Materiel[]>(`${this.baseApiUrl}/liste/disponible/${dateDebut}/${dateFin}/${id}`);
+    return this.apiService.get<Materiel[]>(`materiels/liste/disponible/${dateDebut}/${dateFin}/${id}`)
+      .pipe(tap(
+        (listeMaterielDisponiblePourPeriodeParIdCategorie) =>
+          this.listeMaterielDisponiblePourPeriodeParIdCategorie
+            .set(listeMaterielDisponiblePourPeriodeParIdCategorie)));
   }
 
   obtenirListeMateriel() {
-    return this.http.get<Materiel[]>(`${this.baseApiUrl}/liste`)
+    return this.apiService.get<Materiel[]>('materiels/liste')
+      .pipe(tap((listeMateriel) => this.listeMateriel.set(listeMateriel)));
   }
 }

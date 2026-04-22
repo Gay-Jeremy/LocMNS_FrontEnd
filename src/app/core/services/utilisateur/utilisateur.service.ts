@@ -1,5 +1,7 @@
-import { Injectable } from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import {inject, Injectable, signal} from '@angular/core';
+import {ApiService} from '../api/api.service';
+import {Emprunts} from '../../models/emprunt';
+import {Utilisateur} from '../../models/utilisateur';
 
 @Injectable({
   providedIn: 'root',
@@ -7,11 +9,11 @@ import {HttpClient} from '@angular/common/http';
 
 export class UtilisateurService {
 
-  private baseApiUrl = 'http://localhost:8080/api/utilisateurs';
+  apiService = inject(ApiService)
 
-  constructor(private http: HttpClient) {}
+  readonly listeUtilisateur = signal<Utilisateur[]>([])
 
   obtenirListeUtilisateur() {
-    return this.http.get<any[]>(`${this.baseApiUrl}/liste`);
+    return this.apiService.get<Utilisateur[]>('utilisateurs/liste');
   }
 }
