@@ -18,6 +18,9 @@ import {Table} from '../../shared/components/table/table';
 
 export class Dashboard implements OnInit {
 
+  empruntService = inject(EmpruntService);
+  materielService = inject(MaterielService);
+
   colonnesEmpruntsRecent: ColonneConfig[] = [
     { key: 'utilisateur.nom', label: 'NOM' },
     { key: 'utilisateur.prenom', label: 'PRÉNOM' },
@@ -31,53 +34,35 @@ export class Dashboard implements OnInit {
 
   dateJour = new Date();
 
-  empruntService = inject(EmpruntService)
 
-
-  empruntsActif = signal<Emprunts[]>([]);
-  empruntsRecent = signal<Emprunts[]>([]);
-  materiels = signal<Materiel[]>([]);
-  empruntsDemande = signal<Emprunts[]>([]);
-  incidents = signal<Emprunts[]>([]);
-
-  nbMateriels = computed(() => this.materiels().length);
-  nbEmpruntsActif = computed(() => this.empruntsActif().length);
-  nbEmpruntsDemande = computed(() => this.empruntsDemande().length);
-  nbIncidents = computed(() => this.incidents().length);
 
   listStatsCard = computed<StatCardData[]>(() => [
-    { nomLabel: 'MATÉRIEL', cptValeur: this.nbMateriels(), btnLabel: 'Voir le matériel' },
-    { nomLabel: 'EMPRUNT ACTIF', cptValeur: this.nbEmpruntsActif(), btnLabel: 'Voir les emprunts' },
-    { nomLabel: 'DEMANDE EN COURS', cptValeur: this.nbEmpruntsDemande(), btnLabel: 'Voir les demandes' },
-    { nomLabel: 'INCIDENT SIGNALÉ', cptValeur: this.nbIncidents(), btnLabel: 'Voir les incidents' },
+    { nomLabel: 'MATÉRIEL', cptValeur: this.materielService.nbMateriel(), btnLabel: 'Voir le matériel' },
+    { nomLabel: 'EMPRUNT ACTIF', cptValeur: this.empruntService.nbEmpruntActif(), btnLabel: 'Voir les emprunts' },
+    { nomLabel: 'DEMANDE EN COURS', cptValeur: this.empruntService.nbDemandeEmprunt(), btnLabel: 'Voir les demandes' },
+    { nomLabel: 'INCIDENT SIGNALÉ', cptValeur: this.empruntService.nbPanneSignalee(), btnLabel: 'Voir les incidents' },
   ])
-
-  constructor(
-    private materielService: MaterielService
-  ) {};
-
 
   ngOnInit() {
 
     this.empruntService.obtenirListeEmpruntsActifs().subscribe(data => {
-      this.empruntsActif.set(data);
+      this.empruntService.listeEmpruntActif.set(data);
     });
 
     this.empruntService.obtenirListeEmpruntsRecents().subscribe(data => {
-      this.empruntsRecent.set(data);
-      console.log(this.empruntsRecent())
+      this.empruntService.listeEmpruntRecent.set(data);
     });
 
     this.materielService.obtenirListeMateriel().subscribe(data => {
-      this.materiels.set(data);
+      this.materielService.listeMateriel.set(data);
     });
 
     this.empruntService.obtenirListeDemandesEmprunt().subscribe(data => {
-      this.empruntsDemande.set(data);
+      this.empruntService.listeDemandeEmprunt.set(data);
     })
 
     this.empruntService.obtenirListePannesSignalees().subscribe(data => {
-      this.incidents.set(data);
+      this.empruntService.listePanneSignalee.set(data);
     })
   }
 }

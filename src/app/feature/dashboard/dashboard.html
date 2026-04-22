@@ -15,7 +15,7 @@
     </div>
       <app-table
         [colonnes]="colonnesEmpruntsRecent"
-        [data]="empruntsRecent()"
+        [data]="empruntService.listeEmpruntRecent()"
       />
   <div class="quick-actions">
     <h2 class="section-title">Actions rapides</h2>

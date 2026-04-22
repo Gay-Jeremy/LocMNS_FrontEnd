@@ -1,4 +1,4 @@
-import { inject, Injectable, signal } from '@angular/core';
+import {computed, inject, Injectable, signal} from '@angular/core';
 import {EmpruntDto} from '../../models/empruntDto';
 import {Emprunts} from '../../models/emprunt';
 import {ApiService} from '../api/api.service';
@@ -10,10 +10,14 @@ import {tap} from 'rxjs';
 
 export class EmpruntService {
 
-  readonly listeEmpruntActif = signal<Emprunts[]>([])
-  readonly listeEmpruntRecent = signal<Emprunts[]>([])
-  readonly listeDemandeEmprunt = signal<Emprunts[]>([])
-  readonly listePanneSignalee = signal<Emprunts[]>([])
+  readonly listeEmpruntActif = signal<Emprunts[]>([]);
+  readonly listeEmpruntRecent = signal<Emprunts[]>([]);
+  readonly listeDemandeEmprunt = signal<Emprunts[]>([]);
+  readonly listePanneSignalee = signal<Emprunts[]>([]);
+
+  readonly nbEmpruntActif = computed(() => this.listeEmpruntActif().length);
+  readonly nbDemandeEmprunt = computed(() => this.listeDemandeEmprunt().length);
+  readonly nbPanneSignalee = computed(() => this.listePanneSignalee().length);
 
   apiService = inject(ApiService)
 

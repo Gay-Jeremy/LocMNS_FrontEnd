@@ -11,21 +11,13 @@ import {ColonneConfig} from '../../models/colonne-config.model';
   templateUrl: './table.html',
   styleUrl: './table.css',
 })
-export class Table implements OnInit{
+export class Table {
+
 
   @Input() colonnes: ColonneConfig[] = [];
   @Input() data : any[] = [];
 
-  empruntService = inject(EmpruntService);
-  empruntsActif = signal<Emprunts[]>([]);
 
-  ngOnInit () {
-
-    this.empruntService.obtenirListeEmpruntsActifs().subscribe(data => {
-      this.empruntsActif.set(data);
-    });
-
-  }
   getValeur(row: any, key: string): any {
     return key.split('.').reduce((obj, k) => obj?.[k], row);
   }

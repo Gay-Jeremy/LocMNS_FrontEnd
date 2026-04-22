@@ -4,6 +4,7 @@ import {EmpruntService} from '../../core/services/emprunt/emprunt.service';
 import {MaterielService} from '../../core/services/materiel/materiel.service';
 import {UtilisateurService} from '../../core/services/utilisateur/utilisateur.service'
 import {CategorieModeleService} from '../../core/services/categorie-modele/categorie-modele.service';
+import {Table} from '../../shared/components/table/table';
 
 
 @Component({
@@ -17,14 +18,12 @@ import {CategorieModeleService} from '../../core/services/categorie-modele/categ
 
 export class FormEmprunt {
 
+
   materielService = inject(MaterielService);
   utilisateurService = inject(UtilisateurService);
   categorieModeleService = inject(CategorieModeleService);
   empruntService = inject(EmpruntService);
 
-  nbMateriel = computed(() =>
-    this.materielService.listeMaterielDisponiblePourPeriodeParIdCategorie()
-      .length);
 
   utilisateurId = signal<number | null>(null);
   categorieModeleId = signal<number | null>(null);

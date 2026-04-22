@@ -1,4 +1,4 @@
-import {inject, Injectable, signal} from '@angular/core';
+import {computed, inject, Injectable, signal} from '@angular/core';
 import {Materiel} from '../../models/materiel';
 import {ApiService} from '../api/api.service';
 import {Emprunts} from '../../models/emprunt';
@@ -12,8 +12,13 @@ export class MaterielService {
 
   apiService = inject(ApiService);
 
-  readonly listeMaterielDisponiblePourPeriodeParIdCategorie = signal<Materiel[]>([])
-  readonly listeMateriel = signal<Materiel[]>([])
+  readonly listeMaterielDisponiblePourPeriodeParIdCategorie = signal<Materiel[]>([]);
+  readonly listeMateriel = signal<Materiel[]>([]);
+
+  readonly nbMateriel = computed(() => this.listeMateriel().length);
+  readonly nbMaterielDisponible = computed(() =>
+    this.listeMaterielDisponiblePourPeriodeParIdCategorie().length);
+
 
 
   obtenirListeMaterielsDisponiblePourPeridodeParIDCategorieModele( dateDebut: string,
