@@ -1,7 +1,5 @@
-import {Component, computed, OnInit, signal} from '@angular/core';
-import {Emprunts} from '../../models/emprunt';
+import {Component, inject} from '@angular/core';
 import {EmpruntService} from '../../services/emprunt/emprunt.service';
-import {MaterielService} from '../../services/materiel/materiel.service';
 import {RouterLink, RouterLinkActive} from '@angular/router';
 
 @Component({
@@ -13,23 +11,8 @@ import {RouterLink, RouterLinkActive} from '@angular/router';
   templateUrl: './sidebar.html',
   styleUrl: './sidebar.css',
 })
-export class Sidebar implements OnInit{
+export class Sidebar {
 
-  empruntsDemande = signal<Emprunts[]>([]);
-  empruntsPanne  = signal<Emprunts[]>([]);
-  empruntActif = signal<Emprunts[]>([])
+  empruntService = inject(EmpruntService)
 
-  constructor(
-    protected empruntService: EmpruntService,
-  ) {};
-
-  ngOnInit() {
-
-    this.empruntService.obtenirListeDemandesEmprunt().subscribe();
-
-
-    this.empruntService.obtenirListePannesSignalees().subscribe();
-
-    this.empruntService.obtenirListeEmpruntsActifs().subscribe();
-  }
 }

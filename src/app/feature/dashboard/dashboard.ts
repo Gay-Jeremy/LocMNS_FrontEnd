@@ -1,9 +1,7 @@
 import {Component, computed, inject, OnInit, signal} from '@angular/core';
 import { EmpruntService } from '../../core/services/emprunt/emprunt.service';
 import { MaterielService } from '../../core/services/materiel/materiel.service';
-import {CommonModule, DatePipe} from '@angular/common';
-import {Emprunts} from '../../core/models/emprunt';
-import {Materiel} from '../../core/models/materiel';
+import {CommonModule} from '@angular/common';
 import {StatCard} from '../../shared/components/stat-card/stat-card';
 import {StatCardData} from '../../shared/models/stat-card.model';
 import {ColonneConfig} from '../../shared/models/colonne-config.model';
