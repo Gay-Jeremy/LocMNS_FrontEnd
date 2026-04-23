@@ -1,0 +1,25 @@
+
+  <div class="section-card">
+    <div class="section-header">
+      <h2 class="section-title">{{ titre }}</h2>
+    </div>
+    <table class="loans-table">
+      <thead>
+      <tr>
+        @for (col of colonnes; track col.key) {
+          <th>{{ col.label }}</th>
+        }
+      </tr>
+      </thead>
+      <tbody>
+        @for (row of data; track row.id) {
+          <tr>
+            @for (col of colonnes; track col.key) {
+              <td>{{ getValeur(row, col.key) }}</td>
+            }
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+

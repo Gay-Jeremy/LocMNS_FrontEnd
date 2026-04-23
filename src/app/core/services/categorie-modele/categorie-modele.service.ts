@@ -1,18 +1,25 @@
-import { Injectable } from '@angular/core';
+import {inject, Injectable, signal} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {CategorieModele} from '../../models/categorie-modele';
+import {ApiService} from '../api/api.service';
+import {Materiel} from '../../models/materiel';
+import {tap} from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CategorieModeleService {
 
-  private baseApiUrl = 'http://localhost:8080/api/categorie_modele';
+  apiService = inject(ApiService);
 
-  constructor(private http: HttpClient) {}
+  readonly listeCategorieModele = signal<CategorieModele[]>([])
 
   obtenirListeCategorieModele() {
-    return this.http.get<CategorieModele[]>(`${this.baseApiUrl}/liste`);
+    return this.apiService.get<CategorieModele[]>('categorie_modele/liste')
+      .pipe(tap(
+        (listeCategorieModele) =>
+          this.listeCategorieModele
+            .set(listeCategorieModele)));
   }
 
 }

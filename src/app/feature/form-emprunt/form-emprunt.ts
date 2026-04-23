@@ -1,12 +1,11 @@
-import {Component, computed, signal} from '@angular/core';
+import {Component, computed, inject, OnInit, signal} from '@angular/core';
 import {FormsModule, NgForm} from '@angular/forms';
-import {Utilisateur} from '../../../core/models/utilisateur';
-import {EmpruntService} from '../../../core/services/emprunt/emprunt.service';
-import {MaterielService} from '../../../core/services/materiel/materiel.service';
-import {UtilisateurService} from '../../../core/services/utilisateur/utilisateur.service'
-import {CategorieModele} from '../../../core/models/categorie-modele';
-import {CategorieModeleService} from '../../../core/services/categorie-modele/categorie-modele.service';
-import {Materiel} from '../../../core/models/materiel';
+import {EmpruntService} from '../../core/services/emprunt/emprunt.service';
+import {MaterielService} from '../../core/services/materiel/materiel.service';
+import {UtilisateurService} from '../../core/services/utilisateur/utilisateur.service'
+import {CategorieModeleService} from '../../core/services/categorie-modele/categorie-modele.service';
+import {Table} from '../../shared/components/table/table';
+
 
 @Component({
   selector: 'app-form-emprunt',
@@ -17,13 +16,14 @@ import {Materiel} from '../../../core/models/materiel';
   styleUrl: './form-emprunt.css',
 })
 
-export class FormEmprunt {
+export class FormEmprunt implements OnInit{
 
-  listeUtilisateurs = signal<Utilisateur[]>([])
-  listeCategorieModele = signal<CategorieModele[]>([])
-  listeMateriel = signal<Materiel[]>([])
 
-  nbMateriel = computed(() => this.listeMateriel().length);
+  materielService = inject(MaterielService);
+  utilisateurService = inject(UtilisateurService);
+  categorieModeleService = inject(CategorieModeleService);
+  empruntService = inject(EmpruntService);
+
 
   utilisateurId = signal<number | null>(null);
   categorieModeleId = signal<number | null>(null);
@@ -31,23 +31,6 @@ export class FormEmprunt {
 
   dateDebut = signal<string>('');
   dateFin = signal<string>('');
-
-  dureejours = computed(() => {
-    if (!this.dateDebut() || !this.dateFin()) return null;
-
-    const debut = new Date(this.dateDebut());
-    const fin = new Date(this.dateFin());
-    const diff = fin.getTime() - debut.getTime();
-
-    return Math.ceil(diff / (1000 * 60 * 60 * 24));
-  });
-
-  constructor(
-    private empruntService : EmpruntService,
-    private materielService : MaterielService,
-    private utilisateurService : UtilisateurService,
-    private categorieModeleService : CategorieModeleService
-  ) {}
 
   dateDebutChange(date: string): void {
     this.dateDebut.set(date);
@@ -65,14 +48,9 @@ export class FormEmprunt {
   }
 
   ngOnInit() {
-    this.utilisateurService.obtenirListeUtilisateur().subscribe(data => {
-      this.listeUtilisateurs.set(data);
-    });
+    this.utilisateurService.obtenirListeUtilisateur().subscribe();
 
-    this.categorieModeleService.obtenirListeCategorieModele().subscribe(data => {
-      this.listeCategorieModele.set(data)
-    })
-
+    this.categorieModeleService.obtenirListeCategorieModele().subscribe();
   }
 
   onRechercherMateriels(): void {
@@ -82,10 +60,7 @@ export class FormEmprunt {
       this.dateDebut(),
       this.dateFin(),
       this.categorieModeleId()!
-    ).subscribe(data => {
-      this.listeMateriel.set(data);
-      console.log(this.listeMateriel())
-    });
+    ).subscribe();
   }
 
   onSubmit(form: NgForm): void {

@@ -26,7 +26,7 @@
         <select id="utilisateur" name="utilisateur" class="field-select" [ngModel]="utilisateurId()"
                 (ngModelChange)="utilisateurId.set($event)">
           <option [value]="null" disabled selected>Sélectionner un utilisateur…</option>
-          @for (utilisateur of listeUtilisateurs(); track utilisateur.id) {
+          @for (utilisateur of utilisateurService.listeUtilisateur(); track utilisateur.id) {
             <option [value]="utilisateur.id">
               {{ utilisateur.nom }} {{ utilisateur.prenom }} — {{ utilisateur.promotion.libelle }}
             </option>
@@ -47,7 +47,7 @@
             name="dateDebut"
             class="field-input"
             [(ngModel)]="dateDebut"
-            (ngModelChange)="dateDebutChange($event)" (change)="onRechercherMateriels()">
+            (ngModelChange)="dateDebutChange($event)">
         </div>
 
         <div class="field-group">
@@ -60,17 +60,9 @@
             name="dateFin"
             class="field-input"
             [(ngModel)]="dateFin"
-            (ngModelChange)="dateFinChange($event)" (change)="onRechercherMateriels()">
+            (ngModelChange)="dateFinChange($event)">
         </div>
 
-      </div>
-
-      <!-- ── Hint durée calculée (visible quand les 2 dates sont remplies) ── -->
-      <div class="hint-duree">
-        <span class="hint-icone">i</span>
-        <span class="hint-texte">
-          Durée calculée : <strong>{{ dureejours() }} jours</strong>
-        </span>
       </div>
 
       <!-- ── Catégorie de matériel ── -->
@@ -79,9 +71,9 @@
           CATÉGORIE DE MATÉRIEL <span class="asterisque">*</span>
         </label>
         <select id="categorie" name="categorie" class="field-select" [ngModel]="categorieModeleId()"
-                (ngModelChange)="categorieModeleChange($event)" (change)="onRechercherMateriels()">
+                (ngModelChange)="categorieModeleChange($event)">
           <option value="" disabled selected>Sélectionner une catégorie…</option>
-          @for (categorieModele of listeCategorieModele(); track categorieModele.id) {
+          @for (categorieModele of categorieModeleService.listeCategorieModele(); track categorieModele.id) {
             <option [value]="categorieModele.id">
               {{ categorieModele.libelle }}
             </option>
@@ -96,7 +88,7 @@
         </label>
         <select id="materiel" name="materiel" class="field-select field-select--focus" [ngModel]="materielId()"
                 (ngModelChange)="materielId.set($event)">
-          @for (materiel of listeMateriel(); track materiel.id) {
+          @for (materiel of materielService.listeMaterielDisponiblePourPeriodeParIdCategorie(); track materiel.id) {
             <option [value]="materiel.id">
               {{ materiel.modele.libelle}} — {{ materiel.numSerie }}
             </option>
@@ -104,7 +96,7 @@
         </select>
         <p class="hint-dispo">
           <span class="hint-dispo-dot"></span>
-          {{ nbMateriel() }} matériels disponibles pour cette période
+          {{ materielService.nbMaterielDisponible() }} matériels disponibles pour cette période
         </p>
       </div>
 
@@ -130,7 +122,6 @@
         <button type="button" class="btn-annuler">Annuler</button>
         <button type="submit" class="btn-enregistrer">Enregistrer</button>
       </div>
-
     </form>
   </div>
 </div>
