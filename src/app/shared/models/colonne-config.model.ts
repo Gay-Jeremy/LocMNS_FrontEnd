@@ -1,4 +1,4 @@
 export interface ColonneConfig {
-  key: any;
+  key: string;
   label: string;
 }
