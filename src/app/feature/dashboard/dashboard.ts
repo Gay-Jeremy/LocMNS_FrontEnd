@@ -40,10 +40,10 @@ export class Dashboard implements OnInit {
 
 
   listStatsCard = computed<StatCardData[]>(() => [
-    { nomLabel: 'MATÉRIEL', cptValeur: this.materielService.nbMateriel(), btnLabel: 'Voir le matériel' },
-    { nomLabel: 'EMPRUNT ACTIF', cptValeur: this.empruntService.nbEmpruntActif(), btnLabel: 'Voir les emprunts' },
-    { nomLabel: 'DEMANDE EN COURS', cptValeur: this.empruntService.nbDemandeEmprunt(), btnLabel: 'Voir les demandes' },
-    { nomLabel: 'INCIDENT SIGNALÉ', cptValeur: this.empruntService.nbPanneSignalee(), btnLabel: 'Voir les incidents' },
+    { nomLabel: 'MATÉRIEL', cptValeur: this.materielService.nbMateriel(), btnLabel: 'Voir le matériel', route: '/materiel/liste'},
+    { nomLabel: 'EMPRUNT ACTIF', cptValeur: this.empruntService.nbEmpruntActif(), btnLabel: 'Voir les emprunts', route: '/emprunt/liste' },
+    { nomLabel: 'DEMANDE EN COURS', cptValeur: this.empruntService.nbDemandeEmprunt(), btnLabel: 'Voir les demandes', route: '/demande/liste' },
+    { nomLabel: 'INCIDENT SIGNALÉ', cptValeur: this.empruntService.nbPanneSignalee(), btnLabel: 'Voir les incidents', route: '/panne/liste' },
   ])
 
   ngOnInit() {

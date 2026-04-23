@@ -1,11 +1,10 @@
-import {Component, Input, input} from '@angular/core';
-import {RouterLink, RouterLinkActive} from '@angular/router';
+import {Component, Input} from '@angular/core';
+import {RouterLink} from '@angular/router';
 
 @Component({
   selector: 'app-stat-card',
   imports: [
-    RouterLink,
-    RouterLinkActive
+    RouterLink
   ],
   templateUrl: './stat-card.html',
   styleUrl: './stat-card.css',
@@ -14,7 +13,7 @@ export class StatCard {
 
   @Input() route: string = ""
   @Input() nomLabel: string = ""
-  @Input() cptValeur: string = ""
+  @Input() cptValeur: number = 0
   @Input() btnLabel: string = ""
 
 }
