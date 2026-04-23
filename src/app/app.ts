@@ -1,8 +1,8 @@
 import {Component, signal} from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import {Header} from './core/layouts/header/header';
-import {Sidebar} from './core/layouts/sidebar/sidebar/sidebar';
-import {Footer} from './core/layouts/footer/footer/footer';
+import {Sidebar} from './core/layouts/sidebar/sidebar';
+import {Footer} from './core/layouts/footer/footer';
 
 
 
