@@ -8,10 +8,11 @@ import {StatCard} from '../../shared/components/stat-card/stat-card';
 import {StatCardData} from '../../shared/models/stat-card.model';
 import {ColonneConfig} from '../../shared/models/colonne-config.model';
 import {Table} from '../../shared/components/table/table';
+import {RouterLink} from '@angular/router';
 
 @Component({
   selector: 'app-dashboard',
-  imports: [CommonModule, StatCard, Table],
+  imports: [CommonModule, StatCard, Table, RouterLink],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css',
 })
@@ -20,6 +21,8 @@ export class Dashboard implements OnInit {
 
   empruntService = inject(EmpruntService);
   materielService = inject(MaterielService);
+
+  titre: string = "Emprunts récents"
 
   colonnesEmpruntsRecent: ColonneConfig[] = [
     { key: 'utilisateur.nom', label: 'NOM' },
@@ -45,24 +48,14 @@ export class Dashboard implements OnInit {
 
   ngOnInit() {
 
-    this.empruntService.obtenirListeEmpruntsActifs().subscribe(data => {
-      this.empruntService.listeEmpruntActif.set(data);
-    });
+    this.empruntService.obtenirListeEmpruntsActifs().subscribe();
 
-    this.empruntService.obtenirListeEmpruntsRecents().subscribe(data => {
-      this.empruntService.listeEmpruntRecent.set(data);
-    });
+    this.empruntService.obtenirListeEmpruntsRecents().subscribe();
 
-    this.materielService.obtenirListeMateriel().subscribe(data => {
-      this.materielService.listeMateriel.set(data);
-    });
+    this.materielService.obtenirListeMateriel().subscribe();
 
-    this.empruntService.obtenirListeDemandesEmprunt().subscribe(data => {
-      this.empruntService.listeDemandeEmprunt.set(data);
-    })
+    this.empruntService.obtenirListeDemandesEmprunt().subscribe();
 
-    this.empruntService.obtenirListePannesSignalees().subscribe(data => {
-      this.empruntService.listePanneSignalee.set(data);
-    })
+    this.empruntService.obtenirListePannesSignalees().subscribe();
   }
 }

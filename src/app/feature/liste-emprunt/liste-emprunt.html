@@ -5,6 +5,7 @@
     <span class="subtitle">{{ dateJour }}</span>
   </div>
       <app-table
+        [titre]="titre"
         [colonnes]="colonnesEmpruntsRecent"
         [data]="empruntService.listeEmpruntActif()"
       />

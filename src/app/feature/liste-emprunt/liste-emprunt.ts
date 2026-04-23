@@ -1,13 +1,11 @@
 import {Component, computed, inject, OnInit, signal} from '@angular/core';
 import { EmpruntService } from '../../core/services/emprunt/emprunt.service';
-import { MaterielService } from '../../core/services/materiel/materiel.service';
 import {CommonModule, DatePipe} from '@angular/common';
-import {StatCardData} from '../../shared/models/stat-card.model';
 import {ColonneConfig} from '../../shared/models/colonne-config.model';
 import {Table} from '../../shared/components/table/table';
 
 @Component({
-  selector: 'app-dashboard',
+  selector: 'app-listEmprunt',
   imports: [CommonModule, Table],
   templateUrl: './liste-emprunt.html',
   styleUrl: './liste-emprunt.css',
@@ -34,8 +32,6 @@ export class ListeEmprunt implements OnInit {
 
   ngOnInit() {
 
-    this.empruntService.obtenirListeEmpruntsActifs().subscribe(data => {
-      this.empruntService.listeEmpruntActif.set(data)
-    });
+    this.empruntService.obtenirListeEmpruntsActifs().subscribe();
   }
 }

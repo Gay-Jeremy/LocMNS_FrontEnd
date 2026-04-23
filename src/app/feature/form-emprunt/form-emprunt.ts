@@ -1,4 +1,4 @@
-import {Component, computed, inject, signal} from '@angular/core';
+import {Component, computed, inject, OnInit, signal} from '@angular/core';
 import {FormsModule, NgForm} from '@angular/forms';
 import {EmpruntService} from '../../core/services/emprunt/emprunt.service';
 import {MaterielService} from '../../core/services/materiel/materiel.service';
@@ -16,7 +16,7 @@ import {Table} from '../../shared/components/table/table';
   styleUrl: './form-emprunt.css',
 })
 
-export class FormEmprunt {
+export class FormEmprunt implements OnInit{
 
 
   materielService = inject(MaterielService);
@@ -58,13 +58,9 @@ export class FormEmprunt {
   }
 
   ngOnInit() {
-    this.utilisateurService.obtenirListeUtilisateur().subscribe(data => {
-      this.utilisateurService.listeUtilisateur.set(data);
-    });
+    this.utilisateurService.obtenirListeUtilisateur().subscribe();
 
-    this.categorieModeleService.obtenirListeCategorieModele().subscribe(data => {
-      this.categorieModeleService.listeCategorieModele.set(data)
-    })
+    this.categorieModeleService.obtenirListeCategorieModele().subscribe();
   }
 
   onRechercherMateriels(): void {
@@ -74,10 +70,7 @@ export class FormEmprunt {
       this.dateDebut(),
       this.dateFin(),
       this.categorieModeleId()!
-    ).subscribe(data => {
-      this.materielService.listeMaterielDisponiblePourPeriodeParIdCategorie.set(data);
-      console.log( this.materielService.listeMaterielDisponiblePourPeriodeParIdCategorie())
-    });
+    ).subscribe();
   }
 
   onSubmit(form: NgForm): void {
