@@ -32,16 +32,6 @@ export class FormEmprunt implements OnInit{
   dateDebut = signal<string>('');
   dateFin = signal<string>('');
 
-  dureejours = computed(() => {
-    if (!this.dateDebut() || !this.dateFin()) return null;
-
-    const debut = new Date(this.dateDebut());
-    const fin = new Date(this.dateFin());
-    const diff = fin.getTime() - debut.getTime();
-
-    return Math.ceil(diff / (1000 * 60 * 60 * 24));
-  });
-
   dateDebutChange(date: string): void {
     this.dateDebut.set(date);
     this.onRechercherMateriels();

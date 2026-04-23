@@ -1,10 +1,8 @@
 <div class="dashboard-wrapper">
   <div class="title-group">
-    <h2>Liste des demandes</h2>
-    <span class="subtitle">{{ dateJour }}</span>
+    <h2>Demandes en cours</h2>
   </div>
   <app-table
-    [titre]= "titre"
     [colonnes]="colonnesDemande"
     [data]="empruntService.listeDemandeEmprunt()"
   />

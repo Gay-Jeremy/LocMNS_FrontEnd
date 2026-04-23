@@ -46,14 +46,9 @@ export class Dashboard implements OnInit {
 
   ngOnInit() {
 
-    this.empruntService.obtenirListeEmpruntsActifs().subscribe();
-
     this.empruntService.obtenirListeEmpruntsRecents().subscribe();
 
     this.materielService.obtenirListeMateriel().subscribe();
 
-    this.empruntService.obtenirListeDemandesEmprunt().subscribe();
-
-    this.empruntService.obtenirListePannesSignalees().subscribe();
   }
 }

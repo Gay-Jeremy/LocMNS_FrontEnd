@@ -13,8 +13,6 @@ import {Table} from '../../shared/components/table/table';
 })
 export class ListeDemande {
 
-  titre: string = "Demandes en cours";
-
   colonnesDemande: ColonneConfig[] = [
     { key: 'utilisateur.nom', label: 'NOM' },
     { key: 'utilisateur.prenom', label: 'PRÉNOM' },
@@ -25,8 +23,6 @@ export class ListeDemande {
     { key: 'dateFin', label: 'DATE DE FIN PRÉVUE' },
     { key: 'statutEmprunt.libelle', label: 'STATUT' },
   ];
-
-  dateJour = new Date();
 
   empruntService = inject(EmpruntService)
 

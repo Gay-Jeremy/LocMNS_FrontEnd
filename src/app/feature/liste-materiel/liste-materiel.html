@@ -1,10 +1,8 @@
 <div class="dashboard-wrapper">
   <div class="title-group">
     <h2>Liste du Materiel</h2>
-    <span class="subtitle">{{ dateJour }}</span>
   </div>
   <app-table
-    [titre]= "titre"
     [colonnes]="colonnesMateriel"
     [data]="materielService.listeMateriel()"
   />

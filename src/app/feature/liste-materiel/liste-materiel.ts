@@ -21,10 +21,6 @@ export class ListeMateriel implements OnInit {
 
   ];
 
-  titre: string = 'Materiel'
-
-  dateJour = new Date();
-
   materielService = inject(MaterielService)
 
   ngOnInit() {

@@ -2,10 +2,8 @@
 <div class="dashboard-wrapper">
   <div class="title-group">
     <h2>Liste des Emprunts</h2>
-    <span class="subtitle">{{ dateJour }}</span>
   </div>
       <app-table
-        [titre]="titre"
         [colonnes]="colonnesEmpruntsRecent"
         [data]="empruntService.listeEmpruntActif()"
       />
