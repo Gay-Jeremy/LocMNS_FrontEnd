@@ -1,7 +1,7 @@
 import {Component, inject, OnInit} from '@angular/core';
-import {Table} from '../../../shared/components/table/table';
-import {ColonneConfig} from '../../../shared/models/colonne-config.model';
-import {MaterielService} from '../../../core/services/materiel/materiel.service';
+import {Table} from '../../shared/components/table/table';
+import {ColonneConfig} from '../../shared/models/colonne-config.model';
+import {MaterielService} from '../../core/services/materiel/materiel.service';
 
 @Component({
   selector: 'app-liste-materiel',
@@ -29,8 +29,6 @@ export class ListeMateriel implements OnInit {
 
   ngOnInit() {
 
-    this.materielService.obtenirListeMateriel().subscribe(data => {
-      this.materielService.listeMateriel.set(data)
-    });
+    this.materielService.obtenirListeMateriel().subscribe();
   }
 }

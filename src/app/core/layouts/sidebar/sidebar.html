@@ -3,14 +3,14 @@
   <a class="nav-link" routerLink="" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Vue d'ensemble</a>
 
   <div class="nav-label">Emprunts</div>
-  <a class="nav-link">Demandes en cours <span class="nav-badge warn">{{ nbEmpruntsDemande() }}</span></a>
-  <a class="nav-link" routerLink="/emprunt/liste" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Liste des emprunts<span class="nav-badge warn">{{ empruntService.listeEmpruntActif().length }}</span></a>
+  <a class="nav-link" routerLink="/demande/liste" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Demandes en cours <span class="nav-badge warn" >{{ empruntService.nbDemandeEmprunt() }}</span></a>
+  <a class="nav-link" routerLink="/emprunt/liste" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Liste des emprunts<span class="nav-badge warn">{{ empruntService.nbEmpruntActif() }}</span></a>
   <a class="nav-link">Historique des emprunts</a>
   <a class="nav-link" routerLink="/enregistrer/emprunt" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Enregistrer un emprunt</a>
 
   <div class="nav-label">Matériel</div>
   <a class="nav-link" routerLink="/materiel/liste" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Liste du matériel</a>
-  <a class="nav-link">Incidents signalés <span class="nav-badge danger">{{ nbPanneSignalee() }}</span></a>
+  <a class="nav-link">Incidents signalés <span class="nav-badge danger">{{ empruntService.nbPanneSignalee() }}</span></a>
 
   <div class="nav-label">Utilisateurs</div>
   <a class="nav-link">Liste des utilisateurs</a>
