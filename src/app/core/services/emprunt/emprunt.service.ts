@@ -1,5 +1,5 @@
 import {computed, inject, Injectable, signal} from '@angular/core';
-import {EmpruntDto} from '../../models/empruntDto';
+import {EmpruntDto} from '../../models/emprunt-dto';
 import {Emprunts} from '../../models/emprunt';
 import {ApiService} from '../api/api.service';
 import {tap} from 'rxjs';
