@@ -24,7 +24,7 @@
           UTILISATEUR <span class="asterisque">*</span>
         </label>
         <select id="utilisateur" name="utilisateur" class="field-select" [ngModel]="utilisateurId()"
-                (ngModelChange)="utilisateurId.set($event)">
+                (ngModelChange)="utilisateurId.set(+$event)">
           <option [value]="null" disabled selected>Sélectionner un utilisateur…</option>
           @for (utilisateur of utilisateurService.listeUtilisateur(); track utilisateur.id) {
             <option [value]="utilisateur.id">
@@ -32,6 +32,9 @@
             </option>
           }
         </select>
+        @if (erreurs()['utilisateurId']) {
+          <p class="field-error">{{ erreurs()['utilisateurId'] }}</p>
+        }
       </div>
 
       <!-- ── Dates (2 colonnes) ── -->
@@ -48,6 +51,9 @@
             class="field-input"
             [(ngModel)]="dateDebut"
             (ngModelChange)="dateDebutChange($event)">
+          @if (erreurs()['dateDebut']) {
+            <p class="field-error">{{ erreurs()['dateDebut'] }}</p>
+          }
         </div>
 
         <div class="field-group">
@@ -61,6 +67,9 @@
             class="field-input"
             [(ngModel)]="dateFin"
             (ngModelChange)="dateFinChange($event)">
+          @if (erreurs()['dateFin']) {
+            <p class="field-error">{{ erreurs()['dateFin'] }}</p>
+          }
         </div>
 
       </div>
@@ -71,14 +80,17 @@
           CATÉGORIE DE MATÉRIEL <span class="asterisque">*</span>
         </label>
         <select id="categorie" name="categorie" class="field-select" [ngModel]="categorieModeleId()"
-                (ngModelChange)="categorieModeleChange($event)">
-          <option value="" disabled selected>Sélectionner une catégorie…</option>
+                (ngModelChange)="categorieModeleChange(+$event)">
+          <option [value]="null" disabled selected>Sélectionner une catégorie…</option>
           @for (categorieModele of categorieModeleService.listeCategorieModele(); track categorieModele.id) {
             <option [value]="categorieModele.id">
               {{ categorieModele.libelle }}
             </option>
           }
         </select>
+        @if (erreurs()['categorieModeleId']) {
+          <p class="field-error">{{ erreurs()['categorieModeleId'] }}</p>
+        }
       </div>
 
       <!-- ── Matériel disponible ── -->
@@ -87,13 +99,16 @@
           MATÉRIEL DISPONIBLE <span class="asterisque">*</span>
         </label>
         <select id="materiel" name="materiel" class="field-select field-select--focus" [ngModel]="materielId()"
-                (ngModelChange)="materielId.set($event)">
+                (ngModelChange)="materielId.set(+$event)">
           @for (materiel of materielService.listeMaterielDisponiblePourPeriodeParIdCategorie(); track materiel.id) {
             <option [value]="materiel.id">
               {{ materiel.modele.libelle}} — {{ materiel.numSerie }}
             </option>
           }
         </select>
+        @if (erreurs()['materielId']) {
+          <p class="field-error">{{ erreurs()['materielId'] }}</p>
+        }
         <p class="hint-dispo">
           <span class="hint-dispo-dot"></span>
           {{ materielService.nbMaterielDisponible() }} matériels disponibles pour cette période
@@ -116,7 +131,9 @@
 
       <!-- ── Séparateur ── -->
       <hr class="form-divider">
-
+      @if (erreurs()['erreur']) {
+        <p class="field-error field-error--global">{{ erreurs()['erreur'] }}</p>
+      }
       <!-- ── Actions ── -->
       <div class="form-actions">
         <button type="button" class="btn-annuler">Annuler</button>

@@ -1,8 +1,6 @@
 import {inject, Injectable, signal} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
 import {CategorieModele} from '../../models/categorie-modele';
 import {ApiService} from '../api/api.service';
-import {Materiel} from '../../models/materiel';
 import {tap} from 'rxjs';
 
 @Injectable({
@@ -15,7 +13,7 @@ export class CategorieModeleService {
   readonly listeCategorieModele = signal<CategorieModele[]>([])
 
   obtenirListeCategorieModele() {
-    return this.apiService.get<CategorieModele[]>('categorie_modele/liste')
+    return this.apiService.get<CategorieModele[]>('categories_modele/liste')
       .pipe(tap(
         (listeCategorieModele) =>
           this.listeCategorieModele

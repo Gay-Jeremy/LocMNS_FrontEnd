@@ -328,3 +328,17 @@
     width: 100%;
   }
 }
+.field-error {
+  color: #e53e3e;
+  font-size: 0.75rem;
+  margin-top: 4px;
+}
+
+.field-error--global {
+  font-size: 0.875rem;
+  padding: 10px;
+  background-color: #fff5f5;
+  border: 1px solid #e53e3e;
+  border-radius: 6px;
+  text-align: center;
+}

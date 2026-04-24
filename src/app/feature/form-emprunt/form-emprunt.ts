@@ -4,7 +4,6 @@ import {EmpruntService} from '../../core/services/emprunt/emprunt.service';
 import {MaterielService} from '../../core/services/materiel/materiel.service';
 import {UtilisateurService} from '../../core/services/utilisateur/utilisateur.service'
 import {CategorieModeleService} from '../../core/services/categorie-modele/categorie-modele.service';
-import {Table} from '../../shared/components/table/table';
 
 
 @Component({
@@ -18,6 +17,7 @@ import {Table} from '../../shared/components/table/table';
 
 export class FormEmprunt implements OnInit{
 
+  erreurs = signal<Record<string, string>>({});
 
   materielService = inject(MaterielService);
   utilisateurService = inject(UtilisateurService);
@@ -47,7 +47,9 @@ export class FormEmprunt implements OnInit{
     this.onRechercherMateriels();
   }
 
+
   ngOnInit() {
+
     this.utilisateurService.obtenirListeUtilisateur().subscribe();
 
     this.categorieModeleService.obtenirListeCategorieModele().subscribe();
@@ -64,22 +66,43 @@ export class FormEmprunt implements OnInit{
   }
 
   onSubmit(form: NgForm): void {
+
+    this.erreurs.set({});
+
     const utilisateurId = this.utilisateurId();
     const materielId    = this.materielId();
+    const categorieModeleId = this.categorieModeleId();
 
-    if (!utilisateurId || !materielId || !this.dateDebut || !this.dateFin) {
-      alert('Veuillez remplir tous les champs obligatoires.');
+    if (!utilisateurId || !materielId || !categorieModeleId || !this.dateDebut() || !this.dateFin()) {
+      this.erreurs.set({
+        ...((!utilisateurId) && { utilisateurId: "L'utilisateur est obligatoire" }),
+        ...((!categorieModeleId) && { categorieModeleId: "La catégorie matériel est obligatoire" }),
+        ...((!materielId) && { materielId: "Le matériel est obligatoire" }),
+        ...((!this.dateDebut()) && { dateDebut: "La date de début est obligatoire" }),
+        ...((!this.dateFin()) && { dateFin: "La date de fin est obligatoire" }),
+      });
       return;
     }
+
     this.empruntService.creerEmprunt({
       utilisateurId,
       materielId,
       dateDebut: this.dateDebut(),
       dateFin:   this.dateFin()
     }).subscribe({
-      next: () => {alert('Emprunt enregistré');form.reset()},
-
-      error: (err) => alert(`Erreur : ${err}`)
+      next: () => {
+        this.erreurs.set({});
+        alert('Emprunt enregistré');
+        form.reset();
+      },
+      error: (err) => {
+        const erreurBack = err.error;
+        if (typeof erreurBack === 'object' && erreurBack !== null) {
+          this.erreurs.set(erreurBack);
+        } else {
+          this.erreurs.set({ global: err.message });
+        }
+      }
     });
   }
 
