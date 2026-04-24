@@ -13,7 +13,11 @@ import {RouterLink, RouterLinkActive} from '@angular/router';
 })
 export class Sidebar implements OnInit {
 
-  empruntService = inject(EmpruntService)
+  private readonly empruntService = inject(EmpruntService)
+
+  readonly nbDemandeEmprunt = this.empruntService.nbDemandeEmprunt;
+  readonly nbEmpruntActif   = this.empruntService.nbEmpruntActif;
+  readonly nbPanneSignalee  = this.empruntService.nbPanneSignalee;
 
   ngOnInit() {
     this.empruntService.obtenirListeEmpruntsActifs().subscribe();
