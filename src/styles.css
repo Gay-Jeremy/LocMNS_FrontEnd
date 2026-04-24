@@ -1,20 +1,82 @@
+/* === styles.css === */
+
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap');
 
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
+/* --- Reset --- */
+* { box-sizing: border-box; margin: 0; padding: 0; }
 
+/* --- Base --- */
 body {
-  font-family: 'DM Sans', Arial, sans-serif;
+  font-family: 'DM Sans', Arial, sans-serif; /* UNE seule famille de police */
   background: #180f52;
   color: #ffffff;
   min-height: 100vh;
 }
 
-html, body {
-  overflow: hidden;
-  height: 100%;
-  margin: 0;
+html, body { overflow: hidden; height: 100%; margin: 0; }
+
+/* =============================================
+                  STYLES PARTAGÉS
+   ============================================= */
+
+/* Layout page */
+.page-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 32px 36px;
+  background-color: #100839;
+  min-height: 100%;
+}
+
+/* Titres */
+h2 { color: white; font-weight: bold; font-size: 28px; }
+.title-group { display: flex; flex-direction: column; gap: 0; }
+.subtitle { color: rgb(255, 255, 255); }
+
+/* Section card */
+.section-card { background-color: #2c1f6b; border-radius: 12px; padding: 24px 28px; }
+.section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+.section-title { color: #ffffff; font-size: 18px; font-weight: 600; margin: 0; }
+
+/* Bouton outline */
+.btn-outline {
+  background-color: #5c59b8;
+  border: 3px solid transparent;
+  border-radius: 6px;
+  padding: 7px 18px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s;
+  color: white;
+}
+.btn-outline:hover { border-color: #ff5d2d; }
+
+/* Badges statut */
+.badge { display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 500; }
+.badge--encours  { background-color: #2d6a4f33; color: #52b788; border: 1px solid #2d6a4f66; }
+.badge--retard   { background-color: #e63946cc; color: #fff; }
+.badge--retourne { background-color: #2d2a6e;   color: #b0aee8; border: 1px solid #4b48a5; }
+.badge--attente  { background-color: #3d3a6e44; color: #b0aee8; border: 1px solid #4b48a555; }
+
+/* Actions rapides */
+.quick-actions { background-color: #100839; border-radius: 12px; padding: 24px; padding-left: 0; }
+.quick-actions .section-title { margin-bottom: 16px; }
+.actions-row { display: flex; gap: 12px; flex-wrap: wrap; }
+.action-btn { padding: 12px 22px; border: none; border-radius: 2em; font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.2s; }
+.action-btn--primary { background-color: #f4511e; color: white; }
+.action-btn--primary:hover { background-color: #d64016; transform: translateY(-3px); }
+
+/* Stats grid */
+.stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; }
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .stats-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 640px) {
+  .page-wrapper { padding: 16px; }
+  .stats-grid { grid-template-columns: 1fr 1fr; }
+  .actions-row { flex-direction: column; }
+  .action-btn { width: 100%; text-align: center; }
 }
