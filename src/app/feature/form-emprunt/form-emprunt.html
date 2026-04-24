@@ -129,10 +129,13 @@
         </textarea>
       </div>
 
-      <!-- ── Séparateur ── -->
+      <!-- ── Séparateur / Message  ── -->
       <hr class="form-divider">
       @if (erreurs()['erreur']) {
         <p class="field-error field-error--global">{{ erreurs()['erreur'] }}</p>
+      }
+      @if (succes()) {
+        <p class="field-succes">✓ Emprunt enregistré avec succès</p>
       }
       <!-- ── Actions ── -->
       <div class="form-actions">

@@ -342,3 +342,13 @@
   border-radius: 6px;
   text-align: center;
 }
+
+.field-succes {
+  color: #276749;
+  font-size: 0.875rem;
+  padding: 10px;
+  background-color: #f0fff4;
+  border: 1px solid #276749;
+  border-radius: 6px;
+  text-align: center;
+}

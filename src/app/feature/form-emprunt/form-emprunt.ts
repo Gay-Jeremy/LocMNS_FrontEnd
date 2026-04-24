@@ -17,8 +17,6 @@ import {CategorieModeleService} from '../../core/services/categorie-modele/categ
 
 export class FormEmprunt implements OnInit{
 
-  erreurs = signal<Record<string, string>>({});
-
   materielService = inject(MaterielService);
   utilisateurService = inject(UtilisateurService);
   categorieModeleService = inject(CategorieModeleService);
@@ -31,6 +29,9 @@ export class FormEmprunt implements OnInit{
 
   dateDebut = signal<string>('');
   dateFin = signal<string>('');
+
+  erreurs = signal<Record<string, string>>({});
+  succes = signal<boolean>(false);
 
   dateDebutChange(date: string): void {
     this.dateDebut.set(date);
@@ -68,6 +69,7 @@ export class FormEmprunt implements OnInit{
   onSubmit(form: NgForm): void {
 
     this.erreurs.set({});
+    this.succes.set(false);
 
     const utilisateurId = this.utilisateurId();
     const materielId    = this.materielId();
@@ -92,9 +94,13 @@ export class FormEmprunt implements OnInit{
     }).subscribe({
       next: () => {
         this.erreurs.set({});
-        alert('Emprunt enregistré');
+        this.succes.set(true);
         form.reset();
+        setTimeout(() => {
+          this.succes.set(false);
+        }, 4000);
       },
+
       error: (err) => {
         const erreurBack = err.error;
         if (typeof erreurBack === 'object' && erreurBack !== null) {
