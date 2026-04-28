@@ -1,4 +1,4 @@
-import {Component, Input,} from '@angular/core';
+import {Component, ElementRef, Input, ViewChild,} from '@angular/core';
 import {ColonneConfig} from '../../models/colonne-config.model';
 
 
@@ -13,6 +13,14 @@ export class Table {
   @Input() titre : string = "";
   @Input() colonnes: ColonneConfig[] = [];
   @Input() data : any[] = [];
+
+  @ViewChild('tableScroll') tableScrollRef!: ElementRef<HTMLDivElement>;
+
+  ngAfterViewInit() {
+    if (this.tableScrollRef) {
+      this.tableScrollRef.nativeElement.scrollLeft = 0;
+    }
+  }
 
 
   getValeur(row: any, key: string): any {

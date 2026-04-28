@@ -806,6 +806,10 @@ h2 {
     margin-top: 48px;
   }
 
+  .nav-link {
+    height: 50px;
+  }
+
   /* ── Wrapper de page ── */
   .page-wrapper,
   .dashboard-wrapper,
@@ -825,7 +829,7 @@ h2 {
   /* ── Stats grid : 1 colonne pleine largeur ── */
   .stats-grid {
     grid-template-columns: 1fr;
-    gap: 35px;                  /* 16px entre les cards d'une même section */
+    gap: 35px;
   }
 
   /* ── Stat card : full width, touch-friendly ── */
@@ -885,7 +889,7 @@ h2 {
 
   /* ── Quick actions ── */
   .quick-actions {
-    gap: 16px;
+    gap: 50px;
   }
 
   .quick-actions .section-title {
@@ -894,16 +898,18 @@ h2 {
 
   .actions-row {
     flex-direction: column;
-    gap: 12px;
+    gap: 35px;
   }
 
   .action-btn {
     width: 100%;
     text-align: center;
-    min-height: 48px;           /* Touch target Material minimum 48px */
+    min-height: 50
+    px;           /* Touch target Material minimum 48px */
     padding: 14px 22px;
     font-size: 14px;
     border-radius: var(--radius-md);
+    gap: 35px;
   }
 
   /* ── Formulaire ── */
