@@ -1,3 +1,4 @@
+/* ── Desktop shell ── */
 .shell {
   display: flex;
   height: calc(100vh - 60px - 36px);
@@ -9,4 +10,47 @@ main {
   flex: 1;
   overflow-y: auto;
   background-color: var(--color-bg-page);
+}
+
+/* Overlay mobile : caché par défaut */
+.sidebar-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  z-index: 150;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+  pointer-events: none;
+}
+
+/* ── Mobile (≤ 768px) ── */
+@media (max-width: 768px) {
+  html, body {
+    overflow: auto;
+    height: auto;
+  }
+
+  .shell {
+    height: auto;
+    min-height: calc(100vh - 60px);
+    margin-bottom: 0;
+    overflow: visible;
+  }
+
+  main {
+    overflow-x: hidden;
+    overflow-y: visible;
+    min-height: calc(100vh - 60px);
+  }
+
+  .sidebar-overlay {
+    display: block;
+    top: 60px;
+  }
+
+  .sidebar-overlay.open {
+    opacity: 1;
+    pointer-events: auto;
+  }
 }

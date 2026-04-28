@@ -1,23 +1,33 @@
 <aside>
   <div class="nav-label">Tableau de bord</div>
-  <a class="nav-link" routerLink="" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Vue d'ensemble</a>
+  <a class="nav-link" routerLink="" routerLinkActive="active"
+     [routerLinkActiveOptions]="{exact: true}" (click)="onNavClick()">Vue d'ensemble</a>
 
   <div class="nav-label">Emprunts</div>
-  <a class="nav-link" routerLink="/demande/liste" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Demandes en cours <span class="nav-badge warn" >{{ nbDemandeEmprunt() }}</span></a>
-  <a class="nav-link" routerLink="/emprunt/liste" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Liste des emprunts<span class="nav-badge warn">{{ nbEmpruntActif() }}</span></a>
-  <a class="nav-link">Historique des emprunts</a>
-  <a class="nav-link" routerLink="/enregistrer/emprunt" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Enregistrer un emprunt</a>
+  <a class="nav-link" routerLink="/demande/liste" routerLinkActive="active"
+     [routerLinkActiveOptions]="{exact: true}" (click)="onNavClick()">
+    Demandes en cours <span class="nav-badge warn">{{ nbDemandeEmprunt() }}</span>
+  </a>
+  <a class="nav-link" routerLink="/emprunt/liste" routerLinkActive="active"
+     [routerLinkActiveOptions]="{exact: true}" (click)="onNavClick()">
+    Liste des emprunts<span class="nav-badge warn">{{ nbEmpruntActif() }}</span>
+  </a>
+  <a class="nav-link" (click)="onNavClick()">Historique des emprunts</a>
+  <a class="nav-link" routerLink="/enregistrer/emprunt" routerLinkActive="active"
+     [routerLinkActiveOptions]="{exact: true}" (click)="onNavClick()">Enregistrer un emprunt</a>
 
   <div class="nav-label">Matériel</div>
-  <a class="nav-link" routerLink="/materiel/liste" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Liste du matériel</a>
-  <a class="nav-link">Incidents signalés <span class="nav-badge danger">{{ nbPanneSignalee() }}</span></a>
+  <a class="nav-link" routerLink="/materiel/liste" routerLinkActive="active"
+     [routerLinkActiveOptions]="{exact: true}" (click)="onNavClick()">Liste du matériel</a>
+  <a class="nav-link" (click)="onNavClick()">
+    Incidents signalés <span class="nav-badge danger">{{ nbPanneSignalee() }}</span>
+  </a>
 
   <div class="nav-label">Utilisateurs</div>
-  <a class="nav-link">Liste des utilisateurs</a>
-  <a class="nav-link">Gestion des utilisateurs</a>
+  <a class="nav-link" (click)="onNavClick()">Liste des utilisateurs</a>
+  <a class="nav-link" (click)="onNavClick()">Gestion des utilisateurs</a>
 
   <div class="nav-label">Compte</div>
-  <a class="nav-link">Mon profil</a>
-  <a class="nav-link">Déconnexion</a>
+  <a class="nav-link" (click)="onNavClick()">Mon profil</a>
+  <a class="nav-link" (click)="onNavClick()">Déconnexion</a>
 </aside>
-

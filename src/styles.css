@@ -67,7 +67,15 @@
 
 html, body {
   height: 100%;
-  overflow: hidden;
+  overflow: hidden; /* Desktop : le scroll est dans <main> */
+}
+
+/* Mobile : on laisse le body scroller */
+@media (max-width: 768px) {
+  html, body {
+    height: auto;
+    overflow: auto;
+  }
 }
 
 body {
@@ -287,7 +295,7 @@ h2 {
    ============================================= */
 .stats-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
   gap: 14px;
 }
 
@@ -769,21 +777,35 @@ h2 {
 /* =============================================
    RESPONSIVE
    ============================================= */
+
+/* Tablette : 2 colonnes pour les stat cards */
 @media (max-width: 1024px) {
   .stats-grid { grid-template-columns: repeat(2, 1fr); }
 }
 
+/* Mobile : padding réduit, form en colonne, 1 colonne pour les cards */
 @media (max-width: 768px) {
   .page-wrapper,
   .dashboard-wrapper,
-  .page-emprunt { padding: 20px 16px 40px; }
+  .page-emprunt {
+    padding: 16px 12px 32px;
+    /* Empêche tout débordement horizontal */
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+
+  /* 1 seule colonne pour les stat cards */
+  .stats-grid { grid-template-columns: 1fr; }
+
+  /* Section card : padding réduit */
+  .section-card { padding: 16px 14px; }
+
+  /* Formulaire */
   .field-row { grid-template-columns: 1fr; }
   .form-actions { flex-direction: column-reverse; gap: 10px; }
   .btn-annuler, .btn-enregistrer { width: 100%; }
-}
 
-@media (max-width: 640px) {
-  .stats-grid { grid-template-columns: 1fr 1fr; }
+  /* Quick actions en colonne */
   .actions-row { flex-direction: column; }
   .action-btn { width: 100%; text-align: center; }
 }

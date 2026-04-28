@@ -1,0 +1,23 @@
+/* Le .section-card, .loans-table etc. sont définis dans styles.css global */
+
+/* Wrapper scroll horizontal — actif sur mobile */
+.table-scroll {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+@media (max-width: 768px) {
+  .table-scroll {
+    /* Indicateur visuel discret qu'on peut scroller */
+    border-radius: 0 0 var(--radius-md) var(--radius-md);
+  }
+
+  /* Empêche les cellules de se réduire à rien */
+  .loans-table th,
+  .loans-table td {
+    white-space: nowrap;
+    padding: 11px 12px;
+    font-size: 13px;
+  }
+}

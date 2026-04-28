@@ -1,7 +1,15 @@
 <header>
-  <div class="logo">
-    <div class="logo-dot"></div>
-    <span class="logo-text">ParcInfo</span>
+  <div class="header-left">
+    <!-- Burger : visible uniquement sur mobile -->
+    <button class="burger-btn" (click)="onBurgerClick()" aria-label="Ouvrir le menu">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+    <div class="logo">
+      <div class="logo-dot"></div>
+      <span class="logo-text">ParcInfo</span>
+    </div>
   </div>
   <div class="header-right">
     <span class="badge-admin">Admin</span>
