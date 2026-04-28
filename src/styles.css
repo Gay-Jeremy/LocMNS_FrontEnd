@@ -321,6 +321,15 @@ h2 {
   box-shadow: var(--shadow-card), var(--shadow-glow);
 }
 
+/* Wrapper des infos (label + valeur) — column sur desktop */
+.stat-card-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  width: 100%;
+}
+
 .stat-label {
   font-size: 10px;
   letter-spacing: 1.2px;
@@ -520,6 +529,7 @@ h2 {
   border-radius: var(--radius-lg);
   overflow: hidden;
   box-shadow: var(--shadow-card);
+  margin-top: 24px;
 }
 
 .form-card-header {
@@ -783,29 +793,124 @@ h2 {
   .stats-grid { grid-template-columns: repeat(2, 1fr); }
 }
 
-/* Mobile : padding réduit, form en colonne, 1 colonne pour les cards */
+/* =============================================
+   MOBILE — standards UI/UX
+   • Marges latérales : 16px (Material / HIG)
+   • Gap entre sections : 50px
+   • Touch targets : min 48px de hauteur
+   • Padding interne cards : 20px
+   ============================================= */
 @media (max-width: 768px) {
+
+  .form-card {
+    margin-top: 48px;
+  }
+
+  /* ── Wrapper de page ── */
   .page-wrapper,
   .dashboard-wrapper,
   .page-emprunt {
-    padding: 16px 12px 32px;
-    /* Empêche tout débordement horizontal */
+    padding: 24px 16px 48px;   /* 16px latéral = standard mobile */
+    gap: 50px;                  /* 50px entre chaque section du dashboard */
     max-width: 100%;
     overflow-x: hidden;
+    box-sizing: border-box;
   }
 
-  /* 1 seule colonne pour les stat cards */
-  .stats-grid { grid-template-columns: 1fr; }
+  /* ── Titre de page ── */
+  h2 {
+    font-size: 20px;
+  }
 
-  /* Section card : padding réduit */
-  .section-card { padding: 16px 14px; }
+  /* ── Stats grid : 1 colonne pleine largeur ── */
+  .stats-grid {
+    grid-template-columns: 1fr;
+    gap: 35px;                  /* 16px entre les cards d'une même section */
+  }
 
-  /* Formulaire */
+  /* ── Stat card : full width, touch-friendly ── */
+  .stat-card {
+    padding: 20px 16px 16px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    min-height: auto;
+  }
+
+  .stat-card-info {
+    align-items: center;
+    width: 100%;
+    gap: 2px;
+  }
+
+  .stat-label {
+    font-size: 11px;
+  }
+
+  .stat-value {
+    font-size: 32px;
+    margin: 0;
+  }
+
+  .stat-btn {
+    width: auto;
+    min-width: 100%;
+    min-height: 50px;           /* Touch target HIG minimum 44px */
+    padding: 10px 16px;
+    flex-shrink: 0;
+    font-size: 12px;
+  }
+
+  /* ── Section card (tableau) ── */
+  .section-card {
+    padding: 20px 16px;
+    border-radius: var(--radius-md);
+  }
+
+  .section-header {
+    margin-bottom: 16px;
+  }
+
+  .section-title {
+    font-size: 14px;
+  }
+
+  /* ── Tableau : scroll horizontal ── */
+  .loans-table th,
+  .loans-table td {
+    padding: 12px 10px;
+    font-size: 13px;
+  }
+
+  /* ── Quick actions ── */
+  .quick-actions {
+    gap: 16px;
+  }
+
+  .quick-actions .section-title {
+    font-size: 15px;
+  }
+
+  .actions-row {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .action-btn {
+    width: 100%;
+    text-align: center;
+    min-height: 48px;           /* Touch target Material minimum 48px */
+    padding: 14px 22px;
+    font-size: 14px;
+    border-radius: var(--radius-md);
+  }
+
+  /* ── Formulaire ── */
   .field-row { grid-template-columns: 1fr; }
-  .form-actions { flex-direction: column-reverse; gap: 10px; }
-  .btn-annuler, .btn-enregistrer { width: 100%; }
-
-  /* Quick actions en colonne */
-  .actions-row { flex-direction: column; }
-  .action-btn { width: 100%; text-align: center; }
+  .form-actions { flex-direction: column-reverse; gap: 12px; }
+  .btn-annuler, .btn-enregistrer {
+    width: 100%;
+    min-height: 48px;
+  }
 }
