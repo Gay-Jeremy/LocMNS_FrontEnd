@@ -14,10 +14,15 @@ export class MaterielService {
 
   readonly listeMaterielDisponiblePourPeriodeParIdCategorie = signal<Materiel[]>([]);
   readonly listeMateriel = signal<Materiel[]>([]);
+  readonly listeMaterielPanneSignalee = signal<Materiel[]>([]);
 
   readonly nbMateriel = computed(() => this.listeMateriel().length);
+
   readonly nbMaterielDisponible = computed(() =>
     this.listeMaterielDisponiblePourPeriodeParIdCategorie().length);
+
+  readonly nbMaterielPanneSignalee = computed(() =>
+    this.listeMaterielPanneSignalee().length)
 
 
 
@@ -34,5 +39,10 @@ export class MaterielService {
   obtenirListeMateriel() {
     return this.apiService.get<Materiel[]>('materiels/liste')
       .pipe(tap((listeMateriel) => this.listeMateriel.set(listeMateriel)));
+  }
+
+  obtenirListeMaterielPanneSignalee() {
+    return this.apiService.get<Materiel[]>('materiels/liste/panne_signalee')
+      .pipe(tap((listeMaterielPanneSignalee) => this.listeMaterielPanneSignalee.set(listeMaterielPanneSignalee)))
   }
 }

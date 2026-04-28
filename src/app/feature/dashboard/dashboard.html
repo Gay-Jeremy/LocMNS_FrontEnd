@@ -5,11 +5,9 @@
   </div>
   <div class="stats-grid">
     @for (card of listStatsCard(); track card.nomLabel) {
-      @if (card.cptValeur > 0) {
         <app-stat-card [route]="card.route" [nomLabel]="card.nomLabel"
                        [cptValeur]="card.cptValeur"
                        [btnLabel] = "card.btnLabel"/>
-      }
     }
     </div>
       <app-table

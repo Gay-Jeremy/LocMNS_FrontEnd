@@ -13,11 +13,12 @@ export class EmpruntService {
   readonly listeEmpruntActif = signal<Emprunts[]>([]);
   readonly listeEmpruntRecent = signal<Emprunts[]>([]);
   readonly listeDemandeEmprunt = signal<Emprunts[]>([]);
-  readonly listePanneSignalee = signal<Emprunts[]>([]);
+  readonly listeRetardEmprunt = signal<Emprunts[]>([]);
 
   readonly nbEmpruntActif = computed(() => this.listeEmpruntActif().length);
   readonly nbDemandeEmprunt = computed(() => this.listeDemandeEmprunt().length);
-  readonly nbPanneSignalee = computed(() => this.listePanneSignalee().length);
+  readonly nbRetardEmprunt = computed(() => this.listeRetardEmprunt().length);
+
 
   apiService = inject(ApiService)
 
@@ -36,9 +37,9 @@ export class EmpruntService {
       .pipe(tap((listeDemandeEmprunt) => this.listeDemandeEmprunt.set(listeDemandeEmprunt)))
   }
 
-  obtenirListePannesSignalees() {
-    return this.apiService.get<Emprunts[]>('emprunts/liste/panne')
-      .pipe(tap((listePanneSignalee) => this.listePanneSignalee.set(listePanneSignalee)))
+  obtenirEmpruntEnRetard()  {
+    return this.apiService.get<Emprunts[]>('emprunts/liste/retard')
+      .pipe(tap((listeRetardEmprunt) => this.listeRetardEmprunt.set(listeRetardEmprunt)))
   }
 
   creerEmprunt(empruntDto: EmpruntDto) {
