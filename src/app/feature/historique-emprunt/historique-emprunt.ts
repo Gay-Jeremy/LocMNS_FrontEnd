@@ -2,11 +2,13 @@ import {Component, inject, OnInit} from '@angular/core';
 import {Table} from '../../shared/components/table/table';
 import {EmpruntService} from '../../core/services/emprunt/emprunt.service';
 import {ColonneConfig} from '../../shared/models/colonne-config.model';
+import {RouterLink} from '@angular/router';
 
 @Component({
   selector: 'app-historique-emprunt',
   imports: [
-    Table
+    Table,
+    RouterLink
   ],
   templateUrl: './historique-emprunt.html',
   styleUrl: './historique-emprunt.css',

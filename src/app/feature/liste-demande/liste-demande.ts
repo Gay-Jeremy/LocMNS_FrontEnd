@@ -2,11 +2,13 @@ import {Component, inject} from '@angular/core';
 import {ColonneConfig} from '../../shared/models/colonne-config.model';
 import {EmpruntService} from '../../core/services/emprunt/emprunt.service';
 import {Table} from '../../shared/components/table/table';
+import {RouterLink} from '@angular/router';
 
 @Component({
   selector: 'app-liste-demande',
   imports: [
-    Table
+    Table,
+    RouterLink
   ],
   templateUrl: './liste-demande.html',
   styleUrl: './liste-demande.css',

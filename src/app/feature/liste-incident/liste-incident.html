@@ -1,0 +1,18 @@
+<div class="page-wrapper">
+  <div class="title-group">
+    <h2>Liste du Materiel</h2>
+  </div>
+  <app-table
+    [colonnes]="colonnesIncident"
+    [data]="materielService.listeMaterielPanneSignalee()"
+  />
+  <div class="quick-actions">
+    <h2 class="section-title">Actions rapides</h2>
+    <div class="actions-row">
+      <button class="action-btn action-btn--primary" routerLink="/enregistrer/emprunt">+ Enregistrer un emprunt</button>
+      <button class="action-btn action-btn--primary" routerLink="/emprunt/liste">Voir les emprunts</button>
+      <button class="action-btn action-btn--primary">Gérer les utilisateurs</button>
+    </div>
+  </div>
+</div>
+

@@ -12,14 +12,14 @@
      [routerLinkActiveOptions]="{exact: true}" (click)="onNavClick()">
     Liste des emprunts<span class="nav-badge warn">{{ nbEmpruntActif() }}</span>
   </a>
-  <a class="nav-link" routerLink="/historique/emprunt" (click)="onNavClick()">Historique des emprunts</a>
+  <a class="nav-link" routerLink="/historique/emprunt" (click)="onNavClick()" routerLinkActive="active">Historique des emprunts</a>
   <a class="nav-link" routerLink="/enregistrer/emprunt" routerLinkActive="active"
      [routerLinkActiveOptions]="{exact: true}" (click)="onNavClick()">Enregistrer un emprunt</a>
 
   <div class="nav-label">Matériel</div>
   <a class="nav-link" routerLink="/materiel/liste" routerLinkActive="active"
      [routerLinkActiveOptions]="{exact: true}" (click)="onNavClick()">Liste du matériel</a>
-  <a class="nav-link" (click)="onNavClick()">
+  <a class="nav-link" (click)="onNavClick()" routerLink="/materiel/incident" routerLinkActive="active">
     Incidents signalés <span class="nav-badge danger">{{ nbPanneSignalee() }}</span>
   </a>
 

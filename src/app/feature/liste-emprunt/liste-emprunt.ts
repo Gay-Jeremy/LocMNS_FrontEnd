@@ -3,10 +3,11 @@ import { EmpruntService } from '../../core/services/emprunt/emprunt.service';
 import {CommonModule, DatePipe} from '@angular/common';
 import {ColonneConfig} from '../../shared/models/colonne-config.model';
 import {Table} from '../../shared/components/table/table';
+import {RouterLink} from '@angular/router';
 
 @Component({
   selector: 'app-listEmprunt',
-  imports: [CommonModule, Table],
+  imports: [CommonModule, Table, RouterLink],
   templateUrl: './liste-emprunt.html',
   styleUrl: './liste-emprunt.css',
 })
