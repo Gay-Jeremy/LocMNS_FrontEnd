@@ -1,0 +1,17 @@
+<div class="page-wrapper">
+  <div class="title-group">
+    <h2>Historique des emprunts</h2>
+  </div>
+  <app-table
+    [colonnes]="colonnesHistorique"
+    [data]="empruntService.listeHistoriqueEmprunt()"
+  />
+  <div class="quick-actions">
+    <h2 class="section-title">Actions rapides</h2>
+    <div class="actions-row">
+      <button class="action-btn action-btn--primary">+ Enregistrer un emprunt</button>
+      <button class="action-btn action-btn--primary">Voir le matériel</button>
+      <button class="action-btn action-btn--primary">Gérer les utilisateurs</button>
+    </div>
+  </div>
+</div>

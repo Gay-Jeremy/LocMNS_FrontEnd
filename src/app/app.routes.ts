@@ -5,6 +5,7 @@ import {Table} from './shared/components/table/table';
 import {ListeEmprunt} from './feature/liste-emprunt/liste-emprunt';
 import {ListeMateriel} from './feature/liste-materiel/liste-materiel';
 import {ListeDemande} from './feature/liste-demande/liste-demande';
+import {HistoriqueEmprunt} from './feature/historique-emprunt/historique-emprunt';
 
 export const routes: Routes = [
   { path: '', component: Dashboard},
@@ -12,6 +13,7 @@ export const routes: Routes = [
   { path : 'emprunt/liste', component : ListeEmprunt},
   { path : 'materiel/liste', component : ListeMateriel},
   { path : 'demande/liste', component : ListeDemande},
+  { path : 'historique/emprunt', component : HistoriqueEmprunt},
 
 
 ];
