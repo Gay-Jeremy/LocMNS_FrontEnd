@@ -11,6 +11,7 @@
     }
     </div>
       <app-table
+        [showAction]="false"
         [titre]="titre"
         [colonnes]="colonnesEmpruntsRecent"
         [data]="empruntService.listeEmpruntRecent()"

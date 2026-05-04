@@ -1,21 +1,35 @@
 <div class="section-card">
   <div class="section-header">
-    <h2 class="section-title">{{ titre }}</h2>
+    <h2 class="section-title">{{ titre() }}</h2>
   </div>
-  <div class="table-scroll" #tableScroll >
+  <div class="table-scroll" #tableScroll>
     <table class="loans-table">
       <thead>
       <tr>
-        @for (col of colonnes; track col.key) {
+        @for (col of colonnes(); track col.key) {
           <th>{{ col.label }}</th>
+        }
+        @if (showAction()) {
+          <th>ACTION</th>
         }
       </tr>
       </thead>
       <tbody>
-        @for (row of data; track row.id) {
+        @for (row of data(); track row.id) {
           <tr>
-            @for (col of colonnes; track col.key) {
+            @for (col of colonnes(); track col.key) {
               <td>{{ getValeur(row, col.key) }}</td>
+            }
+            @if (showAction()) {
+              <td>
+                <select [ngModel]="row.action ?? ''"
+                        (ngModelChange)="onActionChange(row, $event)">
+                  <option value="" disabled selected>— Décider —</option>
+                  @for (action of tableActions(); track action.id) {
+                    <option [value]="action.id">{{ action.libelle }}</option>
+                  }
+                </select>
+              </td>
             }
           </tr>
         }

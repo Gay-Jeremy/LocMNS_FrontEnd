@@ -1,6 +1,8 @@
-import {Component, ElementRef, Input, OnChanges, OnInit, ViewChild,} from '@angular/core';
+import {Component, ElementRef, input, output, ViewChild,} from '@angular/core';
 import {ColonneConfig} from '../../models/colonne-config.model';
 import {FormsModule} from '@angular/forms';
+import {TableActionModel} from '../../models/table-action.model';
+import {DecisionEvent} from '../../models/decision-event.model';
 
 
 
@@ -16,10 +18,18 @@ import {FormsModule} from '@angular/forms';
 
 export class Table {
 
-  @Input() titre : string = "";
-  @Input() colonnes: ColonneConfig[] = [];
-  @Input() data : any[] = [];
+  titre  = input<string>('');
+  colonnes = input<ColonneConfig[]>([]);
+  data   = input<any[]>([]);
+  showAction = input<boolean>(true);
+  tableActions = input<any[]>([]);
 
+  decisionChange = output<DecisionEvent>();
+
+  onActionChange(row: any, statutId: number): void {
+    row.action = statutId;
+    this.decisionChange.emit({ rowId: row.id, statutId });
+  }
 
 
   @ViewChild('tableScroll') tableScrollRef!: ElementRef<HTMLDivElement>;

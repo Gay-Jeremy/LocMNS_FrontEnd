@@ -27,5 +27,7 @@ export class ApiService {
   delete<T>(endpoint: string): Observable<T> {
     return this.httpClient.delete<T>(`${this.baseUrl}/${endpoint}`);
   }
+
+
 }
 

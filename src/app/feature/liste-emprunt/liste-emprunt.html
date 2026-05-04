@@ -4,6 +4,7 @@
     <h2>Liste des Emprunts</h2>
   </div>
       <app-table
+        [showAction]="false"
         [colonnes]="colonnesEmpruntsRecent"
         [data]="empruntService.listeEmpruntActif()"
       />

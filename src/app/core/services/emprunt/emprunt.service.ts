@@ -2,7 +2,7 @@ import {computed, inject, Injectable, signal} from '@angular/core';
 import {EmpruntDto} from '../../models/emprunt-dto';
 import {Emprunts} from '../../models/emprunt';
 import {ApiService} from '../api/api.service';
-import {tap} from 'rxjs';
+import {Observable, tap} from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -50,6 +50,18 @@ export class EmpruntService {
 
   creerEmprunt(empruntDto: EmpruntDto) {
     return this.apiService.post<EmpruntDto>('emprunts', empruntDto)
-      .pipe(tap(() => this.obtenirListeEmpruntsActifs().subscribe()))
+      .pipe(tap(() => {
+        this.obtenirListeEmpruntsActifs().subscribe();
+        this.obtenirListeDemandesEmprunt().subscribe();
+      })
+      );
+  }
+
+  mettreAJourStatut(empruntId: number, statutId: number): Observable<any> {
+    return this.apiService.put(`emprunts/${empruntId}/statut`, { statutId })
+      .pipe(tap(() =>
+        this.obtenirListeEmpruntsActifs().subscribe()
+      )
+      );
   }
 }

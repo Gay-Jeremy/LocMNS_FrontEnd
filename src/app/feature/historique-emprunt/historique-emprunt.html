@@ -3,6 +3,7 @@
     <h2>Historique des emprunts</h2>
   </div>
   <app-table
+    [showAction]="false"
     [colonnes]="colonnesHistorique"
     [data]="empruntService.listeHistoriqueEmprunt()"
   />

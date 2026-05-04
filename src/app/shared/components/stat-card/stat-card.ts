@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, input} from '@angular/core';
 import {RouterLink} from '@angular/router';
 
 @Component({
@@ -11,9 +11,9 @@ import {RouterLink} from '@angular/router';
 })
 export class StatCard {
 
-  @Input() route: string = ""
-  @Input() nomLabel: string = ""
-  @Input() cptValeur: number = 0
-  @Input() btnLabel: string = ""
+  route     = input<string>('');
+  nomLabel  = input<string>('');
+  cptValeur = input<number>(0);
+  btnLabel  = input<string>('');
 
 }
