@@ -11,6 +11,7 @@ import {ListeIncident} from './feature/liste-incident/liste-incident';
 export const routes: Routes = [
   { path: '', component: Dashboard},
   { path : 'enregistrer/emprunt' , component : FormEmprunt},
+  { path: 'enregistrer/emprunt/:id', component: FormEmprunt },
   { path : 'emprunt/liste', component : ListeEmprunt},
   { path : 'materiel/liste', component : ListeMateriel},
   { path : 'demande/liste', component : ListeDemande},

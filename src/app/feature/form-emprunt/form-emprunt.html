@@ -2,8 +2,8 @@
 
   <!-- ── En-tête de page ── -->
   <div class="page-header">
-    <h1 class="page-title">Enregistrer un emprunt</h1>
-    <p class="page-subtitle">Remplissez le formulaire pour créer un nouvel emprunt</p>
+    <h1 class="page-title">{{ estModification() ? 'Modifier un emprunt' : 'Enregistrer un emprunt' }}</h1>
+    <p class="page-subtitle">{{ estModification() ? 'Modifiez les informations de l\'emprunt' : 'Remplissez le formulaire pour créer un nouvel emprunt' }}</p>
   </div>
 
   <!-- ── Carte formulaire ── -->
@@ -140,7 +140,9 @@
       <!-- ── Actions ── -->
       <div class="form-actions">
         <button type="button" class="btn-annuler">Annuler</button>
-        <button type="submit" class="btn-enregistrer">Enregistrer</button>
+        <button type="submit" class="btn-enregistrer">
+          {{ estModification() ? 'Enregistrer les modifications' : 'Enregistrer' }}
+        </button>
       </div>
     </form>
   </div>

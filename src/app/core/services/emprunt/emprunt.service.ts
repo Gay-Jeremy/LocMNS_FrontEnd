@@ -23,6 +23,10 @@ export class EmpruntService {
 
   apiService = inject(ApiService)
 
+  obtenirEmpruntParId(id: number): Observable<Emprunts> {
+    return this.apiService.get<Emprunts>(`emprunts/${id}`);
+  }
+
   obtenirListeEmpruntsActifs() {
     return this.apiService.get<Emprunts[]>('emprunts/liste/actif')
     .pipe(tap((listeEmpruntActif) => this.listeEmpruntActif.set(listeEmpruntActif)));
@@ -55,6 +59,10 @@ export class EmpruntService {
         this.obtenirListeDemandesEmprunt().subscribe();
       })
       );
+  }
+
+  modifierEmprunt(id: number, empruntDto: EmpruntDto): Observable<any> {
+    return this.apiService.put(`emprunts/${id}`, empruntDto);
   }
 
   supprimerEmprunt(id: number): Observable<void> {

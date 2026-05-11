@@ -3,7 +3,7 @@ import { EmpruntService } from '../../core/services/emprunt/emprunt.service';
 import {CommonModule, DatePipe} from '@angular/common';
 import {ColonneConfig} from '../../shared/models/colonne-config.model';
 import {Table} from '../../shared/components/table/table';
-import {ActivatedRoute, RouterLink} from '@angular/router';
+import {ActivatedRoute, Router, RouterLink} from '@angular/router';
 
 @Component({
   selector: 'app-listEmprunt',
@@ -13,6 +13,8 @@ import {ActivatedRoute, RouterLink} from '@angular/router';
 })
 
 export class ListeEmprunt implements OnInit {
+
+  router = inject(Router)
 
   colonnesEmpruntsRecent: ColonneConfig[] = [
     { key: 'utilisateur.nom', label: 'NOM' },
@@ -53,7 +55,7 @@ export class ListeEmprunt implements OnInit {
     });
   }
   onEdit(row: any): void {
-    console.log('modifier', row);
+    this.router.navigate(['/enregistrer/emprunt', row.id]);
   }
 
   onDelete(row: any): void {
