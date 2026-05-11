@@ -7,7 +7,8 @@
     @for (card of listStatsCard(); track card.nomLabel) {
         <app-stat-card [route]="card.route" [nomLabel]="card.nomLabel"
                        [cptValeur]="card.cptValeur"
-                       [btnLabel] = "card.btnLabel"/>
+                       [btnLabel] = "card.btnLabel"
+                       [queryParams]="card.queryParams ?? {}"/>
     }
     </div>
       <app-table

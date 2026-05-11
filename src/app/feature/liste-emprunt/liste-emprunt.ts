@@ -3,7 +3,7 @@ import { EmpruntService } from '../../core/services/emprunt/emprunt.service';
 import {CommonModule, DatePipe} from '@angular/common';
 import {ColonneConfig} from '../../shared/models/colonne-config.model';
 import {Table} from '../../shared/components/table/table';
-import {RouterLink} from '@angular/router';
+import {ActivatedRoute, RouterLink} from '@angular/router';
 
 @Component({
   selector: 'app-listEmprunt',
@@ -26,9 +26,30 @@ export class ListeEmprunt implements OnInit {
   ];
 
   empruntService = inject(EmpruntService)
+  route = inject(ActivatedRoute);
+
+  filtre = signal<string>('actif');
+
+  titre = computed(() =>
+    this.filtre() === 'retard' ? 'Emprunts en retard' : 'Emprunts actif'
+  );
+
+  data = computed(() =>
+    this.filtre() === 'retard'
+      ? this.empruntService.listeRetardEmprunt()
+      : this.empruntService.listeEmpruntActif()
+  );
 
   ngOnInit() {
+    this.route.queryParams.subscribe(params => {
+      const filtre = params['filtre'] ?? 'actif';
+      this.filtre.set(filtre);
 
-    this.empruntService.obtenirListeEmpruntsActifs().subscribe();
+      if (filtre === 'retard') {
+        this.empruntService.obtenirEmpruntEnRetard().subscribe();
+      } else {
+        this.empruntService.obtenirListeEmpruntsActifs().subscribe();
+      }
+    });
   }
 }

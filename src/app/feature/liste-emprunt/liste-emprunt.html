@@ -1,12 +1,12 @@
 
 <div class="page-wrapper">
   <div class="title-group">
-    <h2>Liste des Emprunts</h2>
+    <h2>{{ titre() }}</h2>
   </div>
       <app-table
         [showAction]="false"
         [colonnes]="colonnesEmpruntsRecent"
-        [data]="empruntService.listeEmpruntActif()"
+        [data]="data()"
       />
   <div class="quick-actions">
     <h2 class="section-title">Actions rapides</h2>

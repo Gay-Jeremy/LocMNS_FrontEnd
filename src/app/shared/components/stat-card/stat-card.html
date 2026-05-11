@@ -3,5 +3,5 @@
     <span class="stat-label">{{ nomLabel() }}</span>
     <span class="stat-value">{{ cptValeur() }}</span>
   </div>
-  <button class="stat-btn" [routerLink]="route()">{{ btnLabel() }}</button>
+  <button class="stat-btn" [routerLink]="route()" [queryParams]="queryParams()">{{ btnLabel() }}</button>
 </div>

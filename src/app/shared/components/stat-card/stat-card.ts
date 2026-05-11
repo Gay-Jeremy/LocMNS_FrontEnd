@@ -15,5 +15,5 @@ export class StatCard {
   nomLabel  = input<string>('');
   cptValeur = input<number>(0);
   btnLabel  = input<string>('');
-
+  queryParams = input<{ [key: string]: string }>({});
 }

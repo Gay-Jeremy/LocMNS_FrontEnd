@@ -29,7 +29,7 @@ export class MaterielService {
   obtenirListeMaterielsDisponiblePourPeridodeParIDCategorieModele( dateDebut: string,
                                                                    dateFin: string,
                                                                    id: number) {
-    return this.apiService.get<Materiel[]>(`materiels/liste/disponible/${dateDebut}/${dateFin}/${id}`)
+    return this.apiService.get<Materiel[]>(`materiels/liste/disponible/categorie?dateDebut=${dateDebut}&dateFin=${dateFin}&categorieModeleId=${id}`)
       .pipe(tap(
         (listeMaterielDisponiblePourPeriodeParIdCategorie) =>
           this.listeMaterielDisponiblePourPeriodeParIdCategorie

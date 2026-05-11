@@ -42,7 +42,7 @@ export class Dashboard implements OnInit {
     { nomLabel: 'EMPRUNT ACTIF', cptValeur: this.empruntService.nbEmpruntActif(), btnLabel: 'Voir les emprunts', route: '/emprunt/liste' },
     { nomLabel: 'DEMANDE EN COURS', cptValeur: this.empruntService.nbDemandeEmprunt(), btnLabel: 'Voir les demandes', route: '/demande/liste' },
     { nomLabel: 'INCIDENT SIGNALÉ', cptValeur: this.materielService.nbMaterielPanneSignalee(), btnLabel: 'Voir les incidents', route: '/panne/liste' },
-    { nomLabel: 'RETARD EMPRUNT', cptValeur: this.empruntService.nbRetardEmprunt(), btnLabel: 'Voir les retards', route: '/emprunt/retard' },
+    { nomLabel: 'RETARD EMPRUNT', cptValeur: this.empruntService.nbRetardEmprunt(), btnLabel: 'Voir les retards', route: '/emprunt/liste', queryParams: { filtre: 'retard' } },
   ])
 
   ngOnInit() {

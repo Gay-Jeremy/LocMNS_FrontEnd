@@ -637,7 +637,7 @@ h2 {
   cursor: pointer;
 }
 
-.field-select option { background: #221568; color: #fff; }
+.field-select option { background: #ffffff; color: var(--color-bg-card) }
 
 .field-select--focus,
 .field-select--focus:focus {

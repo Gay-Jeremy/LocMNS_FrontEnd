@@ -3,6 +3,13 @@
     <h2 class="section-title">{{ titre() }}</h2>
   </div>
   <div class="table-scroll" #tableScroll>
+    @if (data().length === 0) {
+      <tr>
+        <td [attr.colspan]="colonnes().length" class="table-empty">
+          Aucun résultat à afficher
+        </td>
+      </tr>
+    } @else {
     <table class="loans-table">
       <thead>
       <tr>
@@ -35,5 +42,6 @@
         }
       </tbody>
     </table>
+    }
   </div>
 </div>
