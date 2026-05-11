@@ -52,4 +52,20 @@ export class ListeEmprunt implements OnInit {
       }
     });
   }
+  onEdit(row: any): void {
+    console.log('modifier', row);
+  }
+
+  onDelete(row: any): void {
+    if (confirm(`Supprimer l'emprunt #${row.id} ?`)) {
+      this.empruntService.supprimerEmprunt(row.id).subscribe(() => {
+        const filtre = this.filtre();
+        if (filtre === 'retard') {
+          this.empruntService.obtenirEmpruntEnRetard().subscribe();
+        } else {
+          this.empruntService.obtenirListeEmpruntsActifs().subscribe();
+        }
+      });
+    }
+  }
 }

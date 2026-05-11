@@ -22,14 +22,21 @@ export class Table {
   colonnes = input<ColonneConfig[]>([]);
   data   = input<any[]>([]);
   showAction = input<boolean>(true);
+  showEditDelete = input<boolean>(false);
   tableActions = input<any[]>([]);
 
   decisionChange = output<DecisionEvent>();
+  edit           = output<any>();
+  delete         = output<any>();
 
   onActionChange(row: any, statutId: number): void {
     row.action = statutId;
     this.decisionChange.emit({ rowId: row.id, statutId });
   }
+
+
+  onEdit(row: any): void   { this.edit.emit(row); }
+  onDelete(row: any): void { this.delete.emit(row); }
 
 
   @ViewChild('tableScroll') tableScrollRef!: ElementRef<HTMLDivElement>;

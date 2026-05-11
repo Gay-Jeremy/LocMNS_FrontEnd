@@ -10,38 +10,55 @@
         </td>
       </tr>
     } @else {
-    <table class="loans-table">
-      <thead>
-      <tr>
-        @for (col of colonnes(); track col.key) {
-          <th>{{ col.label }}</th>
-        }
-        @if (showAction()) {
-          <th>ACTION</th>
-        }
-      </tr>
-      </thead>
-      <tbody>
-        @for (row of data(); track row.id) {
-          <tr>
-            @for (col of colonnes(); track col.key) {
-              <td>{{ getValeur(row, col.key) }}</td>
-            }
-            @if (showAction()) {
-              <td>
-                <select [ngModel]="row.action ?? ''"
-                        (ngModelChange)="onActionChange(row, $event)">
-                  <option value="" disabled selected>— Décider —</option>
-                  @for (action of tableActions(); track action.id) {
-                    <option [value]="action.id">{{ action.libelle }}</option>
-                  }
-                </select>
-              </td>
-            }
-          </tr>
-        }
-      </tbody>
-    </table>
+      <table class="loans-table">
+        <thead>
+        <tr>
+          @for (col of colonnes(); track col.key) {
+            <th>{{ col.label }}</th>
+          }
+          @if (showAction()) {
+            <th>ACTION</th>
+          }
+          @if (showEditDelete()) {
+            <th>MODIFIER</th>
+          }
+        </tr>
+        </thead>
+        <tbody>
+          @for (row of data(); track row.id) {
+            <tr>
+              @for (col of colonnes(); track col.key) {
+                <td>{{ getValeur(row, col.key) }}</td>
+              }
+              @if (showAction()) {
+                <td>
+                  <select [ngModel]="row.action ?? ''"
+                          (ngModelChange)="onActionChange(row, $event)">
+                    <option value="" disabled selected>— Décider —</option>
+                    @for (action of tableActions(); track action.id) {
+                      <option [value]="action.id">{{ action.libelle }}</option>
+                    }
+                  </select>
+                </td>
+              }
+              @if (showEditDelete()) {
+                <td class="td-actions">
+                  <button class="btn-icon btn-icon--edit"
+                          title="Modifier"
+                          (click)="onEdit(row)">
+                    ✏️
+                  </button>
+                  <button class="btn-icon btn-icon--delete"
+                          title="Supprimer"
+                          (click)="onDelete(row)">
+                    🗑️
+                  </button>
+                </td>
+              }
+            </tr>
+          }
+        </tbody>
+      </table>
     }
   </div>
 </div>

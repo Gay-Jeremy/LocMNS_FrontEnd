@@ -5,6 +5,9 @@
   </div>
       <app-table
         [showAction]="false"
+        [showEditDelete]="true"
+        (edit)="onEdit($event)"
+        (delete)="onDelete($event)"
         [colonnes]="colonnesEmpruntsRecent"
         [data]="data()"
       />

@@ -57,6 +57,15 @@ export class EmpruntService {
       );
   }
 
+  supprimerEmprunt(id: number): Observable<void> {
+    return this.apiService.delete<void>(`emprunts/${id}`).pipe(
+      tap(() => {
+        this.listeEmpruntActif.update(liste => liste.filter(e => e.id !== id));
+        this.listeRetardEmprunt.update(liste => liste.filter(e => e.id !== id));
+      })
+    );
+  }
+
   mettreAJourStatut(empruntId: number, statutId: number): Observable<any> {
     return this.apiService.put(`emprunts/${empruntId}/statut`, { statutId })
       .pipe(tap(() =>
