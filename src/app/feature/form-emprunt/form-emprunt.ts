@@ -5,6 +5,7 @@ import {EmpruntService} from '../../core/services/emprunt/emprunt.service';
 import {MaterielService} from '../../core/services/materiel/materiel.service';
 import {UtilisateurService} from '../../core/services/utilisateur/utilisateur.service';
 import {CategorieModeleService} from '../../core/services/categorie-modele/categorie-modele.service';
+import {EmpruntDto} from '../../core/models/emprunt-dto';
 
 @Component({
   selector: 'app-form-emprunt',
@@ -21,11 +22,9 @@ export class FormEmprunt implements OnInit {
   route                 = inject(ActivatedRoute);
   router                = inject(Router);
 
-  // Mode
   empruntId = signal<number | null>(null);
   estModification = computed(() => this.empruntId() !== null);
 
-  // Champs
   utilisateurId    = signal<number | null>(null);
   categorieModeleId = signal<number | null>(null);
   materielId       = signal<number | null>(null);
@@ -34,12 +33,13 @@ export class FormEmprunt implements OnInit {
 
   erreurs = signal<Record<string, string>>({});
   succes  = signal<boolean>(false);
+  isLoading = signal<boolean>(false);
 
   ngOnInit() {
     this.utilisateurService.obtenirListeUtilisateur().subscribe();
     this.categorieModeleService.obtenirListeCategorieModele().subscribe();
 
-    // Détecter si on est en mode modification
+
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
       this.empruntId.set(+id);
@@ -59,10 +59,10 @@ export class FormEmprunt implements OnInit {
         emprunt.dateFin,
         emprunt.materiel.modele.categorieModele.id
       ).subscribe((listeMateriel) => {
-        const dejaDansListe = listeMateriel.some(m => m.id === emprunt.materiel.id);
+        const dejaDansListe = listeMateriel.some(materiel => materiel.id === emprunt.materiel.id);
         if (!dejaDansListe) {
           this.materielService.listeMaterielDisponiblePourPeriodeParIdCategorie
-            .update(l => [emprunt.materiel, ...l]);
+            .update(liste => [emprunt.materiel, ...liste]);
         }
         this.materielId.set(emprunt.materiel.id);
       });
@@ -96,6 +96,7 @@ export class FormEmprunt implements OnInit {
   onSubmit(form: NgForm): void {
     this.erreurs.set({});
     this.succes.set(false);
+    this.isLoading.set(true);
 
     const utilisateurId     = this.utilisateurId();
     const materielId        = this.materielId();
@@ -112,17 +113,17 @@ export class FormEmprunt implements OnInit {
       return;
     }
 
-    const payload = {
+    const dataEmprunt: EmpruntDto = {
       utilisateurId,
       materielId,
       dateDebut: this.dateDebut(),
       dateFin:   this.dateFin()
     };
 
-    // ── Modification ──
     if (this.estModification()) {
-      this.empruntService.modifierEmprunt(this.empruntId()!, payload).subscribe({
+      this.empruntService.modifierEmprunt(this.empruntId()!, dataEmprunt).subscribe({
         next: () => {
+          this.isLoading.set(false);
           this.succes.set(true);
           setTimeout(() => this.router.navigate(['/emprunt/liste']), 1500);
         },
@@ -131,15 +132,16 @@ export class FormEmprunt implements OnInit {
       return;
     }
 
-    // ── Création ──
-    this.empruntService.creerEmprunt(payload).subscribe({
+    this.empruntService.creerEmprunt(dataEmprunt).subscribe({
       next: () => {
+        this.isLoading.set(false)
         this.erreurs.set({});
         this.succes.set(true);
         form.reset();
         setTimeout(() => this.succes.set(false), 4000);
       },
       error: (err) => {
+        this.isLoading.set(false);
         const erreurBack = err.error;
         if (typeof erreurBack === 'object' && erreurBack !== null) {
           this.erreurs.set(erreurBack);

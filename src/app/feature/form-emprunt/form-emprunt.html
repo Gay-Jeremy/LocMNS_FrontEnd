@@ -1,24 +1,19 @@
 <div class="page-emprunt">
 
-  <!-- ── En-tête de page ── -->
   <div class="page-header">
     <h1 class="page-title">{{ estModification() ? 'Modifier un emprunt' : 'Enregistrer un emprunt' }}</h1>
     <p class="page-subtitle">{{ estModification() ? 'Modifiez les informations de l\'emprunt' : 'Remplissez le formulaire pour créer un nouvel emprunt' }}</p>
   </div>
 
-  <!-- ── Carte formulaire ── -->
   <div class="form-card">
 
-    <!-- En-tête de la carte -->
     <div class="form-card-header">
       <span class="form-card-title">Nouvel emprunt</span>
       <span class="badge-obligatoire">* Champs obligatoires</span>
     </div>
 
-    <!-- Corps du formulaire -->
     <form class="form-body" #empruntForm="ngForm" (ngSubmit)="onSubmit(empruntForm)">
 
-      <!-- ── UtilisateurService ── -->
       <div class="field-group">
         <label class="field-label" for="utilisateur">
           UTILISATEUR <span class="asterisque">*</span>
@@ -37,7 +32,6 @@
         }
       </div>
 
-      <!-- ── Dates (2 colonnes) ── -->
       <div class="field-row">
 
         <div class="field-group">
@@ -74,7 +68,6 @@
 
       </div>
 
-      <!-- ── Catégorie de matériel ── -->
       <div class="field-group">
         <label class="field-label" for="categorie">
           CATÉGORIE DE MATÉRIEL <span class="asterisque">*</span>
@@ -93,12 +86,13 @@
         }
       </div>
 
-      <!-- ── Matériel disponible ── -->
       <div class="field-group">
         <label class="field-label" for="materiel">
           MATÉRIEL DISPONIBLE <span class="asterisque">*</span>
         </label>
-        <select id="materiel" name="materiel" class="field-select field-select--focus" [ngModel]="materielId()"
+        <select id="materiel" name="materiel" class="field-select"
+                [class.field-select--focus]="!materielId() && categorieModeleId() && dateDebut() && dateFin()"
+                [ngModel]="materielId()"
                 (ngModelChange)="materielId.set(+$event)">
           @for (materiel of materielService.listeMaterielDisponiblePourPeriodeParIdCategorie(); track materiel.id) {
             <option [value]="materiel.id">
@@ -115,7 +109,6 @@
         </p>
       </div>
 
-      <!-- ── Notes ── -->
       <div class="field-group">
         <label class="field-label" for="notes">
           NOTES <span class="field-label-optional">— Optionnel</span>
@@ -129,7 +122,6 @@
         </textarea>
       </div>
 
-      <!-- ── Séparateur / Message  ── -->
       <hr class="form-divider">
       @if (erreurs()['erreur']) {
         <p class="field-error field-error--global">{{ erreurs()['erreur'] }}</p>
@@ -137,11 +129,11 @@
       @if (succes()) {
         <p class="field-succes">✓ Emprunt enregistré avec succès</p>
       }
-      <!-- ── Actions ── -->
+
       <div class="form-actions">
-        <button type="button" class="btn-annuler">Annuler</button>
-        <button type="submit" class="btn-enregistrer">
-          {{ estModification() ? 'Enregistrer les modifications' : 'Enregistrer' }}
+        <button type="button" class="btn-annuler" (click)="onAnnuler()">Annuler</button>
+        <button type="submit" class="btn-enregistrer" [disabled]="isLoading()">
+          {{ isLoading() ? 'Enregistrement…' : (estModification() ? 'Enregistrer les modifications' : 'Enregistrer') }}
         </button>
       </div>
     </form>
