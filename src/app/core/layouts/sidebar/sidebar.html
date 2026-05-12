@@ -19,10 +19,12 @@
   <div class="nav-label">Matériel</div>
   <a class="nav-link" routerLink="/materiel/liste" routerLinkActive="active"
      [routerLinkActiveOptions]="{exact: true}" (click)="onNavClick()">Liste du matériel</a>
-  <a class="nav-link" (click)="onNavClick()" routerLink="/materiel/incident" routerLinkActive="active">
+  <a class="nav-link"  routerLink="/materiel/incident" routerLinkActive="active"
+     [routerLinkActiveOptions]="{exact: true}" (click)="onNavClick()">
     Incidents signalés <span class="nav-badge danger">{{ nbPanneSignalee() }}</span>
   </a>
-
+  <a class="nav-link" routerLink="/materiel/creer" routerLinkActive="active"
+     [routerLinkActiveOptions]="{exact: true}" (click)="onNavClick()">Enregistrer un matériel</a>
   <div class="nav-label">Utilisateurs</div>
   <a class="nav-link" (click)="onNavClick()">Liste des utilisateurs</a>
   <a class="nav-link" (click)="onNavClick()">Gestion des utilisateurs</a>

@@ -1,0 +1,105 @@
+<div class="page-emprunt">
+
+  <div class="page-header">
+    <h1 class="page-title">{{ estModification() ? 'Modifier un matériel' : 'Enregistrer un matériel' }}</h1>
+    <p class="page-subtitle">{{ estModification() ? 'Modifiez les informations du matériel' : 'Remplissez le formulaire pour créer un nouveau matériel' }}</p>
+  </div>
+
+  <div class="form-card">
+
+    <div class="form-card-header">
+      <span class="form-card-title">{{ estModification() ? 'Modifier le matériel' : 'Nouveau matériel' }}</span>
+      <span class="badge-obligatoire">* Champs obligatoires</span>
+    </div>
+
+    <form class="form-body" #materielForm="ngForm" (ngSubmit)="onSubmit(materielForm)">
+
+      <!-- Catégorie -->
+      <div class="field-group">
+        <label class="field-label" for="categorie">
+          CATÉGORIE <span class="asterisque">*</span>
+        </label>
+        <select id="categorie" name="categorie" class="field-select"
+                [ngModel]="categorieModeleId()"
+                (ngModelChange)="categorieModeleChange(+$event)">
+          <option [value]="null" disabled selected>Sélectionner une catégorie…</option>
+          @for (cat of categorieModeleService.listeCategorieModele(); track cat.id) {
+            <option [value]="cat.id">{{ cat.libelle }}</option>
+          }
+        </select>
+        @if (erreurs()['categorieModeleId']) {
+          <p class="field-error">{{ erreurs()['categorieModeleId'] }}</p>
+        }
+      </div>
+
+      <!-- Modèle — affiché uniquement si une catégorie est sélectionnée -->
+      @if (categorieModeleId()) {
+        <div class="field-group">
+          <label class="field-label" for="modele">
+            MODÈLE <span class="asterisque">*</span>
+          </label>
+          <select id="modele" name="modele" class="field-select"
+                  [ngModel]="modeleId()"
+                  (ngModelChange)="modeleId.set(+$event)">
+            <option [value]="null" disabled selected>Sélectionner un modèle…</option>
+            @for (modele of modeleService.listeModeleParCategorie(); track modele.id) {
+              <option [value]="modele.id">{{ modele.libelle }}</option>
+            }
+          </select>
+          @if (erreurs()['modeleId']) {
+            <p class="field-error">{{ erreurs()['modeleId'] }}</p>
+          }
+        </div>
+      }
+
+      <!-- Numéro de série -->
+      <div class="field-group">
+        <label class="field-label" for="numSerie">
+          NUMÉRO DE SÉRIE <span class="asterisque">*</span>
+        </label>
+        <input
+          type="text"
+          id="numSerie"
+          name="numSerie"
+          class="field-input"
+          placeholder="Ex : SN-2024-00142"
+          [ngModel]="numSerie()"
+          (ngModelChange)="numSerie.set($event)">
+        @if (erreurs()['numSerie']) {
+          <p class="field-error">{{ erreurs()['numSerie'] }}</p>
+        }
+      </div>
+
+      <!-- Statut -->
+      <div class="field-group">
+        <label class="field-label" for="statut">
+          STATUT <span class="field-label-optional">— Optionnel</span>
+        </label>
+        <select id="statut" name="statut" class="field-select"
+                [ngModel]="statutMaterielId()"
+                (ngModelChange)="statutMaterielId.set($event === 'null' ? null : +$event)">
+          @for (statut of statutMaterielService.listeStatutMateriel(); track statut.id) {
+            <option [value]="statut.id">{{ statut.libelle }}</option>
+          }
+        </select>
+      </div>
+
+      <hr class="form-divider">
+
+      @if (erreurs()['erreur']) {
+        <p class="field-error field-error--global">{{ erreurs()['erreur'] }}</p>
+      }
+      @if (succes()) {
+        <p class="field-succes">✓ Matériel {{ estModification() ? 'modifié' : 'enregistré' }} avec succès</p>
+      }
+
+      <div class="form-actions">
+        <button type="button" class="btn-annuler" (click)="onAnnuler()">Annuler</button>
+        <button type="submit" class="btn-enregistrer" [disabled]="isLoading()">
+          {{ isLoading() ? 'Enregistrement…' : (estModification() ? 'Enregistrer les modifications' : 'Enregistrer') }}
+        </button>
+      </div>
+
+    </form>
+  </div>
+</div>

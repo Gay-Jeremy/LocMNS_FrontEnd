@@ -5,6 +5,7 @@
   <app-table
     [colonnes]="colonnesIncident"
     [data]="materielService.listeMaterielPanneSignalee()"
+    [actionPlaceholder]="'— Changer le statut —'"
     [tableActions]="statutMaterielService.listeStatutMateriel()"
     (decisionChange)="onDecisionChange($event)"
   />

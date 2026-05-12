@@ -6,6 +6,7 @@
       [colonnes]="colonnesDemande"
       [data]="empruntService.listeDemandeEmprunt()"
       [showNote]="true"
+      [actionPlaceholder]="'— Décision —'"
       [tableActions]="statutEmpruntService.listeStatutEmpruntDecision()"
       (decisionChange)="onDecisionChange($event)"
     />

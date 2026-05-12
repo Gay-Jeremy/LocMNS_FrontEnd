@@ -53,4 +53,16 @@ export class MaterielService {
         )
       );
   }
+
+  obtenirMaterielParId(id: number): Observable<Materiel> {
+    return this.apiService.get<Materiel>(`materiels/${id}`);
+  }
+
+  creerMateriel(dataMateriel: any): Observable<Materiel> {
+    return this.apiService.post<Materiel>('materiels', dataMateriel);
+  }
+
+  modifierMateriel(id: number, payload: any): Observable<any> {
+    return this.apiService.put(`materiels/${id}`, payload);
+  }
 }

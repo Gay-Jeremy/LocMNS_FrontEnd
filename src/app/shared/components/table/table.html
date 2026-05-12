@@ -37,7 +37,7 @@
                 <td>
                   <select [ngModel]="row.action ?? ''"
                           (ngModelChange)="onActionChange(row, $event)">
-                    <option value="" disabled selected>— Décisions —</option>
+                    <option value="" disabled selected>{{ actionPlaceholder() }}</option>
                     @for (action of tableActions(); track action.id) {
                       <option [value]="action.id">{{ action.libelle }}</option>
                     }
