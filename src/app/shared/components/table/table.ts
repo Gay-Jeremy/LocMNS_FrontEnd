@@ -24,6 +24,7 @@ export class Table {
   showAction = input<boolean>(true);
   showEditDelete = input<boolean>(false);
   tableActions = input<any[]>([]);
+  showNote = input<boolean>(false);
 
   decisionChange = output<DecisionEvent>();
   edit           = output<any>();

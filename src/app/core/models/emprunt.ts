@@ -11,6 +11,7 @@ export interface Emprunts  {
   dateRetourReel : string;
   dateProlongation : string;
   dateRetourAnticipe : string;
+  note : string;
   utilisateur : Utilisateur;
   statutEmprunt : StatutEmprunt;
   materiel : Materiel;

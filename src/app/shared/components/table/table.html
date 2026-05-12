@@ -16,11 +16,14 @@
           @for (col of colonnes(); track col.key) {
             <th>{{ col.label }}</th>
           }
+          @if (showEditDelete()) {
+            <th>MODIFIER</th>
+          }
           @if (showAction()) {
             <th>ACTION</th>
           }
-          @if (showEditDelete()) {
-            <th>MODIFIER</th>
+          @if (showNote()) {
+            <th>NOTE</th>
           }
         </tr>
         </thead>
@@ -41,6 +44,7 @@
                   </select>
                 </td>
               }
+
               @if (showEditDelete()) {
                 <td class="td-actions">
                   <button class="btn-icon btn-icon--edit"
@@ -53,6 +57,17 @@
                           (click)="onDelete(row)">
                     🗑️
                   </button>
+                </td>
+              }
+              @if (showNote()) {
+                <td>
+                  @if (row.note) {
+                    <button class="btn-icon btn-icon--note" [title]="row.note">
+                      📋
+                    </button>
+                  } @else {
+                    <span class="table-empty-note">—</span>
+                  }
                 </td>
               }
             </tr>

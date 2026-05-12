@@ -1,6 +1,4 @@
-/* Le .section-card, .loans-table etc. sont définis dans styles.css global */
 
-/* Wrapper scroll horizontal — actif sur mobile */
 .table-scroll {
   width: 100%;
   overflow-x: auto;
@@ -27,13 +25,30 @@
 .btn-icon--edit:hover  { background: rgba(255, 255, 255, 0.08); }
 .btn-icon--delete:hover { background: rgba(230, 57, 70, 0.18); }
 
+.btn-icon--note {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 15px;
+  opacity: 0.6;
+  transition: opacity var(--transition-fast), transform var(--transition-fast);
+}
+
+.btn-icon--note:hover {
+  opacity: 1;
+  transform: scale(1.15);
+}
+
+.table-empty-note {
+  color: var(--color-text-muted);
+  font-size: 13px;
+}
+
 @media (max-width: 768px) {
   .table-scroll {
-    /* Indicateur visuel discret qu'on peut scroller */
     border-radius: 0 0 var(--radius-md) var(--radius-md);
   }
 
-  /* Empêche les cellules de se réduire à rien */
   .loans-table th,
   .loans-table td {
     white-space: nowrap;
