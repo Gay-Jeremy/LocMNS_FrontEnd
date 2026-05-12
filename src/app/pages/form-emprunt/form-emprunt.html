@@ -49,7 +49,6 @@
             <p class="field-error">{{ erreurs()['dateDebut'] }}</p>
           }
         </div>
-
         <div class="field-group">
           <label class="field-label" for="dateFin">
             DATE DE FIN PRÉVUE <span class="asterisque">*</span>
@@ -65,9 +64,10 @@
             <p class="field-error">{{ erreurs()['dateFin'] }}</p>
           }
         </div>
-
       </div>
-
+      @if (erreurDates() && !erreurs()['dateDebut'] && !erreurs()['dateFin']) {
+        <p class="field-error">{{ erreurDates() }}</p>
+      }
       <div class="field-group">
         <label class="field-label" for="categorie">
           CATÉGORIE DE MATÉRIEL <span class="asterisque">*</span>

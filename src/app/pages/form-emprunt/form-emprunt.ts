@@ -31,6 +31,7 @@ export class FormEmprunt implements OnInit {
   dateDebut        = signal<string>('');
   dateFin          = signal<string>('');
   note= signal<string>('');
+  erreurDates = signal<string>('');
 
   erreurs = signal<Record<string, string>>({});
   succes  = signal<boolean>(false);
@@ -72,14 +73,38 @@ export class FormEmprunt implements OnInit {
 
   dateDebutChange(date: string): void {
     this.dateDebut.set(date);
+    this.validerDates();
     this.onRechercherMateriels();
   }
 
   dateFinChange(date: string): void {
     this.dateFin.set(date);
+    this.validerDates();
     this.onRechercherMateriels();
   }
 
+  validerDates(): void {
+    const debut = this.dateDebut();
+    const fin   = this.dateFin();
+    const dateActuelle = new Date().toISOString().split('T')[0];
+
+    if (!debut && !fin) {
+      this.erreurDates.set('');
+      return;
+    }
+
+    if (debut && fin && fin <= debut) {
+      this.erreurDates.set('La date de fin doit être supérieur à la date de début');
+    } else {
+      this.erreurDates.set('');
+    }
+
+    if (debut && debut < dateActuelle ) {
+      this.erreurDates.set('La date de début ne peut pas être dans le passé');
+    } else {
+      this.erreurDates.set('');
+    }
+  }
   categorieModeleChange(id: number): void {
     this.categorieModeleId.set(id);
     this.onRechercherMateriels();
@@ -97,7 +122,7 @@ export class FormEmprunt implements OnInit {
   onSubmit(form: NgForm): void {
     this.erreurs.set({});
     this.succes.set(false);
-    this.isLoading.set(true);
+
 
     const utilisateurId     = this.utilisateurId();
     const materielId        = this.materielId();
@@ -114,7 +139,8 @@ export class FormEmprunt implements OnInit {
       return;
     }
 
-    this.isLoading.set(true)
+    this.isLoading.set(true);
+
 
     const dataEmprunt: EmpruntDto = {
       utilisateurId,
