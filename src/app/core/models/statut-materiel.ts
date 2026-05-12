@@ -1,4 +1,4 @@
 export interface StatutMateriel {
-  id : number;
+  id : number | null;
   libelle : string;
 }

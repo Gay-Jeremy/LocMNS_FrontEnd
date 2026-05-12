@@ -5,6 +5,8 @@
   <app-table
     [colonnes]="colonnesIncident"
     [data]="materielService.listeMaterielPanneSignalee()"
+    [tableActions]="statutMaterielService.listeStatutMateriel()"
+    (decisionChange)="onDecisionChange($event)"
   />
   <div class="quick-actions">
     <h2 class="section-title">Actions rapides</h2>

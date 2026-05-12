@@ -2,7 +2,7 @@ import {computed, inject, Injectable, signal} from '@angular/core';
 import {Materiel} from '../../models/materiel';
 import {ApiService} from '../api/api.service';
 import {Emprunts} from '../../models/emprunt';
-import {tap} from 'rxjs';
+import {Observable, tap} from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -44,5 +44,13 @@ export class MaterielService {
   obtenirListeMaterielPanneSignalee() {
     return this.apiService.get<Materiel[]>('materiels/liste/panne_signalee')
       .pipe(tap((listeMaterielPanneSignalee) => this.listeMaterielPanneSignalee.set(listeMaterielPanneSignalee)))
+  }
+
+  mettreAJourStatut(materielId: number, statutId: number): Observable<any> {
+    return this.apiService.put(`materiels/${materielId}/statut`, { statutId })
+      .pipe(tap(() =>
+          this.obtenirListeMaterielPanneSignalee().subscribe()
+        )
+      );
   }
 }
