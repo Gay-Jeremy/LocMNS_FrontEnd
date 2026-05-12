@@ -904,8 +904,7 @@ h2 {
   .action-btn {
     width: 100%;
     text-align: center;
-    min-height: 50
-    px;           /* Touch target Material minimum 48px */
+    min-height: 50px;           /* Touch target Material minimum 48px */
     padding: 14px 22px;
     font-size: 14px;
     border-radius: var(--radius-md);

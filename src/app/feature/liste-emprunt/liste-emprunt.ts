@@ -17,6 +17,8 @@ export class ListeEmprunt implements OnInit {
   router = inject(Router)
 
   colonnesEmpruntsRecent: ColonneConfig[] = [
+    { key: 'id', label: 'ID' },
+    { key: 'dateCreation', label: 'DATE CREATION' },
     { key: 'utilisateur.nom', label: 'NOM' },
     { key: 'utilisateur.prenom', label: 'PRÉNOM' },
     { key: 'utilisateur.promotion.libelle', label: 'PROMOTION' },

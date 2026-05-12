@@ -19,6 +19,8 @@ import {switchMap} from 'rxjs';
 export class ListeDemande implements OnInit {
 
   colonnesDemande: ColonneConfig[] = [
+    { key: 'id', label: 'ID' },
+    { key: 'dateCreation', label: 'DATE CREATION' },
     { key: 'utilisateur.nom', label: 'NOM' },
     { key: 'utilisateur.prenom', label: 'PRÉNOM' },
     { key: 'utilisateur.promotion.libelle', label: 'PROMOTION' },
