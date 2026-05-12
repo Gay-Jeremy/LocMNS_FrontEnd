@@ -1,23 +1,19 @@
-
 <div class="page-wrapper">
   <div class="title-group">
-    <h2>{{ titre() }}</h2>
+    <h2>Historique des emprunts</h2>
   </div>
-      <app-table
-        [showAction]="false"
-        [showEditDelete]="true"
-        (edit)="onEdit($event)"
-        (delete)="onDelete($event)"
-        [colonnes]="colonnesEmpruntsRecent"
-        [data]="data()"
-      />
+  <app-table
+    [showAction]="false"
+    [showNote]="true"
+    [colonnes]="colonnesHistorique"
+    [data]="empruntService.listeHistoriqueEmprunt()"
+  />
   <div class="quick-actions">
     <h2 class="section-title">Actions rapides</h2>
     <div class="actions-row">
       <button class="action-btn action-btn--primary" routerLink="/enregistrer/emprunt">+ Enregistrer un emprunt</button>
-      <button class="action-btn action-btn--primary" routerLink="/materiel/liste">Voir le matériel</button>
+      <button class="action-btn action-btn--primary" routerLink="/materiel/liste" >Voir le matériel</button>
       <button class="action-btn action-btn--primary">Gérer les utilisateurs</button>
     </div>
   </div>
 </div>
-

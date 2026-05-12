@@ -5,6 +5,7 @@
     <app-table
       [colonnes]="colonnesDemande"
       [data]="empruntService.listeDemandeEmprunt()"
+      [showNote]="true"
       [tableActions]="statutEmpruntService.listeStatutEmpruntDecision()"
       (decisionChange)="onDecisionChange($event)"
     />

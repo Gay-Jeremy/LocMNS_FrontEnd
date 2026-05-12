@@ -1,12 +1,12 @@
 import { Routes } from '@angular/router';
-import { Dashboard } from './feature/dashboard/dashboard';
-import {FormEmprunt} from './feature/form-emprunt/form-emprunt';
+import { Dashboard } from './pages/dashboard/dashboard';
+import {FormEmprunt} from './pages/form-emprunt/form-emprunt';
 import {Table} from './shared/components/table/table';
-import {ListeEmprunt} from './feature/liste-emprunt/liste-emprunt';
-import {ListeMateriel} from './feature/liste-materiel/liste-materiel';
-import {ListeDemande} from './feature/liste-demande/liste-demande';
-import {HistoriqueEmprunt} from './feature/historique-emprunt/historique-emprunt';
-import {ListeIncident} from './feature/liste-incident/liste-incident';
+import {ListeEmprunt} from './pages/liste-emprunt/liste-emprunt';
+import {ListeMateriel} from './pages/liste-materiel/liste-materiel';
+import {ListeDemande} from './pages/liste-demande/liste-demande';
+import {HistoriqueEmprunt} from './pages/historique-emprunt/historique-emprunt';
+import {ListeIncident} from './pages/liste-incident/liste-incident';
 
 export const routes: Routes = [
   { path: '', component: Dashboard},

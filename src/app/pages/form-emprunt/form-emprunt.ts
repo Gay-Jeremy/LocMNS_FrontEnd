@@ -30,6 +30,7 @@ export class FormEmprunt implements OnInit {
   materielId       = signal<number | null>(null);
   dateDebut        = signal<string>('');
   dateFin          = signal<string>('');
+  note= signal<string>('');
 
   erreurs = signal<Record<string, string>>({});
   succes  = signal<boolean>(false);
@@ -113,11 +114,14 @@ export class FormEmprunt implements OnInit {
       return;
     }
 
+    this.isLoading.set(true)
+
     const dataEmprunt: EmpruntDto = {
       utilisateurId,
       materielId,
       dateDebut: this.dateDebut(),
-      dateFin:   this.dateFin()
+      dateFin:   this.dateFin(),
+      note: this.note()
     };
 
     if (this.estModification()) {

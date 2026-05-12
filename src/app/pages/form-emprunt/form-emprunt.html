@@ -121,11 +121,13 @@
           NOTES <span class="field-label-optional">— Optionnel</span>
         </label>
         <textarea
-          id="notes"
-          name="notes"
+          id="note"
+          name="note"
           class="field-textarea"
           rows="4"
-          placeholder="Ajouter une remarque ou instruction particulière…"></textarea>
+          placeholder="Ajouter une remarque ou instruction particulière…"
+          [ngModel]="note()"
+          (ngModelChange)="note.set($event)"></textarea>
       </div>
 
       <hr class="form-divider">

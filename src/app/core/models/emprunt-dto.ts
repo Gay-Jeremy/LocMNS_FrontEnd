@@ -3,4 +3,5 @@ export interface EmpruntDto {
   utilisateurId: number;
   dateDebut: string;
   dateFin: string;
+  note: string;
 }
