@@ -594,8 +594,7 @@ h2 {
 
 /* Inputs sombres — cohérents avec le fond violet */
 .field-input,
-.field-select,
-.field-textarea {
+.field-select {
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid var(--color-border-strong);
   border-radius: var(--radius-sm);
@@ -609,6 +608,23 @@ h2 {
   outline: none;
   appearance: none;
   -webkit-appearance: none;
+}
+
+.field-textarea {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-sm);
+  color: var(--color-text-primary);
+  font-family: inherit;
+  font-size: 13.5px;
+  padding: 12px 14px;
+  width: 100%;
+  height: auto;
+  min-height: 88px;
+  resize: vertical;
+  line-height: 1.6;
+  transition: border-color var(--transition-base), box-shadow var(--transition-base), background var(--transition-base);
+  outline: none;
 }
 
 .field-input::placeholder,
