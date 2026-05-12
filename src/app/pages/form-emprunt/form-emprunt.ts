@@ -55,6 +55,7 @@ export class FormEmprunt implements OnInit {
       this.dateDebut.set(emprunt.dateDebut);
       this.dateFin.set(emprunt.dateFin);
       this.categorieModeleId.set(emprunt.materiel.modele.categorieModele.id);
+      this.note.set(emprunt.note)
 
       this.materielService.obtenirListeMaterielsDisponiblePourPeridodeParIDCategorieModele(
         emprunt.dateDebut,
@@ -88,22 +89,26 @@ export class FormEmprunt implements OnInit {
     const fin   = this.dateFin();
     const dateActuelle = new Date().toISOString().split('T')[0];
 
-    if (!debut && !fin) {
-      this.erreurDates.set('');
+    // Cas 1 — date de début dans le passé
+    if (debut && debut < dateActuelle) {
+      this.erreurDates.set('La date de début ne peut pas être dans le passé');
+      return; // ← on sort, inutile de vérifier le reste
+    }
+
+    // Cas 2 — date de fin dans le passé
+    if (fin && fin < dateActuelle) {
+      this.erreurDates.set('La date de fin ne peut pas être dans le passé');
       return;
     }
 
+    // Cas 3 — date de fin <= date de début
     if (debut && fin && fin <= debut) {
-      this.erreurDates.set('La date de fin doit être supérieur à la date de début');
-    } else {
-      this.erreurDates.set('');
+      this.erreurDates.set('La date de fin doit être supérieure à la date de début');
+      return;
     }
 
-    if (debut && debut < dateActuelle ) {
-      this.erreurDates.set('La date de début ne peut pas être dans le passé');
-    } else {
-      this.erreurDates.set('');
-    }
+    // Aucune erreur
+    this.erreurDates.set('');
   }
   categorieModeleChange(id: number): void {
     this.categorieModeleId.set(id);

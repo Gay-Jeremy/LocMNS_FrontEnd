@@ -65,7 +65,7 @@
           }
         </div>
       </div>
-      @if (erreurDates() && !erreurs()['dateDebut'] && !erreurs()['dateFin']) {
+      @if (erreurDates()) {
         <p class="field-error">{{ erreurDates() }}</p>
       }
       <div class="field-group">
