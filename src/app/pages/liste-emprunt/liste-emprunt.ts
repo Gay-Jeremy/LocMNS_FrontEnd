@@ -33,6 +33,7 @@ export class ListeEmprunt implements OnInit {
   route = inject(ActivatedRoute);
 
   filtre = signal<string>('actif');
+  empruntASupprimer = signal<any | null>(null);
 
   titre = computed(() =>
     this.filtre() === 'retard' ? 'Emprunts en retard' : 'Emprunts actif'
@@ -61,15 +62,21 @@ export class ListeEmprunt implements OnInit {
   }
 
   onDelete(row: any): void {
-    if (confirm(`Supprimer l'emprunt #${row.id} ?`)) {
-      this.empruntService.supprimerEmprunt(row.id).subscribe(() => {
-        const filtre = this.filtre();
-        if (filtre === 'retard') {
-          this.empruntService.obtenirEmpruntEnRetard().subscribe();
-        } else {
-          this.empruntService.obtenirListeEmpruntsActifs().subscribe();
-        }
-      });
-    }
+    this.empruntASupprimer.set(row);
+  }
+
+  confirmerSuppression(): void {
+    const row = this.empruntASupprimer();
+    if (!row) return;
+    this.empruntService.supprimerEmprunt(row.id).subscribe(() => {
+      this.empruntASupprimer.set(null);
+      this.filtre() === 'retard'
+        ? this.empruntService.obtenirEmpruntEnRetard().subscribe()
+        : this.empruntService.obtenirListeEmpruntsActifs().subscribe();
+    });
+  }
+
+  annulerSuppression(): void {
+    this.empruntASupprimer.set(null);
   }
 }
