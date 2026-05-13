@@ -49,7 +49,7 @@
 
   /* Ombres */
   --shadow-card: 0 2px 12px rgba(0, 0, 0, 0.35), 0 0 0 1px var(--color-border);
-  --shadow-glow: 0 0 20px rgba(255, 93, 45, 0.15);
+  --shadow-glow: 0 0 20px rgba(255, 93, 45, 0.43);
 
   /* Transitions */
   --transition-fast: 0.12s ease;
@@ -381,12 +381,12 @@ h2 {
 
 .loans-table th {
   color: var(--color-text-hint);
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 600;
   letter-spacing: 1px;
   text-transform: uppercase;
   padding: 0 14px 12px;
-  text-align: left;
+  text-align: center;
 }
 
 .loans-table tbody tr {
@@ -401,6 +401,7 @@ h2 {
   padding: 13px 14px;
   color: var(--color-text-secondary);
   vertical-align: middle;
+  text-align: center;
 }
 
 .user-name {
