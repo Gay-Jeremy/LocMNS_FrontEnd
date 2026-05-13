@@ -21,6 +21,7 @@ export class ListeIncident implements OnInit{
 
   colonnesIncident: ColonneConfig[] = [
     { key: 'modele.categorieModele.libelle', label: 'CATEGORIE' },
+    { key: 'modele.libelle', label: 'MODELE' },
     { key: 'numSerie', label: 'NUM SÉRIE' },
     { key: 'statutMateriel.libelle', label: 'STATUT' },
   ];
