@@ -54,19 +54,41 @@
       </div>
 
       <!-- Modèle — affiché uniquement si une catégorie est sélectionnée -->
-      @if (categorieModeleId()) {
+      @if (categorieModeleId() && categorieModeleId() !== 'new') {
         <div class="field-group">
           <label class="field-label" for="modele">
             MODÈLE <span class="asterisque">*</span>
           </label>
           <select id="modele" name="modele" class="field-select"
                   [ngModel]="modeleId()"
-                  (ngModelChange)="modeleId.set(+$event)">
+                  (ngModelChange)="modeleChange($event)">
             <option [value]="null" disabled selected>Sélectionner un modèle…</option>
             @for (modele of modeleService.listeModeleParCategorie(); track modele.id) {
               <option [value]="modele.id">{{ modele.libelle }}</option>
             }
+            <option [value]="'new'">+ Nouveau modèle</option>
           </select>
+
+          @if (modeleId() === 'new') {
+            <div class="field-group" style="margin-top: 10px;">
+              <label class="field-label">NOUVEAU MODÈLE</label>
+              <div style="display: flex; gap: 8px;">
+                <input type="text"
+                       name="newModele"
+                       class="field-input"
+                       placeholder="Nom du nouveau modèle"
+                       [ngModel]="newModeleLibelle()"
+                       (ngModelChange)="newModeleLibelle.set($event)">
+                <button type="button"
+                        class="btn-enregistrer"
+                        style="white-space: nowrap; padding: 0 16px;"
+                        (click)="creerNouveauModele()">
+                  Créer
+                </button>
+              </div>
+            </div>
+          }
+
           @if (erreurs()['modeleId']) {
             <p class="field-error">{{ erreurs()['modeleId'] }}</p>
           }

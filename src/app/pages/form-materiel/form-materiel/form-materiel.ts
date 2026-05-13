@@ -28,10 +28,11 @@ export class FormMateriel implements OnInit {
 
   // Champs
   categorieModeleId  = signal<number | null | 'new'>(null);
-  modeleId           = signal<number | null>(null);
+  modeleId           = signal<number | null | 'new'>(null);
   numSerie           = signal<string>('');
   statutMaterielId   = signal<number | null>(null);
   newCategorieLibelle = signal<string>('');
+  newModeleLibelle = signal<string>('');
 
   erreurs   = signal<Record<string, string>>({});
   succes    = signal<boolean>(false);
@@ -64,6 +65,9 @@ export class FormMateriel implements OnInit {
     });
   }
 
+
+
+
   categorieModeleChange(id: any): void {
     if (id === 'new') {
       this.categorieModeleId.set('new'); // ← affiche le champ immédiatement
@@ -91,8 +95,53 @@ export class FormMateriel implements OnInit {
           this.newCategorieLibelle.set('');
           this.modeleService.obtenirListeModeleParCategorie(created.id).subscribe();
         },
-        error: () => this.erreurs.set({ categorieModeleId: 'Erreur lors de la création' })
+        error: (err) => {
+          const erreurBack = err.error;
+          if (typeof erreurBack === 'object' && erreurBack !== null) {
+            this.erreurs.set({ categorieModeleId: erreurBack['erreur'] });
+          } else {
+            this.erreurs.set({ categorieModeleId: 'Erreur lors de la création' });
+          }
+        }
       });
+  }
+
+  modeleChange(id: any): void {
+    if (id === 'new') {
+      this.modeleId.set('new');
+      return;
+    }
+    this.modeleId.set(+id);
+  }
+
+  creerNouveauModele(): void {
+    const categorieId = this.categorieModeleId();
+
+    if (!this.newModeleLibelle().trim()) {
+      this.erreurs.set({ modeleId: 'Le libellé est obligatoire' });
+      return;
+    }
+
+    if (typeof categorieId !== 'number') return;
+
+    this.modeleService.creerModele({
+      libelle: this.newModeleLibelle(),
+      categorieModeleId: categorieId
+    }).subscribe({
+      next: (created) => {
+        this.modeleService.obtenirListeModeleParCategorie(categorieId).subscribe();
+        this.modeleId.set(created.id);
+        this.newModeleLibelle.set('');
+      },
+      error: (err) => {
+        const erreurBack = err.error;
+        if (typeof erreurBack === 'object' && erreurBack !== null) {
+          this.erreurs.set({ modeleId: erreurBack['erreur'] });
+        } else {
+          this.erreurs.set({ modeleId: 'Erreur lors de la création' });
+        }
+      }
+    });
   }
 
   onSubmit(form: NgForm): void {
