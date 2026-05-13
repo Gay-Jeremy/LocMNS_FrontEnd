@@ -105,6 +105,7 @@ export class FormMateriel implements OnInit {
         this.isLoading.set(false);
         this.succes.set(true);
         if (this.estModification()) {
+          console.log(this.estModification)
           setTimeout(() => this.router.navigate(['/materiel/liste']), 1500);
         } else {
           form.reset();

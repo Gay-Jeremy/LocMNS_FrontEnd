@@ -3,6 +3,7 @@ import {Materiel} from '../../models/materiel';
 import {ApiService} from '../api/api.service';
 import {Emprunts} from '../../models/emprunt';
 import {Observable, tap} from 'rxjs';
+import {MaterielDto} from '../../models/materiel-dto';
 
 @Injectable({
   providedIn: 'root',
@@ -58,11 +59,11 @@ export class MaterielService {
     return this.apiService.get<Materiel>(`materiels/${id}`);
   }
 
-  creerMateriel(dataMateriel: any): Observable<Materiel> {
-    return this.apiService.post<Materiel>('materiels', dataMateriel);
+  creerMateriel(dataMateriel: MaterielDto): Observable<MaterielDto> {
+    return this.apiService.post<MaterielDto>('materiels', dataMateriel);
   }
 
-  modifierMateriel(id: number, payload: any): Observable<any> {
-    return this.apiService.put(`materiels/${id}`, payload);
+  modifierMateriel(id: number, dataMateriel: MaterielDto): Observable<MaterielDto> {
+    return this.apiService.put(`materiels/${id}`, dataMateriel);
   }
 }
