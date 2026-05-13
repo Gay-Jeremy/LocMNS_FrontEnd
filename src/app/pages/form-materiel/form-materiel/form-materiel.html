@@ -21,12 +21,33 @@
         </label>
         <select id="categorie" name="categorie" class="field-select"
                 [ngModel]="categorieModeleId()"
-                (ngModelChange)="categorieModeleChange(+$event)">
+                (ngModelChange)="categorieModeleChange($event)">
           <option [value]="null" disabled selected>Sélectionner une catégorie…</option>
           @for (cat of categorieModeleService.listeCategorieModele(); track cat.id) {
             <option [value]="cat.id">{{ cat.libelle }}</option>
           }
+          <option [value]="'new'">+ Nouvelle catégorie</option>
         </select>
+        @if (categorieModeleId() === 'new') {
+          <div class="field-group" style="margin-top: 10px;">
+            <label class="field-label">NOUVELLE CATÉGORIE</label>
+            <div style="display: flex; gap: 8px;">
+              <input type="text"
+                     name="newCategorie"
+                     class="field-input"
+                     placeholder="Nom de la nouvelle catégorie"
+                     [ngModel]="newCategorieLibelle()"
+                     (ngModelChange)="newCategorieLibelle.set($event)">
+              <button type="button"
+                      class="btn-enregistrer"
+                      style="white-space: nowrap; padding: 0 16px;"
+                      (click)="creerNouvelleCategorie()">
+                Créer
+              </button>
+            </div>
+          </div>
+        }
+
         @if (erreurs()['categorieModeleId']) {
           <p class="field-error">{{ erreurs()['categorieModeleId'] }}</p>
         }

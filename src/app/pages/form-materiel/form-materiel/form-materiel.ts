@@ -27,10 +27,11 @@ export class FormMateriel implements OnInit {
   estModification = computed(() => this.materielId() !== null);
 
   // Champs
-  categorieModeleId  = signal<number | null>(null);
+  categorieModeleId  = signal<number | null | 'new'>(null);
   modeleId           = signal<number | null>(null);
   numSerie           = signal<string>('');
   statutMaterielId   = signal<number | null>(null);
+  newCategorieLibelle = signal<string>('');
 
   erreurs   = signal<Record<string, string>>({});
   succes    = signal<boolean>(false);
@@ -63,10 +64,35 @@ export class FormMateriel implements OnInit {
     });
   }
 
-  categorieModeleChange(id: number): void {
-    this.categorieModeleId.set(id);
-    this.modeleId.set(null); // reset le modèle quand la catégorie change
-    this.modeleService.obtenirListeModeleParCategorie(id).subscribe();
+  categorieModeleChange(id: any): void {
+    if (id === 'new') {
+      this.categorieModeleId.set('new'); // ← affiche le champ immédiatement
+      this.modeleId.set(null);
+      return; // ← on s'arrête là, pas de validation ici
+    }
+
+    this.categorieModeleId.set(+id);
+    this.modeleId.set(null);
+    this.modeleService.obtenirListeModeleParCategorie(+id).subscribe();
+  }
+
+// Nouvelle méthode appelée par un bouton dédié
+  creerNouvelleCategorie(): void {
+    if (!this.newCategorieLibelle().trim()) {
+      this.erreurs.set({ categorieModeleId: 'Le libellé est obligatoire' });
+      return;
+    }
+
+    this.categorieModeleService.creerCategorieModele({ libelle: this.newCategorieLibelle() })
+      .subscribe({
+        next: (created) => {
+          this.categorieModeleService.obtenirListeCategorieModele().subscribe();
+          this.categorieModeleId.set(created.id); // ← sélectionne la nouvelle catégorie
+          this.newCategorieLibelle.set('');
+          this.modeleService.obtenirListeModeleParCategorie(created.id).subscribe();
+        },
+        error: () => this.erreurs.set({ categorieModeleId: 'Erreur lors de la création' })
+      });
   }
 
   onSubmit(form: NgForm): void {
@@ -76,6 +102,7 @@ export class FormMateriel implements OnInit {
     const categorieModeleId = this.categorieModeleId();
     const modeleId          = this.modeleId();
     const numSerie          = this.numSerie();
+
 
     if (!categorieModeleId || !modeleId || !numSerie) {
       this.erreurs.set({
