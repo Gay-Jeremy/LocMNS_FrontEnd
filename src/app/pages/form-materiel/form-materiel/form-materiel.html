@@ -23,14 +23,15 @@
                 [ngModel]="categorieModeleId()"
                 (ngModelChange)="categorieModeleChange($event)">
           <option [value]="null" disabled selected>Sélectionner une catégorie…</option>
+          <option [value]="'new'">+ Nouvelle catégorie</option>
           @for (cat of categorieModeleService.listeCategorieModele(); track cat.id) {
             <option [value]="cat.id">{{ cat.libelle }}</option>
           }
-          <option [value]="'new'">+ Nouvelle catégorie</option>
+
         </select>
         @if (categorieModeleId() === 'new') {
           <div class="field-group" style="margin-top: 10px;">
-            <label class="field-label">NOUVELLE CATÉGORIE</label>
+            <label class="field-label">NOUVELLE CATÉGORIE<span class="asterisque">*</span></label>
             <div style="display: flex; gap: 8px;">
               <input type="text"
                      name="newCategorie"
@@ -63,15 +64,16 @@
                   [ngModel]="modeleId()"
                   (ngModelChange)="modeleChange($event)">
             <option [value]="null" disabled selected>Sélectionner un modèle…</option>
+            <option [value]="'new'">+ Nouveau modèle</option>
             @for (modele of modeleService.listeModeleParCategorie(); track modele.id) {
               <option [value]="modele.id">{{ modele.libelle }}</option>
             }
-            <option [value]="'new'">+ Nouveau modèle</option>
+
           </select>
 
           @if (modeleId() === 'new') {
             <div class="field-group" style="margin-top: 10px;">
-              <label class="field-label">NOUVEAU MODÈLE</label>
+              <label class="field-label">NOUVEAU MODÈLE<span class="asterisque">*</span></label>
               <div style="display: flex; gap: 8px;">
                 <input type="text"
                        name="newModele"
