@@ -15,6 +15,8 @@ export class Sidebar implements OnInit {
   authService = inject(Auth)
   router = inject(Router)
 
+  @Output() closeMenu = new EventEmitter<void>();
+
   private readonly empruntService = inject(EmpruntService);
   private readonly materielService = inject(MaterielService);
 
@@ -29,6 +31,6 @@ export class Sidebar implements OnInit {
   }
 
   onNavClick() {
-
+    this.closeMenu.closed
   }
 }
