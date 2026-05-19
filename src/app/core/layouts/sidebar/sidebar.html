@@ -31,5 +31,6 @@
 
   <div class="nav-label">Compte</div>
   <a class="nav-link" (click)="onNavClick()">Mon profil</a>
-  <a class="nav-link" (click)="onNavClick()">Déconnexion</a>
+  <a class="nav-link" routerLink="" routerLinkActive="active"
+     [routerLinkActiveOptions]="{exact: true}" (click)="onNavClick()">Déconnexion</a>
 </aside>

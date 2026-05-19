@@ -1,7 +1,8 @@
 import { Component, inject, OnInit, Output, EventEmitter } from '@angular/core';
 import { EmpruntService } from '../../services/emprunt/emprunt.service';
-import { RouterLink, RouterLinkActive } from '@angular/router';
+import {Router, RouterLink, RouterLinkActive} from '@angular/router';
 import {MaterielService} from '../../services/materiel/materiel.service';
+import {Auth} from '../../services/authentification/auth';
 
 @Component({
   selector: 'app-sidebar',
@@ -10,7 +11,9 @@ import {MaterielService} from '../../services/materiel/materiel.service';
   styleUrl: './sidebar.css',
 })
 export class Sidebar implements OnInit {
-  @Output() closeMenu = new EventEmitter<void>();
+
+  authService = inject(Auth)
+  router = inject(Router)
 
   private readonly empruntService = inject(EmpruntService);
   private readonly materielService = inject(MaterielService);
@@ -26,6 +29,6 @@ export class Sidebar implements OnInit {
   }
 
   onNavClick() {
-    this.closeMenu.emit();
+
   }
 }

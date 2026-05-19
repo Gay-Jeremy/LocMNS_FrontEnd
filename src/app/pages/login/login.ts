@@ -1,6 +1,7 @@
 import { Component, inject, ChangeDetectorRef } from '@angular/core';
 import { FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
-import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
+import { Auth } from '../../core/services/authentification/auth';
 
 @Component({
   selector: 'app-login',
@@ -11,9 +12,10 @@ import { HttpClient } from '@angular/common/http';
 })
 export class LoginComponent {
 
+  authService = inject(Auth);
   formBuilder = inject(FormBuilder);
-  httpClient = inject(HttpClient);
   cdr = inject(ChangeDetectorRef);
+  router = inject(Router);
 
   loginError: string | null = null;
   loginSuccess: string | null = null;
@@ -28,21 +30,19 @@ export class LoginComponent {
     this.loginSuccess = null;
 
     if (this.formulaire.valid) {
-      this.httpClient.post(
-        'http://localhost:8080/login',
-        this.formulaire.value,
-        { responseType: 'text' }
-      ).subscribe({
-        next: (jwt) => {
-          localStorage.setItem('jwt', jwt);
-          this.loginSuccess = 'Connexion réussie !';
-          this.cdr.detectChanges();
-        },
-        error: () => {
-          this.loginError = 'Mauvais login / mot de passe';
-          this.cdr.detectChanges();
-        }
-      });
+      this.authService
+        .login(this.formulaire.value as { email: string; password: string })
+        .subscribe({
+          next: (jwt) => {
+            this.loginSuccess = 'Connexion réussie !';
+            this.cdr.detectChanges();
+            setTimeout(() => this.router.navigate(['/accueil']), 1500);
+          },
+          error: () => {
+            this.loginError = 'Mauvais login / mot de passe';
+            this.cdr.detectChanges();
+          }
+        });
     } else {
       this.formulaire.markAllAsTouched();
     }
