@@ -41,7 +41,7 @@ export class Dashboard implements OnInit {
     { nomLabel: 'MATÉRIEL', cptValeur: this.materielService.nbMateriel(), btnLabel: 'Voir le matériel', route: '/materiel/liste'},
     { nomLabel: 'EMPRUNT ACTIF', cptValeur: this.empruntService.nbEmpruntActif(), btnLabel: 'Voir les emprunts', route: '/emprunt/liste' },
     { nomLabel: 'DEMANDE EN COURS', cptValeur: this.empruntService.nbDemandeEmprunt(), btnLabel: 'Voir les demandes', route: '/demande/liste' },
-    { nomLabel: 'INCIDENT SIGNALÉ', cptValeur: this.materielService.nbMaterielPanneSignalee(), btnLabel: 'Voir les incidents', route: 'materiel/incident' },
+    { nomLabel: 'INCIDENT SIGNALÉ', cptValeur: this.materielService.nbMaterielPanneSignalee(), btnLabel: 'Voir les incidents', route: '/materiel/incident' },
     { nomLabel: 'RETARD EMPRUNT', cptValeur: this.empruntService.nbRetardEmprunt(), btnLabel: 'Voir les retards', route: '/emprunt/liste', queryParams: { filtre: 'retard' } },
   ])
 

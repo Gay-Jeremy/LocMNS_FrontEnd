@@ -9,7 +9,8 @@ import { ListeIncident } from './pages/liste-incident/liste-incident';
 import { FormMateriel } from './pages/form-materiel/form-materiel/form-materiel';
 import { LoginComponent } from './pages/login/login';
 import { LayoutComponent } from './shared/components/layout/layout-component';
-import {userGuard} from './guards/user-guard';
+import {adminGuard} from './guards/admin-guard';
+import {utilisateurGuard} from './guards/utilisateur-guard';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -18,13 +19,13 @@ export const routes: Routes = [
     path: '',
     component: LayoutComponent,
     children: [
-      { path: 'accueil', component: Dashboard },
-      { path: 'enregistrer/emprunt', component: FormEmprunt },
-      { path: 'enregistrer/emprunt/:id', component: FormEmprunt },
-      { path: 'emprunt/liste', component: ListeEmprunt },
-      { path: 'materiel/liste', component: ListeMateriel },
-      { path: 'materiel/creer', component: FormMateriel },
-      { path: 'materiel/modifier/:id', component: FormMateriel },
+      { path: 'accueil', component: Dashboard, canActivate: [utilisateurGuard] },
+      { path: 'enregistrer/emprunt', component: FormEmprunt, canActivate: [utilisateurGuard] },
+      { path: 'enregistrer/emprunt/:id', component: FormEmprunt, canActivate: [utilisateurGuard] },
+      { path: 'emprunt/liste', component: ListeEmprunt, canActivate: [utilisateurGuard] },
+      { path: 'materiel/liste', component: ListeMateriel, canActivate: [utilisateurGuard] },
+      { path: 'materiel/creer', component: FormMateriel, canActivate: [adminGuard] },
+      { path: 'materiel/modifier/:id', component: FormMateriel, canActivate: [adminGuard] },
       { path: 'demande/liste', component: ListeDemande },
       { path: 'historique/emprunt', component: HistoriqueEmprunt },
       { path: 'materiel/incident', component: ListeIncident },

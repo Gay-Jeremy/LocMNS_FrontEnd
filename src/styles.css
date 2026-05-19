@@ -56,6 +56,31 @@
   --transition-base: 0.2s ease;
 }
 
+/* Toasts ngx-toastr — harmonisation avec la charte */
+#toast-container > .ngx-toastr {
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-card);
+  font-family: inherit;
+  font-size: 14px;
+}
+
+#toast-container > .toast-success {
+  background-color: var(--color-success);
+}
+
+#toast-container > .toast-error {
+  background-color: var(--color-danger);
+}
+
+#toast-container > .toast-warning {
+  background-color: var(--color-warn);
+  color: #1c1c1e;
+}
+
+#toast-container > .toast-info {
+  background-color: var(--color-violet);
+}
+
 /* =============================================
    RESET
    ============================================= */
