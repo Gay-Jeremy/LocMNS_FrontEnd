@@ -12,22 +12,25 @@ import { LayoutComponent } from './shared/components/layout/layout-component';
 import {userGuard} from './guards/user-guard';
 
 export const routes: Routes = [
-  { path: '', component: LoginComponent },
+  { path: 'login', component: LoginComponent },
 
   {
-    path: 'accueil',
+    path: '',
     component: LayoutComponent,
     children: [
-      { path: '', component: Dashboard },
+      { path: 'accueil', component: Dashboard },
       { path: 'enregistrer/emprunt', component: FormEmprunt },
       { path: 'enregistrer/emprunt/:id', component: FormEmprunt },
       { path: 'emprunt/liste', component: ListeEmprunt },
       { path: 'materiel/liste', component: ListeMateriel },
-      { path: 'materiel/creer', component: FormMateriel, canActivate:[userGuard] },
+      { path: 'materiel/creer', component: FormMateriel },
       { path: 'materiel/modifier/:id', component: FormMateriel },
       { path: 'demande/liste', component: ListeDemande },
       { path: 'historique/emprunt', component: HistoriqueEmprunt },
       { path: 'materiel/incident', component: ListeIncident },
-    ], canActivate:[userGuard]
-  }
+      { path: '**', redirectTo: '' },
+    ]
+  },
+
+  { path: '**', redirectTo: 'login' },
 ];

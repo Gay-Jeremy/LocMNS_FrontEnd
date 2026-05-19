@@ -31,6 +31,6 @@ export class Sidebar implements OnInit {
   }
 
   onNavClick() {
-    this.closeMenu.closed
+    this.closeMenu.emit();
   }
 }

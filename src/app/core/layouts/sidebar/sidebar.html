@@ -1,6 +1,6 @@
 <aside>
   <div class="nav-label">Tableau de bord</div>
-  <a class="nav-link" routerLink="" routerLinkActive="active"
+  <a class="nav-link" routerLink="/accueil" routerLinkActive="active"
      [routerLinkActiveOptions]="{exact: true}" (click)="onNavClick()">Vue d'ensemble</a>
 
   <div class="nav-label">Emprunts</div>
@@ -31,6 +31,6 @@
 
   <div class="nav-label">Compte</div>
   <a class="nav-link" (click)="onNavClick()">Mon profil</a>
-  <a class="nav-link" routerLink="" routerLinkActive="active"
+  <a class="nav-link" routerLink="/login" routerLinkActive="active"
      [routerLinkActiveOptions]="{exact: true}" (click)="onNavClick()">Déconnexion</a>
 </aside>
