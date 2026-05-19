@@ -8,6 +8,7 @@ import {ListeDemande} from './pages/liste-demande/liste-demande';
 import {HistoriqueEmprunt} from './pages/historique-emprunt/historique-emprunt';
 import {ListeIncident} from './pages/liste-incident/liste-incident';
 import {FormMateriel} from './pages/form-materiel/form-materiel/form-materiel';
+import {LoginComponent} from './pages/login/login';
 
 export const routes: Routes = [
   { path: '', component: Dashboard},
@@ -20,6 +21,7 @@ export const routes: Routes = [
   { path : 'demande/liste', component : ListeDemande},
   { path : 'historique/emprunt', component : HistoriqueEmprunt},
   { path : 'materiel/incident', component : ListeIncident},
+  { path : 'login', component : LoginComponent},
 
 
 ];

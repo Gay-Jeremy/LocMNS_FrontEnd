@@ -1,0 +1,65 @@
+<div class="page-wrapper">
+  <div class="title-group">
+    <h2>Connexion</h2>
+    <span class="subtitle">Accédez à votre espace LocMns</span>
+  </div>
+
+  <div class="form-card">
+    <div class="form-card-header">
+      <span class="form-card-title">Identifiants</span>
+      <span class="badge-obligatoire">Champs obligatoires</span>
+    </div>
+
+    <form class="form-body" [formGroup]="formulaire" (ngSubmit)="onLogin()">
+
+      <div class="field-group">
+        <label class="field-label">
+          Email <span class="asterisque">*</span>
+        </label>
+        <input
+          class="field-input"
+          type="email"
+          placeholder="Ex. john.doe@gmail.com"
+          formControlName="email"
+        />
+        @if (formulaire.get('email')?.touched && formulaire.get('email')?.hasError('email')) {
+          <span class="field-error">Doit être une adresse email valide</span>
+        } @else if (formulaire.get('email')?.touched && formulaire.get('email')?.hasError('required')) {
+          <span class="field-error">Le champ est obligatoire</span>
+        }
+      </div>
+
+      <div class="field-group">
+        <label class="field-label">
+          Mot de passe <span class="asterisque">*</span>
+        </label>
+        <input
+          class="field-input"
+          type="password"
+          placeholder="••••••••"
+          formControlName="password"
+        />
+        @if (formulaire.get('password')?.touched && formulaire.get('password')?.hasError('required')) {
+          <span class="field-error">Le champ est obligatoire</span>
+        }
+      </div>
+
+      @if (loginError) {
+        <div class="field-error--global">{{ loginError }}</div>
+      }
+      @if (loginSuccess) {
+        <div class="field-succes">{{ loginSuccess }}</div>
+      }
+
+      <hr class="form-divider" />
+
+      <div class="form-actions">
+        <span></span>
+        <button class="btn-enregistrer" type="submit">
+          Se connecter
+        </button>
+      </div>
+
+    </form>
+  </div>
+</div>
