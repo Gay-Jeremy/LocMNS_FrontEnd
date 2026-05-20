@@ -1,6 +1,10 @@
 <div class="page-wrapper">
   <div class="title-group">
-    <h2>Liste du Materiel</h2>
+    @if(authService.isAdmin()){
+      <h2>Liste du Materiel</h2>
+    } @else {
+      <h2>Liste du Materiel Emprunté </h2>
+    }
   </div>
   <app-table
     [colonnes]="colonnesMateriel"

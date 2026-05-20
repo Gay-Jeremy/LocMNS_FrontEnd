@@ -12,7 +12,7 @@
     </div>
   </div>
   <div class="header-right">
-    <span class="badge-admin">Admin</span>
-    <div class="avatar">JD</div>
+    <span class="badge-admin">{{ authService.jwtInfo()?.role }}</span>
+    <div class="avatar">{{ authService.jwtInfo()?.nom?.[0] }} {{ authService.jwtInfo()?.prenom?.[0]}}</div>
   </div>
 </header>
