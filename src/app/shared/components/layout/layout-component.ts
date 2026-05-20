@@ -10,10 +10,9 @@ import {Sidebar} from '../../../core/layouts/sidebar/sidebar';
   standalone: true,
   imports: [RouterOutlet, Footer, Header, Sidebar, Header, Sidebar, Footer],
   template: `
-    <!-- colle ici le contenu actuel de ton app.component.html -->
+
     <app-header (burgerClick)="toggleSidebar()"></app-header>
 
-    <!-- Overlay sombre derrière la sidebar sur mobile -->
     <div class="sidebar-overlay" [class.open]="sidebarOpen" (click)="closeSidebar()"></div>
 
     <div class="shell">
