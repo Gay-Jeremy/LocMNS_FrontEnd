@@ -6,6 +6,7 @@ import {MaterielService} from '../../core/services/materiel/materiel.service';
 import {UtilisateurService} from '../../core/services/utilisateur/utilisateur.service';
 import {CategorieModeleService} from '../../core/services/categorie-modele/categorie-modele.service';
 import {EmpruntDto} from '../../core/models/emprunt-dto';
+import {Auth} from '../../core/services/authentification/auth';
 
 @Component({
   selector: 'app-form-emprunt',
@@ -21,6 +22,7 @@ export class FormEmprunt implements OnInit {
   empruntService        = inject(EmpruntService);
   route                 = inject(ActivatedRoute);
   router                = inject(Router);
+  authService = inject(Auth)
 
   empruntId = signal<number | null>(null);
   estModification = computed(() => this.empruntId() !== null);
@@ -41,11 +43,16 @@ export class FormEmprunt implements OnInit {
     this.utilisateurService.obtenirListeUtilisateur().subscribe();
     this.categorieModeleService.obtenirListeCategorieModele().subscribe();
 
-
     const id = this.route.snapshot.paramMap.get('id');
+    console.log(id)
     if (id) {
       this.empruntId.set(+id);
       this.chargerEmprunt(+id);
+    } else if (!this.authService.isAdmin()) {
+      const idJwt = this.authService.jwtInfo()?.id;
+      console.log('idJwt:', idJwt);
+      if (idJwt) this.utilisateurId.set(+idJwt);
+      console.log(this.utilisateurId())
     }
   }
 
@@ -128,11 +135,10 @@ export class FormEmprunt implements OnInit {
     this.erreurs.set({});
     this.succes.set(false);
 
-
     const utilisateurId     = this.utilisateurId();
     const materielId        = this.materielId();
     const categorieModeleId = this.categorieModeleId();
-
+    console.log(utilisateurId)
     if (!utilisateurId || !materielId || !categorieModeleId || !this.dateDebut() || !this.dateFin()) {
       this.erreurs.set({
         ...(!utilisateurId      && { utilisateurId: "L'utilisateur est obligatoire" }),

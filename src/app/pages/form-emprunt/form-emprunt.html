@@ -18,15 +18,22 @@
         <label class="field-label" for="utilisateur">
           UTILISATEUR <span class="asterisque">*</span>
         </label>
-        <select id="utilisateur" name="utilisateur" class="field-select" [ngModel]="utilisateurId()"
-                (ngModelChange)="utilisateurId.set(+$event)" required aria-required="true">
-          <option [value]="null" disabled selected>Sélectionner un utilisateur…</option>
-          @for (utilisateur of utilisateurService.listeUtilisateur(); track utilisateur.id) {
-            <option [value]="utilisateur.id">
-              {{ utilisateur.nom }} {{ utilisateur.prenom }} — {{ utilisateur.promotion.libelle }}
-            </option>
-          }
-        </select>
+        @if (authService.isAdmin()) {
+          <select id="utilisateur" name="utilisateur" class="field-select"
+                  [ngModel]="utilisateurId()"
+                  (ngModelChange)="utilisateurId.set(+$event)"
+                  required aria-required="true">
+            <option [value]="null" disabled selected>Sélectionner un utilisateur…</option>
+            @for (utilisateur of utilisateurService.listeUtilisateur(); track utilisateur.id) {
+              <option [value]="utilisateur.id">
+                {{ utilisateur.nom }} {{ utilisateur.prenom }} — {{ utilisateur.promotion.libelle }}
+              </option>
+            }
+          </select>
+        } @else {
+          <input class="field-input" type="text" readonly
+                 value="{{ authService.jwtInfo()?.nom }} {{ authService.jwtInfo()?.prenom }}" />
+        }
         @if (erreurs()['utilisateurId']) {
           <p class="field-error">{{ erreurs()['utilisateurId'] }}</p>
         }

@@ -2,7 +2,7 @@ import {computed, inject, Injectable, signal} from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { tap } from 'rxjs';
 
-type JwtInfo = {sub: string, role: string, nom: string, prenom: string};
+type JwtInfo = {sub: string, id: string, role: string, nom: string, prenom: string};
 @Injectable({ providedIn: 'root' })
 export class Auth {
 
