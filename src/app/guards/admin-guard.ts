@@ -1,6 +1,7 @@
 import {CanActivateFn, Router, UrlTree} from '@angular/router';
 import {inject} from '@angular/core';
 import {Auth} from '../core/services/authentification/auth';
+import {NotificationService} from '../core/services/notification/notification.service';
 
 export const adminGuard: CanActivateFn = (route, state) => {
 
@@ -8,7 +9,9 @@ export const adminGuard: CanActivateFn = (route, state) => {
 
   if(authService.jwtInfo()?.role != 'Administrateur') {
     const router = inject(Router);
-    return router.parseUrl('/login')
+    const notification = inject(NotificationService);
+    notification.error("Vous n'avez pas accès à cette page");
+    return router.parseUrl('/accueil')
   }
 
   return true;

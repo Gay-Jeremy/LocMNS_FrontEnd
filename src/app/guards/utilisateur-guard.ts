@@ -7,17 +7,16 @@ export const utilisateurGuard: CanActivateFn = (route, state) => {
 
   const authService = inject(Auth)
 
-
-
   if(authService.jwtInfo() == null) {
     const router = inject(Router);
     return router.parseUrl('/login')
-    console.log(authService.jwtInfo())
   }
 
   if(authService.jwtInfo()?.role != 'Étudiant' && authService.jwtInfo()?.role != 'Enseignant' && authService.jwtInfo()?.role != 'Administrateur') {
-   const notification = inject(NotificationService);
-   notification.error("Vous n'avez pas accès à cette page")
+    const router = inject(Router);
+    const notification = inject(NotificationService);
+    notification.error("Vous n'avez pas accès à cette page");
+    return router.parseUrl('/accueil')
   }
   return true;
 };

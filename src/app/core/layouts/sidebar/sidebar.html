@@ -23,11 +23,13 @@
      [routerLinkActiveOptions]="{exact: true}" (click)="onNavClick()">
     Incidents signalés <span class="nav-badge danger">{{ nbPanneSignalee() }}</span>
   </a>
+  @if (authService.isAdmin()) {
   <a class="nav-link" routerLink="/materiel/creer" routerLinkActive="active"
      [routerLinkActiveOptions]="{exact: true}" (click)="onNavClick()">Enregistrer un matériel</a>
   <div class="nav-label">Utilisateurs</div>
   <a class="nav-link" (click)="onNavClick()">Liste des utilisateurs</a>
   <a class="nav-link" (click)="onNavClick()">Gestion des utilisateurs</a>
+  }
 
   <div class="nav-label">Compte</div>
   <a class="nav-link" (click)="onNavClick()">Mon profil</a>

@@ -17,6 +17,7 @@ export class Sidebar implements OnInit {
 
   @Output() closeMenu = new EventEmitter<void>();
 
+
   private readonly empruntService = inject(EmpruntService);
   private readonly materielService = inject(MaterielService);
 
