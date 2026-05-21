@@ -1,4 +1,5 @@
-import {Component, computed, inject, OnInit, signal} from '@angular/core';
+import {Component, computed, DestroyRef, inject, OnInit} from '@angular/core';
+import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import { EmpruntService } from '../../core/services/emprunt/emprunt.service';
 import { MaterielService } from '../../core/services/materiel/materiel.service';
 import {CommonModule} from '@angular/common';
@@ -21,6 +22,7 @@ export class Dashboard implements OnInit {
   empruntService = inject(EmpruntService);
   materielService = inject(MaterielService);
   notification = inject(NotificationService);
+  private readonly destroyRef = inject(DestroyRef);
 
   titre: string = "Emprunts récents"
 
@@ -47,12 +49,17 @@ export class Dashboard implements OnInit {
     { nomLabel: 'RETARD EMPRUNT', cptValeur: this.empruntService.nbRetardEmprunt(), btnLabel: 'Voir les retards', route: '/emprunt/liste', queryParams: { filtre: 'retard' } },
   ])
 
-  ngOnInit() {
-
+  ngOnInit(): void {
     const onError = (err: unknown) => this.notification.fromHttpError(err);
 
-    this.empruntService.obtenirListeEmpruntsRecents().subscribe({ error: onError });
-    this.materielService.obtenirListeMateriel().subscribe({ error: onError });
-    this.empruntService.obtenirEmpruntEnRetard().subscribe({ error: onError });
+    this.empruntService.obtenirListeEmpruntsRecents()
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({ error: onError });
+    this.materielService.obtenirListeMateriel()
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({ error: onError });
+    this.empruntService.obtenirEmpruntEnRetard()
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({ error: onError });
   }
 }

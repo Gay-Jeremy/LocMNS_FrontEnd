@@ -1,4 +1,5 @@
-import {Component, inject, OnInit} from '@angular/core';
+import {Component, DestroyRef, inject, OnInit} from '@angular/core';
+import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {Table} from '../../shared/components/table/table';
 import {EmpruntService} from '../../core/services/emprunt/emprunt.service';
 import {ColonneConfig} from '../../shared/models/colonne-config.model';
@@ -18,6 +19,7 @@ export class HistoriqueEmprunt implements OnInit {
 
   empruntService = inject(EmpruntService);
   notification = inject(NotificationService);
+  private readonly destroyRef = inject(DestroyRef);
 
   colonnesHistorique: ColonneConfig[] = [
     { key: 'id', label: 'ID' },
@@ -34,8 +36,10 @@ export class HistoriqueEmprunt implements OnInit {
 
   ngOnInit () {
 
-    this.empruntService.obtenirHistoriqueEmprunt().subscribe({
-      error: (err) => this.notification.fromHttpError(err),
-    });
+    this.empruntService.obtenirHistoriqueEmprunt()
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        error: (err) => this.notification.fromHttpError(err),
+      });
   }
 }
