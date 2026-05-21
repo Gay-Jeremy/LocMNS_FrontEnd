@@ -3,6 +3,7 @@ import {Table} from '../../shared/components/table/table';
 import {EmpruntService} from '../../core/services/emprunt/emprunt.service';
 import {ColonneConfig} from '../../shared/models/colonne-config.model';
 import {RouterLink} from '@angular/router';
+import {NotificationService} from '../../core/services/notification/notification.service';
 
 @Component({
   selector: 'app-historique-emprunt',
@@ -16,6 +17,7 @@ import {RouterLink} from '@angular/router';
 export class HistoriqueEmprunt implements OnInit {
 
   empruntService = inject(EmpruntService);
+  notification = inject(NotificationService);
 
   colonnesHistorique: ColonneConfig[] = [
     { key: 'id', label: 'ID' },
@@ -32,6 +34,8 @@ export class HistoriqueEmprunt implements OnInit {
 
   ngOnInit () {
 
-    this.empruntService.obtenirHistoriqueEmprunt().subscribe();
+    this.empruntService.obtenirHistoriqueEmprunt().subscribe({
+      error: (err) => this.notification.fromHttpError(err),
+    });
   }
 }
