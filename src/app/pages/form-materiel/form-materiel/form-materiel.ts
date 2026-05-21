@@ -1,4 +1,5 @@
-import {Component, computed, inject, OnInit, signal} from '@angular/core';
+import {Component, computed, DestroyRef, inject, OnInit, signal} from '@angular/core';
+import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {FormsModule, NgForm} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import {MaterielService} from '../../../core/services/materiel/materiel.service';
@@ -7,6 +8,7 @@ import {CategorieModeleService} from '../../../core/services/categorie-modele/ca
 import {StatutMaterielService} from '../../../core/services/statut-materiel/statut-materiel.service';
 import {MaterielDto} from '../../../core/models/materiel-dto';
 import {NotificationService} from '../../../core/services/notification/notification.service';
+import {forkJoin, map, switchMap} from 'rxjs';
 
 @Component({
   selector: 'app-form-materiel',
@@ -23,12 +25,11 @@ export class FormMateriel implements OnInit {
   route                 = inject(ActivatedRoute);
   router                = inject(Router);
   notification          = inject(NotificationService);
+  private readonly destroyRef = inject(DestroyRef);
 
-  // Mode
   materielId     = signal<number | null>(null);
   estModification = computed(() => this.materielId() !== null);
 
-  // Champs
   categorieModeleId  = signal<number | null | 'new'>(null);
   modeleId           = signal<number | null | 'new'>(null);
   numSerie           = signal<string>('');
@@ -39,10 +40,15 @@ export class FormMateriel implements OnInit {
   erreurs   = signal<Record<string, string>>({});
   isLoading = signal<boolean>(false);
 
-  ngOnInit() {
+  ngOnInit(): void {
     const onError = (err: unknown) => this.notification.fromHttpError(err);
-    this.categorieModeleService.obtenirListeCategorieModele().subscribe({ error: onError });
-    this.statutMaterielService.obtenirListeStatutMateriel().subscribe({ error: onError });
+
+    forkJoin([
+      this.categorieModeleService.obtenirListeCategorieModele(),
+      this.statutMaterielService.obtenirListeStatutMateriel(),
+    ])
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({ error: onError });
 
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
@@ -52,37 +58,38 @@ export class FormMateriel implements OnInit {
   }
 
   chargerMateriel(id: number): void {
-    this.materielService.obtenirMaterielParId(id).subscribe(materiel => {
-      this.categorieModeleId.set(materiel.modele.categorieModele.id);
-
-      // Charger les modèles de la catégorie PUIS sélectionner le bon
-      this.modeleService.obtenirListeModeleParCategorie(
-        materiel.modele.categorieModele.id
-      ).subscribe(() => {
+    this.materielService.obtenirMaterielParId(id).pipe(
+      switchMap((materiel) =>
+        this.modeleService.obtenirListeModeleParCategorie(
+          materiel.modele.categorieModele.id,
+        ).pipe(map(() => materiel)),
+      ),
+      takeUntilDestroyed(this.destroyRef),
+    ).subscribe({
+      next: (materiel) => {
+        this.categorieModeleId.set(materiel.modele.categorieModele.id);
         this.modeleId.set(materiel.modele.id);
-      });
-
-      this.numSerie.set(materiel.numSerie);
-      this.statutMaterielId.set(materiel.statutMateriel?.id ?? null);
+        this.numSerie.set(materiel.numSerie);
+        this.statutMaterielId.set(materiel.statutMateriel?.id ?? null);
+      },
+      error: (err) => this.notification.fromHttpError(err),
     });
   }
 
-
-
-
-  categorieModeleChange(id: any): void {
+  categorieModeleChange(id: string | number): void {
     if (id === 'new') {
-      this.categorieModeleId.set('new'); // ← affiche le champ immédiatement
+      this.categorieModeleId.set('new');
       this.modeleId.set(null);
-      return; // ← on s'arrête là, pas de validation ici
+      return;
     }
 
     this.categorieModeleId.set(+id);
     this.modeleId.set(null);
-    this.modeleService.obtenirListeModeleParCategorie(+id).subscribe();
+    this.modeleService.obtenirListeModeleParCategorie(+id)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({ error: (err) => this.notification.fromHttpError(err) });
   }
 
-// Nouvelle méthode appelée par un bouton dédié
   creerNouvelleCategorie(): void {
     if (!this.newCategorieLibelle().trim()) {
       this.erreurs.set({ categorieModeleId: 'Le libellé est obligatoire' });
@@ -90,12 +97,23 @@ export class FormMateriel implements OnInit {
     }
 
     this.categorieModeleService.creerCategorieModele({ libelle: this.newCategorieLibelle() })
+      .pipe(
+        switchMap((created) =>
+          this.categorieModeleService.obtenirListeCategorieModele().pipe(
+            map(() => created),
+          ),
+        ),
+        switchMap((created) =>
+          this.modeleService.obtenirListeModeleParCategorie(created.id).pipe(
+            map(() => created),
+          ),
+        ),
+        takeUntilDestroyed(this.destroyRef),
+      )
       .subscribe({
         next: (created) => {
-          this.categorieModeleService.obtenirListeCategorieModele().subscribe();
-          this.categorieModeleId.set(created.id); // ← sélectionne la nouvelle catégorie
+          this.categorieModeleId.set(created.id);
           this.newCategorieLibelle.set('');
-          this.modeleService.obtenirListeModeleParCategorie(created.id).subscribe();
         },
         error: (err) => {
           if (!this.notification.applyFieldErrors(err, this.erreurs)) {
@@ -105,7 +123,7 @@ export class FormMateriel implements OnInit {
       });
   }
 
-  modeleChange(id: any): void {
+  modeleChange(id: string | number): void {
     if (id === 'new') {
       this.modeleId.set('new');
       return;
@@ -126,9 +144,15 @@ export class FormMateriel implements OnInit {
     this.modeleService.creerModele({
       libelle: this.newModeleLibelle(),
       categorieModeleId: categorieId
-    }).subscribe({
+    }).pipe(
+      switchMap((created) =>
+        this.modeleService.obtenirListeModeleParCategorie(categorieId).pipe(
+          map(() => created),
+        ),
+      ),
+      takeUntilDestroyed(this.destroyRef),
+    ).subscribe({
       next: (created) => {
-        this.modeleService.obtenirListeModeleParCategorie(categorieId).subscribe();
         this.modeleId.set(created.id);
         this.newModeleLibelle.set('');
       },
@@ -146,7 +170,6 @@ export class FormMateriel implements OnInit {
     const categorieModeleId = this.categorieModeleId();
     const modeleId          = this.modeleId();
     const numSerie          = this.numSerie();
-
 
     if (!categorieModeleId || !modeleId || !numSerie) {
       this.erreurs.set({
@@ -171,7 +194,7 @@ export class FormMateriel implements OnInit {
       ? this.materielService.modifierMateriel(this.materielId()!, payload)
       : this.materielService.creerMateriel(payload);
 
-    requete$.subscribe({
+    requete$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
       next: () => {
         this.isLoading.set(false);
         const msg = this.estModification()
