@@ -7,6 +7,7 @@ import {StatCardData} from '../../shared/models/stat-card.model';
 import {ColonneConfig} from '../../shared/models/colonne-config.model';
 import {Table} from '../../shared/components/table/table';
 import {RouterLink} from '@angular/router';
+import {NotificationService} from '../../core/services/notification/notification.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -19,6 +20,7 @@ export class Dashboard implements OnInit {
 
   empruntService = inject(EmpruntService);
   materielService = inject(MaterielService);
+  notification = inject(NotificationService);
 
   titre: string = "Emprunts récents"
 
@@ -47,10 +49,10 @@ export class Dashboard implements OnInit {
 
   ngOnInit() {
 
-    this.empruntService.obtenirListeEmpruntsRecents().subscribe();
+    const onError = (err: unknown) => this.notification.fromHttpError(err);
 
-    this.materielService.obtenirListeMateriel().subscribe();
-
-    this.empruntService.obtenirEmpruntEnRetard().subscribe();
+    this.empruntService.obtenirListeEmpruntsRecents().subscribe({ error: onError });
+    this.materielService.obtenirListeMateriel().subscribe({ error: onError });
+    this.empruntService.obtenirEmpruntEnRetard().subscribe({ error: onError });
   }
 }
