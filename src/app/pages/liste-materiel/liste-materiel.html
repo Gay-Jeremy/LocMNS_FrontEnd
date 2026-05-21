@@ -8,7 +8,11 @@
   </div>
   <app-table
     [colonnes]="colonnesMateriel"
+    [showEditDelete]="authService.isAdmin()"
+    [actionPlaceholder]="'-Signaler incident-'"
     [data]="materielService.listeMateriel()"
+    [tableActions]="listeStatut()"
+    (decisionChange)="onDecisionChange($event)"
   />
   <div class="quick-actions">
     <h2 class="section-title">Actions rapides</h2>
