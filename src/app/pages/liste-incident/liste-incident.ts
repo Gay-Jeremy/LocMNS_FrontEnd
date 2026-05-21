@@ -7,6 +7,7 @@ import {RouterLink} from '@angular/router';
 import {StatutMaterielService} from '../../core/services/statut-materiel/statut-materiel.service';
 import {DecisionEvent} from '../../shared/models/decision-event.model';
 import {switchMap} from 'rxjs';
+import {Auth} from '../../core/services/authentification/auth';
 
 @Component({
   selector: 'app-liste-incident',
@@ -29,6 +30,7 @@ export class ListeIncident implements OnInit{
   empruntService = inject(EmpruntService)
   materielService = inject(MaterielService)
   statutMaterielService = inject(StatutMaterielService)
+  authService = inject(Auth)
 
   erreurs = signal<Record<string, string>>({});
   succes = signal<boolean>(false);
