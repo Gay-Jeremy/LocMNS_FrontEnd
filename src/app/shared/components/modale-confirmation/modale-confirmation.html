@@ -1,0 +1,12 @@
+<div class="modale-overlay" (click)="annuler.emit()">
+  <div class="modale" (click)="$event.stopPropagation()">
+    <div>
+      <strong>{{ titre }}</strong>
+      <p>{{ message }}</p>
+    </div>
+    <div class="modale-actions">
+      <button class="btn-annuler" (click)="annuler.emit()">{{ labelAnnuler }}</button>
+      <button class="btn-supprimer" (click)="confirmer.emit()">{{ labelConfirmer }}</button>
+    </div>
+  </div>
+</div>

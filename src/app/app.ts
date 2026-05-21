@@ -1,8 +1,9 @@
-import { Component, signal } from '@angular/core';
+import {Component, inject, signal} from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { Header } from './core/layouts/header/header';
 import { Sidebar } from './core/layouts/sidebar/sidebar';
 import { Footer } from './core/layouts/footer/footer';
+import {NotificationService} from './core/services/notification/notification.service';
 
 @Component({
   selector: 'app-root',
@@ -12,6 +13,8 @@ import { Footer } from './core/layouts/footer/footer';
 })
 export class App {
   protected readonly title = signal('locmns-frontend');
+
+  notificationService = inject(NotificationService);
 
   sidebarOpen = false;
 

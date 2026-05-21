@@ -22,7 +22,7 @@ export class Table {
   colonnes = input<ColonneConfig[]>([]);
   data   = input<any[]>([]);
   showAction = input<boolean>(true);
-  showEditDelete = input<boolean>(false);
+  showEditDelete = input<boolean>(true);
   tableActions = input<any[]>([]);
   showNote = input<boolean>(false);
   actionPlaceholder = input<string>('— Décision —');

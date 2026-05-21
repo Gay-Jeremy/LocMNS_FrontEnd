@@ -1,4 +1,4 @@
-import { Injectable, inject } from '@angular/core';
+import {Injectable, inject, signal} from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ToastrService } from 'ngx-toastr';
 
@@ -7,6 +7,9 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class NotificationService {
   private readonly toastr = inject(ToastrService);
+  readonly modaleVisible = signal(false);
+  readonly modaleConfig = signal({ titre: '', message: '' });
+  private resolveConfirm!: (value: boolean) => void
 
   success(message: string, title = 'Succès'): void {
     this.toastr.success(message, title);
@@ -22,6 +25,22 @@ export class NotificationService {
 
   info(message: string, title = 'Information'): void {
     this.toastr.info(message, title);
+  }
+
+  confirm(message: string, titre = 'Confirmation'): Promise<boolean> {
+    this.modaleConfig.set({ titre, message });
+    this.modaleVisible.set(true);
+    return new Promise((resolve) => (this.resolveConfirm = resolve));
+  }
+
+  onConfirmer(): void {
+    this.modaleVisible.set(false);
+    this.resolveConfirm(true);
+  }
+
+  onAnnuler(): void {
+    this.modaleVisible.set(false);
+    this.resolveConfirm(false);
   }
 
   /** Affiche le message d'une erreur HTTP ou d'une exception. */

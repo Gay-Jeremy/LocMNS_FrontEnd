@@ -1,0 +1,52 @@
+.modale-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modale {
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-lg);
+  padding: 28px;
+  width: 360px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  text-align: center;
+}
+
+.modale p { color: var(--color-text-secondary); font-size: 14px; }
+.modale strong { color: var(--color-text-primary); }
+
+.modale-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.modale-actions .btn-annuler,
+.btn-supprimer {
+  flex: 1;
+  height: 40px;
+  border-radius:  var(--radius-pill);
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+}
+
+.modale-actions .btn-annuler {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid var(--color-border-strong);
+  color: var(--color-text-secondary);
+}
+
+.btn-supprimer {
+  background: var(--color-accent);
+  color: #fff;
+}

@@ -1,1 +1,10 @@
 <router-outlet />
+
+@if (notificationService.modaleVisible()) {
+  <app-modale-confirmation
+    [titre]="notificationService.modaleConfig().titre"
+    [message]="notificationService.modaleConfig().message"
+    (confirmer)="notificationService.onConfirmer()"
+    (annuler)="notificationService.onAnnuler()"
+  />
+}
