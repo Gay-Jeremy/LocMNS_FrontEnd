@@ -1,4 +1,4 @@
-import {Injectable, inject, signal} from '@angular/core';
+import {Injectable, inject, signal, WritableSignal} from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ToastrService } from 'ngx-toastr';
 
@@ -46,6 +46,24 @@ export class NotificationService {
   /** Affiche le message d'une erreur HTTP ou d'une exception. */
   fromHttpError(error: unknown, fallback = 'Une erreur est survenue'): void {
     this.error(this.extractMessage(error, fallback));
+  }
+
+  /** Erreur 400 avec champs de validation renvoyés par le backend. */
+  isValidationError(error: unknown): boolean {
+    if (!(error instanceof HttpErrorResponse) || error.status !== 400) {
+      return false;
+    }
+    const body = error.error;
+    return typeof body === 'object' && body !== null && !Array.isArray(body);
+  }
+
+  /** Remplit le signal d'erreurs par champ ; retourne true si traité. */
+  applyFieldErrors(error: unknown, erreurs: WritableSignal<Record<string, string>>): boolean {
+    if (!this.isValidationError(error)) {
+      return false;
+    }
+    erreurs.set((error as HttpErrorResponse).error as Record<string, string>);
+    return true;
   }
 
   private extractMessage(error: unknown, fallback: string): string {
