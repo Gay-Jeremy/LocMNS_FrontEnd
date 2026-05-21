@@ -3,6 +3,7 @@ import { EmpruntService } from '../../services/emprunt/emprunt.service';
 import {Router, RouterLink, RouterLinkActive} from '@angular/router';
 import {MaterielService} from '../../services/materiel/materiel.service';
 import {Auth} from '../../services/authentification/auth';
+import {NotificationService} from '../../services/notification/notification.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -14,6 +15,7 @@ export class Sidebar implements OnInit {
 
   authService = inject(Auth)
   router = inject(Router)
+  notification = inject(NotificationService)
 
   @Output() closeMenu = new EventEmitter<void>();
 
@@ -33,5 +35,12 @@ export class Sidebar implements OnInit {
 
   onNavClick() {
     this.closeMenu.emit();
+  }
+
+  logout(): void {
+    localStorage.removeItem('jwt');
+    this.authService.jwtInfo.set(null);
+    this.notification.info('Vous êtes déconnecté'); // optionnel
+    this.router.navigate(['/login']);
   }
 }
