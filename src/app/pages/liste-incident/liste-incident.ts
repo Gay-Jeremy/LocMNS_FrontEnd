@@ -1,4 +1,5 @@
-import {Component, inject, OnInit, signal} from '@angular/core';
+import {Component, DestroyRef, inject, OnInit, signal} from '@angular/core';
+import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {Table} from '../../shared/components/table/table';
 import {ColonneConfig} from '../../shared/models/colonne-config.model';
 import {EmpruntService} from '../../core/services/emprunt/emprunt.service';
@@ -33,22 +34,32 @@ export class ListeIncident implements OnInit{
   statutMaterielService = inject(StatutMaterielService)
   authService = inject(Auth)
   notification = inject(NotificationService)
+  private readonly destroyRef = inject(DestroyRef);
 
   erreurs = signal<Record<string, string>>({});
 
   ngOnInit() {
 
     const onError = (err: unknown) => this.notification.fromHttpError(err);
-    this.empruntService.obtenirListeEmpruntsActifs().subscribe({ error: onError });
-    this.materielService.obtenirListeMaterielPanneSignalee().subscribe({ error: onError });
-    this.statutMaterielService.obtenirListeStatutMateriel().subscribe({ error: onError });
+    this.empruntService.obtenirListeEmpruntsActifs()
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({ error: onError });
+    this.materielService.obtenirListeMaterielPanneSignalee()
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({ error: onError });
+    this.statutMaterielService.obtenirListeStatutMateriel()
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({ error: onError });
   }
 
   onDecisionChange(event: DecisionEvent): void {
     this.erreurs.set({});
 
     this.materielService.mettreAJourStatut(event.rowId, event.statutId)
-      .pipe(switchMap(() => this.materielService.obtenirListeMaterielPanneSignalee()))
+      .pipe(
+        switchMap(() => this.materielService.obtenirListeMaterielPanneSignalee()),
+        takeUntilDestroyed(this.destroyRef),
+      )
       .subscribe({
         next: () => this.notification.success('Statut mis à jour'),
         error: (err) => {

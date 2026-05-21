@@ -1,4 +1,5 @@
-import {Component, computed, inject, OnInit, signal} from '@angular/core';
+import {Component, computed, DestroyRef, inject, OnInit, signal} from '@angular/core';
+import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {FormsModule, NgForm} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import {EmpruntService} from '../../core/services/emprunt/emprunt.service';
@@ -8,6 +9,7 @@ import {CategorieModeleService} from '../../core/services/categorie-modele/categ
 import {EmpruntDto} from '../../core/models/emprunt-dto';
 import {Auth} from '../../core/services/authentification/auth';
 import {NotificationService} from '../../core/services/notification/notification.service';
+import {forkJoin, map, Subject, switchMap} from 'rxjs';
 
 @Component({
   selector: 'app-form-emprunt',
@@ -25,6 +27,12 @@ export class FormEmprunt implements OnInit {
   router                = inject(Router);
   authService = inject(Auth)
   notification = inject(NotificationService)
+  private readonly destroyRef = inject(DestroyRef);
+  private readonly rechercheMateriel$ = new Subject<{
+    dateDebut: string;
+    dateFin: string;
+    categorieModeleId: number;
+  }>();
 
   empruntId = signal<number | null>(null);
   estModification = computed(() => this.empruntId() !== null);
@@ -40,43 +48,63 @@ export class FormEmprunt implements OnInit {
   erreurs = signal<Record<string, string>>({});
   isLoading = signal<boolean>(false);
 
-  ngOnInit() {
-    this.utilisateurService.obtenirListeUtilisateur().subscribe();
-    this.categorieModeleService.obtenirListeCategorieModele().subscribe();
+  ngOnInit(): void {
+    const onError = (err: unknown) => this.notification.fromHttpError(err);
+
+    forkJoin([
+      this.utilisateurService.obtenirListeUtilisateur(),
+      this.categorieModeleService.obtenirListeCategorieModele(),
+    ])
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({ error: onError });
+
+    this.rechercheMateriel$.pipe(
+      switchMap(({ dateDebut, dateFin, categorieModeleId }) =>
+        this.materielService.obtenirListeMaterielsDisponiblePourPeridodeParIDCategorieModele(
+          dateDebut,
+          dateFin,
+          categorieModeleId,
+        ),
+      ),
+      takeUntilDestroyed(this.destroyRef),
+    ).subscribe({ error: onError });
 
     const id = this.route.snapshot.paramMap.get('id');
-    console.log(id)
     if (id) {
       this.empruntId.set(+id);
       this.chargerEmprunt(+id);
     } else if (!this.authService.isAdmin()) {
       const idJwt = this.authService.jwtInfo()?.id;
-      console.log('idJwt:', idJwt);
       if (idJwt) this.utilisateurId.set(+idJwt);
-      console.log(this.utilisateurId())
     }
   }
 
   chargerEmprunt(id: number): void {
-    this.empruntService.obtenirEmpruntParId(id).subscribe(emprunt => {
-      this.utilisateurId.set(emprunt.utilisateur.id);
-      this.dateDebut.set(emprunt.dateDebut);
-      this.dateFin.set(emprunt.dateFin);
-      this.categorieModeleId.set(emprunt.materiel.modele.categorieModele.id);
-      this.note.set(emprunt.note)
+    this.empruntService.obtenirEmpruntParId(id).pipe(
+      switchMap((emprunt) => {
+        this.utilisateurId.set(emprunt.utilisateur.id);
+        this.dateDebut.set(emprunt.dateDebut);
+        this.dateFin.set(emprunt.dateFin);
+        this.categorieModeleId.set(emprunt.materiel.modele.categorieModele.id);
+        this.note.set(emprunt.note);
 
-      this.materielService.obtenirListeMaterielsDisponiblePourPeridodeParIDCategorieModele(
-        emprunt.dateDebut,
-        emprunt.dateFin,
-        emprunt.materiel.modele.categorieModele.id
-      ).subscribe((listeMateriel) => {
-        const dejaDansListe = listeMateriel.some(materiel => materiel.id === emprunt.materiel.id);
+        return this.materielService.obtenirListeMaterielsDisponiblePourPeridodeParIDCategorieModele(
+          emprunt.dateDebut,
+          emprunt.dateFin,
+          emprunt.materiel.modele.categorieModele.id,
+        ).pipe(map((listeMateriel) => ({ emprunt, listeMateriel })));
+      }),
+      takeUntilDestroyed(this.destroyRef),
+    ).subscribe({
+      next: ({ emprunt, listeMateriel }) => {
+        const dejaDansListe = listeMateriel.some((materiel) => materiel.id === emprunt.materiel.id);
         if (!dejaDansListe) {
           this.materielService.listeMaterielDisponiblePourPeriodeParIdCategorie
-            .update(liste => [emprunt.materiel, ...liste]);
+            .update((liste) => [emprunt.materiel, ...liste]);
         }
         this.materielId.set(emprunt.materiel.id);
-      });
+      },
+      error: (err) => this.notification.fromHttpError(err),
     });
   }
 
@@ -97,39 +125,36 @@ export class FormEmprunt implements OnInit {
     const fin   = this.dateFin();
     const dateActuelle = new Date().toISOString().split('T')[0];
 
-    // Cas 1 — date de début dans le passé
     if (debut && debut < dateActuelle) {
       this.erreurDates.set('La date de début ne peut pas être dans le passé');
-      return; // ← on sort, inutile de vérifier le reste
+      return;
     }
 
-    // Cas 2 — date de fin dans le passé
     if (fin && fin < dateActuelle) {
       this.erreurDates.set('La date de fin ne peut pas être dans le passé');
       return;
     }
 
-    // Cas 3 — date de fin <= date de début
     if (debut && fin && fin <= debut) {
       this.erreurDates.set('La date de fin doit être supérieure à la date de début');
       return;
     }
 
-    // Aucune erreur
     this.erreurDates.set('');
   }
+
   categorieModeleChange(id: number): void {
     this.categorieModeleId.set(id);
     this.onRechercherMateriels();
   }
 
   onRechercherMateriels(): void {
-    if (!this.dateDebut() || !this.dateFin() || !this.categorieModeleId()) return;
-    this.materielService.obtenirListeMaterielsDisponiblePourPeridodeParIDCategorieModele(
-      this.dateDebut(),
-      this.dateFin(),
-      this.categorieModeleId()!
-    ).subscribe();
+    const dateDebut = this.dateDebut();
+    const dateFin = this.dateFin();
+    const categorieModeleId = this.categorieModeleId();
+    if (!dateDebut || !dateFin || !categorieModeleId) return;
+
+    this.rechercheMateriel$.next({ dateDebut, dateFin, categorieModeleId });
   }
 
   async onSubmit(form: NgForm): Promise<void> {
@@ -149,6 +174,7 @@ export class FormEmprunt implements OnInit {
       });
       return;
     }
+
     const confirmed = await this.notification.confirm(
       this.estModification()
         ? 'Voulez-vous vraiment modifier cet emprunt ?'
@@ -159,7 +185,6 @@ export class FormEmprunt implements OnInit {
 
     this.isLoading.set(true);
 
-
     const dataEmprunt: EmpruntDto = {
       utilisateurId,
       materielId,
@@ -168,36 +193,37 @@ export class FormEmprunt implements OnInit {
       note: this.note()
     };
 
+    const handleError = (err: unknown) => {
+      this.isLoading.set(false);
+      if (!this.notification.applyFieldErrors(err, this.erreurs)) {
+        this.notification.fromHttpError(err);
+      }
+    };
+
     if (this.estModification()) {
-      this.empruntService.modifierEmprunt(this.empruntId()!, dataEmprunt).subscribe({
+      this.empruntService.modifierEmprunt(this.empruntId()!, dataEmprunt).pipe(
+        takeUntilDestroyed(this.destroyRef),
+      ).subscribe({
         next: () => {
           this.isLoading.set(false);
           this.notification.success('Emprunt modifié avec succès');
           setTimeout(() => this.router.navigate(['/emprunt/liste']), 1500);
         },
-        error: (err) => {
-          this.isLoading.set(false);
-          if (!this.notification.applyFieldErrors(err, this.erreurs)) {
-            this.notification.fromHttpError(err);
-          }
-        },
+        error: handleError,
       });
       return;
     }
 
-    this.empruntService.creerEmprunt(dataEmprunt).subscribe({
+    this.empruntService.creerEmprunt(dataEmprunt).pipe(
+      takeUntilDestroyed(this.destroyRef),
+    ).subscribe({
       next: () => {
         this.isLoading.set(false);
         this.erreurs.set({});
         this.notification.success('Emprunt enregistré avec succès');
         form.reset();
       },
-      error: (err) => {
-        this.isLoading.set(false);
-        if (!this.notification.applyFieldErrors(err, this.erreurs)) {
-          this.notification.fromHttpError(err);
-        }
-      },
+      error: handleError,
     });
   }
 

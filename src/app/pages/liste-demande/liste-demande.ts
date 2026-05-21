@@ -1,4 +1,5 @@
-import {Component, inject, OnInit, signal} from '@angular/core';
+import {Component, DestroyRef, inject, OnInit, signal} from '@angular/core';
+import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {KeyValuePipe} from '@angular/common';
 import {ColonneConfig} from '../../shared/models/colonne-config.model';
 import {EmpruntService} from '../../core/services/emprunt/emprunt.service';
@@ -39,21 +40,27 @@ export class ListeDemande implements OnInit {
   statutEmpruntService = inject(StatutEmprunt)
   authService = inject(Auth)
   notification = inject(NotificationService)
+  private readonly destroyRef = inject(DestroyRef);
 
   erreurs = signal<Record<string, string>>({});
 
   ngOnInit() {
 
-    this.empruntService.obtenirListeDemandesEmprunt().subscribe({
-      error: (err) => this.notification.fromHttpError(err),
-    });
+    this.empruntService.obtenirListeDemandesEmprunt()
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        error: (err) => this.notification.fromHttpError(err),
+      });
   }
 
   onDecisionChange(event: DecisionEvent): void {
     this.erreurs.set({});
 
     this.empruntService.mettreAJourStatut(event.rowId, event.statutId)
-      .pipe(switchMap(() => this.empruntService.obtenirListeDemandesEmprunt()))
+      .pipe(
+        switchMap(() => this.empruntService.obtenirListeDemandesEmprunt()),
+        takeUntilDestroyed(this.destroyRef),
+      )
       .subscribe({
         next: () => this.notification.success('Décision enregistrée'),
         error: (err) => {
