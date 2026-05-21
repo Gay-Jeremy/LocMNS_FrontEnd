@@ -6,6 +6,7 @@ import {ModeleService} from '../../../core/services/modele/modele-service'
 import {CategorieModeleService} from '../../../core/services/categorie-modele/categorie-modele.service';
 import {StatutMaterielService} from '../../../core/services/statut-materiel/statut-materiel.service';
 import {MaterielDto} from '../../../core/models/materiel-dto';
+import {NotificationService} from '../../../core/services/notification/notification.service';
 
 @Component({
   selector: 'app-form-materiel',
@@ -21,6 +22,7 @@ export class FormMateriel implements OnInit {
   statutMaterielService = inject(StatutMaterielService);
   route                 = inject(ActivatedRoute);
   router                = inject(Router);
+  notification          = inject(NotificationService);
 
   // Mode
   materielId     = signal<number | null>(null);
@@ -35,12 +37,12 @@ export class FormMateriel implements OnInit {
   newModeleLibelle = signal<string>('');
 
   erreurs   = signal<Record<string, string>>({});
-  succes    = signal<boolean>(false);
   isLoading = signal<boolean>(false);
 
   ngOnInit() {
-    this.categorieModeleService.obtenirListeCategorieModele().subscribe();
-    this.statutMaterielService.obtenirListeStatutMateriel().subscribe();
+    const onError = (err: unknown) => this.notification.fromHttpError(err);
+    this.categorieModeleService.obtenirListeCategorieModele().subscribe({ error: onError });
+    this.statutMaterielService.obtenirListeStatutMateriel().subscribe({ error: onError });
 
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
@@ -96,13 +98,10 @@ export class FormMateriel implements OnInit {
           this.modeleService.obtenirListeModeleParCategorie(created.id).subscribe();
         },
         error: (err) => {
-          const erreurBack = err.error;
-          if (typeof erreurBack === 'object' && erreurBack !== null) {
-            this.erreurs.set({ categorieModeleId: erreurBack['erreur'] });
-          } else {
-            this.erreurs.set({ categorieModeleId: 'Erreur lors de la création' });
+          if (!this.notification.applyFieldErrors(err, this.erreurs)) {
+            this.notification.fromHttpError(err, 'Erreur lors de la création');
           }
-        }
+        },
       });
   }
 
@@ -134,19 +133,15 @@ export class FormMateriel implements OnInit {
         this.newModeleLibelle.set('');
       },
       error: (err) => {
-        const erreurBack = err.error;
-        if (typeof erreurBack === 'object' && erreurBack !== null) {
-          this.erreurs.set({ modeleId: erreurBack['erreur'] });
-        } else {
-          this.erreurs.set({ modeleId: 'Erreur lors de la création' });
+        if (!this.notification.applyFieldErrors(err, this.erreurs)) {
+          this.notification.fromHttpError(err, 'Erreur lors de la création');
         }
-      }
+      },
     });
   }
 
   onSubmit(form: NgForm): void {
     this.erreurs.set({});
-    this.succes.set(false);
 
     const categorieModeleId = this.categorieModeleId();
     const modeleId          = this.modeleId();
@@ -179,25 +174,23 @@ export class FormMateriel implements OnInit {
     requete$.subscribe({
       next: () => {
         this.isLoading.set(false);
-        this.succes.set(true);
+        const msg = this.estModification()
+          ? 'Matériel modifié avec succès'
+          : 'Matériel enregistré avec succès';
+        this.notification.success(msg);
         if (this.estModification()) {
-          console.log(this.estModification)
           setTimeout(() => this.router.navigate(['/materiel/liste']), 1500);
         } else {
           form.reset();
           this.modeleService.listeModeleParCategorie.set([]);
-          setTimeout(() => this.succes.set(false), 4000);
         }
       },
       error: (err) => {
         this.isLoading.set(false);
-        const erreurBack = err.error;
-        if (typeof erreurBack === 'object' && erreurBack !== null) {
-          this.erreurs.set(erreurBack);
-        } else {
-          this.erreurs.set({ erreur: err.message });
+        if (!this.notification.applyFieldErrors(err, this.erreurs)) {
+          this.notification.fromHttpError(err);
         }
-      }
+      },
     });
   }
 
