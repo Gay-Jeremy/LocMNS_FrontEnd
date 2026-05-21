@@ -15,7 +15,7 @@ export class StatutMaterielService {
   obtenirListeStatutMateriel() {
     return this.apiService.get<StatutMateriel[]>('statuts_materiel/liste')
       .pipe(tap((listeStatutMateriel) => {
-        const statutDisponible: StatutMateriel = { id: null, libelle: 'Disponible' };
+        const statutDisponible: StatutMateriel = { id: null, libelle: 'Disponible', code: null };
         this.listeStatutMateriel.set([statutDisponible, ...listeStatutMateriel]);
       }));
   }
