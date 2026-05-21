@@ -7,6 +7,13 @@ export const adminGuard: CanActivateFn = (route, state) => {
 
   const authService = inject(Auth)
 
+  if(authService.jwtInfo() == null) {
+    const router = inject(Router);
+    const notification = inject(NotificationService);
+    notification.warning('Veuillez vous connecter pour accéder à cette page');
+    return router.parseUrl('/login')
+  }
+
   if(authService.jwtInfo()?.role != 'Administrateur') {
     const router = inject(Router);
     const notification = inject(NotificationService);

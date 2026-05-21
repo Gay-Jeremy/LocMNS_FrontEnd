@@ -26,9 +26,9 @@ export const routes: Routes = [
       { path: 'materiel/liste', component: ListeMateriel, canActivate: [utilisateurGuard] },
       { path: 'materiel/creer', component: FormMateriel, canActivate: [adminGuard] },
       { path: 'materiel/modifier/:id', component: FormMateriel, canActivate: [adminGuard] },
-      { path: 'demande/liste', component: ListeDemande },
-      { path: 'historique/emprunt', component: HistoriqueEmprunt },
-      { path: 'materiel/incident', component: ListeIncident },
+      { path: 'demande/liste', component: ListeDemande, canActivate: [utilisateurGuard]},
+      { path: 'historique/emprunt', component: HistoriqueEmprunt, canActivate: [utilisateurGuard]},
+      { path: 'materiel/incident', component: ListeIncident, canActivate: [utilisateurGuard]},
       { path: '**', redirectTo: '' },
     ]
   },
