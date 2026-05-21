@@ -47,12 +47,8 @@ export class MaterielService {
       .pipe(tap((listeMaterielPanneSignalee) => this.listeMaterielPanneSignalee.set(listeMaterielPanneSignalee)))
   }
 
-  mettreAJourStatut(materielId: number, statutId: number): Observable<any> {
-    return this.apiService.put(`materiels/${materielId}/statut`, { statutId })
-      .pipe(tap(() =>
-          this.obtenirListeMaterielPanneSignalee().subscribe()
-        )
-      );
+  mettreAJourStatut(materielId: number, statutId: number): Observable<unknown> {
+    return this.apiService.put(`materiels/${materielId}/statut`, { statutId });
   }
 
   obtenirMaterielParId(id: number): Observable<Materiel> {
