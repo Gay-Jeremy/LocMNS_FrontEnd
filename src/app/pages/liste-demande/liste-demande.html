@@ -5,6 +5,8 @@
     <app-table
       [colonnes]="colonnesDemande"
       [data]="empruntService.listeDemandeEmprunt()"
+      [showAction]="authService.isAdmin()"
+      [showEditDelete]="authService.isAdmin()"
       [showNote]="true"
       [actionPlaceholder]="'— Décision —'"
       [tableActions]="statutEmpruntService.listeStatutEmpruntDecision()"

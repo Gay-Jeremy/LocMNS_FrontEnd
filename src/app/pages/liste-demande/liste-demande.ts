@@ -6,6 +6,7 @@ import {RouterLink} from '@angular/router';
 import {StatutEmprunt} from '../../core/services/statut-emprunt/statut-emprunt';
 import {DecisionEvent} from '../../shared/models/decision-event.model';
 import {switchMap} from 'rxjs';
+import {Auth} from '../../core/services/authentification/auth';
 
 @Component({
   selector: 'app-liste-demande',
@@ -33,6 +34,7 @@ export class ListeDemande implements OnInit {
 
   empruntService = inject(EmpruntService)
   statutEmpruntService = inject(StatutEmprunt)
+  authService = inject(Auth)
 
   erreurs = signal<Record<string, string>>({});
   succes = signal<boolean>(false);
@@ -40,7 +42,7 @@ export class ListeDemande implements OnInit {
   ngOnInit() {
 
     this.empruntService.obtenirListeDemandesEmprunt().subscribe();
-    this.statutEmpruntService.obtenirListeStatutEmpruntsDecision().subscribe();
+
   }
 
   onDecisionChange(event: DecisionEvent): void {
