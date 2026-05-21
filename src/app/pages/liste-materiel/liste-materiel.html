@@ -9,7 +9,9 @@
   <app-table
     [colonnes]="colonnesMateriel"
     [showEditDelete]="authService.isAdmin()"
-    [actionPlaceholder]="'-Signaler incident-'"
+    (delete)="onDelete($event)"
+    (edit)="onEdit($event)"
+    [actionPlaceholder]="authService.isAdmin() ? '— Changer le statut —' : '— Signaler un incident —'"
     [data]="materielService.listeMateriel()"
     [tableActions]="listeStatut()"
     (decisionChange)="onDecisionChange($event)"

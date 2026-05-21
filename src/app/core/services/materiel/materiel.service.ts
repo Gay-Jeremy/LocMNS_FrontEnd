@@ -62,4 +62,12 @@ export class MaterielService {
   modifierMateriel(id: number, dataMateriel: MaterielDto): Observable<MaterielDto> {
     return this.apiService.put(`materiels/${id}`, dataMateriel);
   }
+
+  supprimerMateriel(id: number): Observable<void> {
+    return this.apiService.delete<void>(`materiels/${id}`).pipe(
+      tap(() => {
+        this.listeMateriel.update(liste => liste.filter(m => m.id !== id));
+      })
+    );
+  }
 }

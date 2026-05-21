@@ -88,6 +88,9 @@ export class NotificationService {
       if (error.status === 403) {
         return 'Accès refusé';
       }
+      if (error.status === 409) {
+        return 'Impossible de supprimer ce matériel : il est lié à un emprunt.';
+      }
     }
     if (error instanceof Error && error.message.trim()) {
       return error.message;

@@ -7,7 +7,7 @@ import {Table} from '../../shared/components/table/table';
 import {RouterLink} from '@angular/router';
 import {StatutEmprunt} from '../../core/services/statut-emprunt/statut-emprunt';
 import {DecisionEvent} from '../../shared/models/decision-event.model';
-import {switchMap} from 'rxjs';
+import {forkJoin, switchMap} from 'rxjs';
 import {Auth} from '../../core/services/authentification/auth';
 import {NotificationService} from '../../core/services/notification/notification.service';
 
@@ -51,6 +51,12 @@ export class ListeDemande implements OnInit {
       .subscribe({
         error: (err) => this.notification.fromHttpError(err),
       });
+
+    this.statutEmpruntService.obtenirListeStatutEmpruntsDecision()
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        error: (err) => this.notification.fromHttpError(err),
+      });
   }
 
   onDecisionChange(event: DecisionEvent): void {
@@ -58,7 +64,10 @@ export class ListeDemande implements OnInit {
 
     this.empruntService.mettreAJourStatut(event.rowId, event.statutId)
       .pipe(
-        switchMap(() => this.empruntService.obtenirListeDemandesEmprunt()),
+        switchMap(() => forkJoin([
+          this.empruntService.obtenirListeDemandesEmprunt(),
+          this.empruntService.obtenirListeEmpruntsActifs(),
+        ])),
         takeUntilDestroyed(this.destroyRef),
       )
       .subscribe({

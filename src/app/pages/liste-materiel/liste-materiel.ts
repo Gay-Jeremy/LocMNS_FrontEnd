@@ -3,13 +3,14 @@ import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {Table} from '../../shared/components/table/table';
 import {ColonneConfig} from '../../shared/models/colonne-config.model';
 import {MaterielService} from '../../core/services/materiel/materiel.service';
-import {RouterLink} from '@angular/router';
+import {Router, RouterLink} from '@angular/router';
 import {Auth} from '../../core/services/authentification/auth';
 import {StatutMaterielService} from '../../core/services/statut-materiel/statut-materiel.service';
 import {StatutMateriel} from '../../core/models/statut-materiel';
 import {map, switchMap} from 'rxjs';
 import {DecisionEvent} from '../../shared/models/decision-event.model';
 import {NotificationService} from '../../core/services/notification/notification.service';
+import {Emprunts} from '../../core/models/emprunt';
 
 @Component({
   selector: 'app-liste-materiel',
@@ -34,6 +35,8 @@ export class ListeMateriel implements OnInit {
   materielService = inject(MaterielService)
   statutMaterielService = inject(StatutMaterielService)
   notification = inject(NotificationService);
+  router = inject(Router)
+
   private readonly destroyRef = inject(DestroyRef);
 
   listeStatut = signal<StatutMateriel[]>([]);
@@ -74,6 +77,31 @@ export class ListeMateriel implements OnInit {
       .subscribe({
         next: () => this.notification.success('Statut mis à jour'),
         error: (err) => this.notification.fromHttpError(err)
+      });
+  }
+
+  onEdit(row: Emprunts): void {
+    this.router.navigate(['/enregistrer/materiel', row.id]);
+  }
+
+  async onDelete(row: Emprunts): Promise<void> {
+    const confirmed = await this.notification.confirm(
+      `Confirmez-vous la suppression du materiel n°${row.id} ?`,
+      'Suppression'
+    );
+    if (!confirmed) return;
+
+    this.materielService.supprimerMateriel(row.id)
+      .pipe(
+        switchMap(() =>
+            this.materielService.obtenirListeMateriel()
+
+        ),
+        takeUntilDestroyed(this.destroyRef),
+      )
+      .subscribe({
+        next: () => this.notification.success('Materiel supprimé'),
+        error: (err) => this.notification.fromHttpError(err),
       });
   }
 }
