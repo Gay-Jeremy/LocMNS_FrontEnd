@@ -50,7 +50,6 @@ export class Table {
     }
   }
 
-
   getValeur(row: any, key: string): any {
     return key.split('.').reduce((obj, k) => obj?.[k], row);
   }

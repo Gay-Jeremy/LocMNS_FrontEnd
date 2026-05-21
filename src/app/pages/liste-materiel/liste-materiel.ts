@@ -44,13 +44,11 @@ export class ListeMateriel implements OnInit {
 
 
     this.statutMaterielService.obtenirListeStatutMateriel().pipe(
-      tap(statuts => console.log('statuts reçus', statuts)), // 👈 vérifier ici
       map(statuts =>
         this.authService.isAdmin()
           ? statuts
           : statuts.filter(s => s.code != null && ['INCIDENT', 'PANNE'].includes(s.code))
       ),
-      tap(statuts => console.log('statuts filtrés', statuts)) // 👈 et ici
     ).subscribe(statuts => this.listeStatut.set(statuts));
   }
 
