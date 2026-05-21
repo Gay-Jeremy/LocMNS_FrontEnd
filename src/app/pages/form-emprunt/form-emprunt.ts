@@ -7,6 +7,7 @@ import {UtilisateurService} from '../../core/services/utilisateur/utilisateur.se
 import {CategorieModeleService} from '../../core/services/categorie-modele/categorie-modele.service';
 import {EmpruntDto} from '../../core/models/emprunt-dto';
 import {Auth} from '../../core/services/authentification/auth';
+import {NotificationService} from '../../core/services/notification/notification.service';
 
 @Component({
   selector: 'app-form-emprunt',
@@ -23,6 +24,7 @@ export class FormEmprunt implements OnInit {
   route                 = inject(ActivatedRoute);
   router                = inject(Router);
   authService = inject(Auth)
+  notification = inject(NotificationService)
 
   empruntId = signal<number | null>(null);
   estModification = computed(() => this.empruntId() !== null);
@@ -36,7 +38,6 @@ export class FormEmprunt implements OnInit {
   erreurDates = signal<string>('');
 
   erreurs = signal<Record<string, string>>({});
-  succes  = signal<boolean>(false);
   isLoading = signal<boolean>(false);
 
   ngOnInit() {
@@ -131,14 +132,13 @@ export class FormEmprunt implements OnInit {
     ).subscribe();
   }
 
-  onSubmit(form: NgForm): void {
+  async onSubmit(form: NgForm): Promise<void> {
     this.erreurs.set({});
-    this.succes.set(false);
 
     const utilisateurId     = this.utilisateurId();
     const materielId        = this.materielId();
     const categorieModeleId = this.categorieModeleId();
-    console.log(utilisateurId)
+
     if (!utilisateurId || !materielId || !categorieModeleId || !this.dateDebut() || !this.dateFin()) {
       this.erreurs.set({
         ...(!utilisateurId      && { utilisateurId: "L'utilisateur est obligatoire" }),
@@ -149,6 +149,13 @@ export class FormEmprunt implements OnInit {
       });
       return;
     }
+    const confirmed = await this.notification.confirm(
+      this.estModification()
+        ? 'Voulez-vous vraiment modifier cet emprunt ?'
+        : 'Voulez-vous vraiment enregistrer cet emprunt ?',
+      this.estModification() ? 'Modification' : 'Confirmation'
+    );
+    if (!confirmed) return;
 
     this.isLoading.set(true);
 
@@ -165,31 +172,32 @@ export class FormEmprunt implements OnInit {
       this.empruntService.modifierEmprunt(this.empruntId()!, dataEmprunt).subscribe({
         next: () => {
           this.isLoading.set(false);
-          this.succes.set(true);
+          this.notification.success('Emprunt modifié avec succès');
           setTimeout(() => this.router.navigate(['/emprunt/liste']), 1500);
         },
-        error: (err) => this.erreurs.set(err.error ?? { erreur: err.message })
+        error: (err) => {
+          this.isLoading.set(false);
+          if (!this.notification.applyFieldErrors(err, this.erreurs)) {
+            this.notification.fromHttpError(err);
+          }
+        },
       });
       return;
     }
 
     this.empruntService.creerEmprunt(dataEmprunt).subscribe({
       next: () => {
-        this.isLoading.set(false)
+        this.isLoading.set(false);
         this.erreurs.set({});
-        this.succes.set(true);
+        this.notification.success('Emprunt enregistré avec succès');
         form.reset();
-        setTimeout(() => this.succes.set(false), 4000);
       },
       error: (err) => {
         this.isLoading.set(false);
-        const erreurBack = err.error;
-        if (typeof erreurBack === 'object' && erreurBack !== null) {
-          this.erreurs.set(erreurBack);
-        } else {
-          this.erreurs.set({ erreur: err.message });
+        if (!this.notification.applyFieldErrors(err, this.erreurs)) {
+          this.notification.fromHttpError(err);
         }
-      }
+      },
     });
   }
 

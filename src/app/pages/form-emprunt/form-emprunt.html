@@ -138,12 +138,6 @@
       </div>
 
       <hr class="form-divider">
-      @if (erreurs()['erreur']) {
-        <p class="field-error field-error--global">{{ erreurs()['erreur'] }}</p>
-      }
-      @if (succes()) {
-        <p class="field-succes">✓ Emprunt enregistré avec succès</p>
-      }
 
       <div class="form-actions">
         <button type="button" class="btn-annuler" (click)="onAnnuler()">Annuler</button>
