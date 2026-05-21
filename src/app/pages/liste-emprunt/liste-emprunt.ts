@@ -4,6 +4,9 @@ import {CommonModule, DatePipe} from '@angular/common';
 import {ColonneConfig} from '../../shared/models/colonne-config.model';
 import {Table} from '../../shared/components/table/table';
 import {ActivatedRoute, Router, RouterLink} from '@angular/router';
+import {Auth} from '../../core/services/authentification/auth';
+import {NotificationService} from '../../core/services/notification/notification.service';
+import {switchMap} from 'rxjs';
 
 @Component({
   selector: 'app-listEmprunt',
@@ -15,6 +18,7 @@ import {ActivatedRoute, Router, RouterLink} from '@angular/router';
 export class ListeEmprunt implements OnInit {
 
   router = inject(Router)
+  authService =inject(Auth)
 
   colonnesEmpruntsRecent: ColonneConfig[] = [
     { key: 'id', label: 'ID' },
@@ -31,6 +35,7 @@ export class ListeEmprunt implements OnInit {
 
   empruntService = inject(EmpruntService)
   route = inject(ActivatedRoute);
+  notificationService = inject(NotificationService);
 
   filtre = signal<string>('actif');
   empruntASupprimer = signal<any | null>(null);
@@ -61,22 +66,21 @@ export class ListeEmprunt implements OnInit {
     this.router.navigate(['/enregistrer/emprunt', row.id]);
   }
 
-  onDelete(row: any): void {
-    this.empruntASupprimer.set(row);
+  async onDelete(row: any): Promise<void> {
+    const confirmed = await this.notificationService.confirm(
+      `Confirmez-vous la suppression de l'emprunt n°${row.id} ?`,
+      'Suppression'
+    );
+    if (!confirmed) return;
+
+    this.empruntService.supprimerEmprunt(row.id)
+      .pipe(switchMap(() =>
+        this.filtre() === 'retard'
+          ? this.empruntService.obtenirEmpruntEnRetard()
+          : this.empruntService.obtenirListeEmpruntsActifs()
+      ))
+      .subscribe();
   }
 
-  confirmerSuppression(): void {
-    const row = this.empruntASupprimer();
-    if (!row) return;
-    this.empruntService.supprimerEmprunt(row.id).subscribe(() => {
-      this.empruntASupprimer.set(null);
-      this.filtre() === 'retard'
-        ? this.empruntService.obtenirEmpruntEnRetard().subscribe()
-        : this.empruntService.obtenirListeEmpruntsActifs().subscribe();
-    });
-  }
 
-  annulerSuppression(): void {
-    this.empruntASupprimer.set(null);
-  }
 }

@@ -4,25 +4,14 @@
     <h2>{{ titre() }}</h2>
   </div>
   <app-table
-    [showAction]="false"
-    [showEditDelete]="true"
+    [showAction]="authService.isAdmin()"
+    [showEditDelete]="authService.isAdmin()"
     [showNote]="true"
     (edit)="onEdit($event)"
     (delete)="onDelete($event)"
     [colonnes]="colonnesEmpruntsRecent"
     [data]="data()"
   />
-  @if (empruntASupprimer()) {
-    <div class="modale-overlay">
-      <div class="modale">
-        <p>Confirmez-vous la suppression de l'emprunt n°{{ empruntASupprimer().id }} ?</p>
-        <div class="modale-actions">
-          <button class="btn-annuler" (click)="annulerSuppression()">Annuler</button>
-          <button class="btn-supprimer" (click)="confirmerSuppression()">Confirmer</button>
-        </div>
-      </div>
-    </div>
-  }
   <div class="quick-actions">
     <h2 class="section-title">Actions rapides</h2>
     <div class="actions-row">
