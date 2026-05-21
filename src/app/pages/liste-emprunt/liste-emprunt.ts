@@ -55,10 +55,11 @@ export class ListeEmprunt implements OnInit {
       const filtre = params['filtre'] ?? 'actif';
       this.filtre.set(filtre);
 
+      const onError = (err: unknown) => this.notificationService.fromHttpError(err);
       if (filtre === 'retard') {
-        this.empruntService.obtenirEmpruntEnRetard().subscribe();
+        this.empruntService.obtenirEmpruntEnRetard().subscribe({ error: onError });
       } else {
-        this.empruntService.obtenirListeEmpruntsActifs().subscribe();
+        this.empruntService.obtenirListeEmpruntsActifs().subscribe({ error: onError });
       }
     });
   }
@@ -79,7 +80,10 @@ export class ListeEmprunt implements OnInit {
           ? this.empruntService.obtenirEmpruntEnRetard()
           : this.empruntService.obtenirListeEmpruntsActifs()
       ))
-      .subscribe();
+      .subscribe({
+        next: () => this.notificationService.success('Emprunt supprimé'),
+        error: (err) => this.notificationService.fromHttpError(err),
+      });
   }
 
 
