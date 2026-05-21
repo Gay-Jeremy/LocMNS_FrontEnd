@@ -9,6 +9,8 @@ export const utilisateurGuard: CanActivateFn = (route, state) => {
 
   if(authService.jwtInfo() == null) {
     const router = inject(Router);
+    const notification = inject(NotificationService);
+    notification.warning('Veuillez vous connecter pour accéder à cette page');
     return router.parseUrl('/login')
   }
 
