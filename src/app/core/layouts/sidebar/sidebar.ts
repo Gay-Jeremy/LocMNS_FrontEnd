@@ -1,4 +1,5 @@
-import { Component, inject, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit, Output, EventEmitter } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { EmpruntService } from '../../services/emprunt/emprunt.service';
 import {Router, RouterLink, RouterLinkActive} from '@angular/router';
 import {MaterielService} from '../../services/materiel/materiel.service';
@@ -22,15 +23,24 @@ export class Sidebar implements OnInit {
 
   private readonly empruntService = inject(EmpruntService);
   private readonly materielService = inject(MaterielService);
+  private readonly destroyRef = inject(DestroyRef);
 
   readonly nbDemandeEmprunt = this.empruntService.nbDemandeEmprunt;
   readonly nbEmpruntActif   = this.empruntService.nbEmpruntActif;
   readonly nbPanneSignalee  = this.materielService.nbMaterielPanneSignalee;
 
-  ngOnInit() {
-    this.empruntService.obtenirListeEmpruntsActifs().subscribe();
-    this.empruntService.obtenirListeDemandesEmprunt().subscribe();
-    this.materielService.obtenirListeMaterielPanneSignalee().subscribe();
+  ngOnInit(): void {
+    const onError = (err: unknown) => this.notification.fromHttpError(err);
+
+    this.empruntService.obtenirListeEmpruntsActifs()
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({ error: onError });
+    this.empruntService.obtenirListeDemandesEmprunt()
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({ error: onError });
+    this.materielService.obtenirListeMaterielPanneSignalee()
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({ error: onError });
   }
 
   onNavClick() {
