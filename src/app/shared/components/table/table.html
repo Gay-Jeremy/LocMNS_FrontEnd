@@ -33,18 +33,6 @@
               @for (col of colonnes(); track col.key) {
                 <td>{{ getValeur(row, col.key) }}</td>
               }
-              @if (showAction()) {
-                <td>
-                  <select [ngModel]="row.action ?? ''"
-                          (ngModelChange)="onActionChange(row, $event)">
-                    <option value="" disabled selected>{{ actionPlaceholder() }}</option>
-                    @for (action of tableActions(); track action.id) {
-                      <option [value]="action.id">{{ action.libelle }}</option>
-                    }
-                  </select>
-                </td>
-              }
-
               @if (showEditDelete()) {
                 <td class="td-actions">
                   <button class="btn-icon btn-icon--edit"
@@ -57,6 +45,17 @@
                           (click)="onDelete(row)">
                     🗑️
                   </button>
+                </td>
+              }
+              @if (showAction()) {
+                <td>
+                  <select [ngModel]="row.action ?? ''"
+                          (ngModelChange)="onActionChange(row, $event)">
+                    <option value="" disabled selected>{{ actionPlaceholder() }}</option>
+                    @for (action of tableActions(); track action.id) {
+                      <option [value]="action.id">{{ action.libelle }}</option>
+                    }
+                  </select>
                 </td>
               }
               @if (showNote()) {
