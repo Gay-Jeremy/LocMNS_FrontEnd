@@ -8,6 +8,7 @@ import {StatutMaterielService} from '../../core/services/statut-materiel/statut-
 import {DecisionEvent} from '../../shared/models/decision-event.model';
 import {switchMap} from 'rxjs';
 import {Auth} from '../../core/services/authentification/auth';
+import {NotificationService} from '../../core/services/notification/notification.service';
 
 @Component({
   selector: 'app-liste-incident',
@@ -31,36 +32,30 @@ export class ListeIncident implements OnInit{
   materielService = inject(MaterielService)
   statutMaterielService = inject(StatutMaterielService)
   authService = inject(Auth)
+  notification = inject(NotificationService)
 
   erreurs = signal<Record<string, string>>({});
-  succes = signal<boolean>(false);
 
   ngOnInit() {
 
-    this.empruntService.obtenirListeEmpruntsActifs().subscribe();
-    this.materielService.obtenirListeMaterielPanneSignalee().subscribe();
-    this.statutMaterielService.obtenirListeStatutMateriel().subscribe();
+    const onError = (err: unknown) => this.notification.fromHttpError(err);
+    this.empruntService.obtenirListeEmpruntsActifs().subscribe({ error: onError });
+    this.materielService.obtenirListeMaterielPanneSignalee().subscribe({ error: onError });
+    this.statutMaterielService.obtenirListeStatutMateriel().subscribe({ error: onError });
   }
 
   onDecisionChange(event: DecisionEvent): void {
     this.erreurs.set({});
-    this.succes.set(false);
 
     this.materielService.mettreAJourStatut(event.rowId, event.statutId)
       .pipe(switchMap(() => this.materielService.obtenirListeMaterielPanneSignalee()))
       .subscribe({
-        next: () => {
-          this.succes.set(true);
-          setTimeout(() => this.succes.set(false), 4000);
-        },
+        next: () => this.notification.success('Statut mis à jour'),
         error: (err) => {
-          const erreurBack = err.error;
-          if (typeof erreurBack === 'object' && erreurBack !== null) {
-            this.erreurs.set(erreurBack);
-          } else {
-            this.erreurs.set({ global: err.message });
+          if (!this.notification.applyFieldErrors(err, this.erreurs)) {
+            this.notification.fromHttpError(err);
           }
-        }
+        },
       });
   }
 }
