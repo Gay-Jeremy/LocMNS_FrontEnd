@@ -1,14 +1,7 @@
-
 .table-scroll {
   width: 100%;
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
-}
-
-.td-actions {
-  display: flex;
-  gap: 8px;
-  align-items: center;
 }
 
 .btn-icon {
@@ -19,24 +12,19 @@
   border-radius: var(--radius-sm);
   font-size: 15px;
   line-height: 1;
-  transition: background var(--transition-fast);
-}
-
-.btn-icon--edit:hover  { background: rgba(255, 255, 255, 0.08); }
-.btn-icon--delete:hover { background: rgba(230, 57, 70, 0.18); }
-
-.btn-icon--note {
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-size: 15px;
-  opacity: 0.6;
+  opacity: 0.65;
   transition: opacity var(--transition-fast), transform var(--transition-fast);
 }
 
-.btn-icon--note:hover {
+.btn-icon svg {
+  display: block;
+  stroke: var(--color-text-secondary);
+}
+
+.btn-icon:hover {
   opacity: 1;
   transform: scale(1.15);
+  background: none;
 }
 
 .table-empty-note {

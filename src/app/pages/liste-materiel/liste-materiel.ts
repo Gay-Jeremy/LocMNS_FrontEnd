@@ -7,7 +7,7 @@ import {Router, RouterLink} from '@angular/router';
 import {Auth} from '../../core/services/authentification/auth';
 import {StatutMaterielService} from '../../core/services/statut-materiel/statut-materiel.service';
 import {StatutMateriel} from '../../core/models/statut-materiel';
-import {map, switchMap} from 'rxjs';
+import {forkJoin, map, switchMap} from 'rxjs';
 import {DecisionEvent} from '../../shared/models/decision-event.model';
 import {NotificationService} from '../../core/services/notification/notification.service';
 import {Emprunts} from '../../core/models/emprunt';
@@ -71,7 +71,10 @@ export class ListeMateriel implements OnInit {
 
     this.materielService.mettreAJourStatut(event.rowId, event.statutId)
       .pipe(
-        switchMap(() => this.materielService.obtenirListeMateriel()),
+        switchMap(() => forkJoin([
+          this.materielService.obtenirListeMateriel(),
+          this.materielService.obtenirListeMaterielPanneSignalee()
+        ])),
         takeUntilDestroyed(this.destroyRef),
       )
       .subscribe({
