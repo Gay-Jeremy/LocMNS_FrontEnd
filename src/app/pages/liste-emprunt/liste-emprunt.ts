@@ -8,14 +8,15 @@ import {ActivatedRoute, Router, RouterLink} from '@angular/router';
 import {Auth} from '../../core/services/authentification/auth';
 import {NotificationService} from '../../core/services/notification/notification.service';
 import {Emprunts} from '../../core/models/emprunt';
-import {forkJoin, map, switchMap, tap} from 'rxjs';
+import { map, switchMap, tap} from 'rxjs';
 import {StatutEmpruntService} from '../../core/services/statut-emprunt/statut-emprunt.service';
 import {StatutEmprunt} from '../../core/models/statut-emprunt';
 import {DecisionEvent} from '../../shared/models/decision-event.model';
+import {DatePicker} from '../../shared/components/date-picker/date-picker';
 
 @Component({
   selector: 'app-listEmprunt',
-  imports: [CommonModule, Table, RouterLink],
+  imports: [CommonModule, Table, RouterLink, DatePicker],
   templateUrl: './liste-emprunt.html',
   styleUrl: './liste-emprunt.css',
 })
@@ -49,6 +50,8 @@ export class ListeEmprunt implements OnInit {
 
   filtre = signal<string>('actif');
   listeStatut = signal<StatutEmprunt[]>([]);
+  showDateModal = signal(false);
+  pendingEvent = signal<DecisionEvent | null>(null);
 
   titre = computed(() =>
     this.filtre() === 'retard' ? 'Emprunts en retard' : 'Emprunts actif'
@@ -120,24 +123,43 @@ export class ListeEmprunt implements OnInit {
 
   async onDecisionChange(event: DecisionEvent): Promise<void> {
     this.erreurs.set({});
-    const confirmed = await this.notificationService.confirm('Voulez-vous vraiment changer le statut ?');
 
-    if (!confirmed) return;
-
-    if (event.code === "DEMANDE_PROLONGATION" || event.code === "DEMANDE_RETOUR_ANTICIPE" ) {
-
+    if (event.code === 'DEMANDE_PROLONGATION' || event.code === 'DEMANDE_RETOUR_ANTICIPE') {
+      const row = this.data().find(r => r.id === event.rowId);
+      console.log('row complet :', row);
+      console.log('dateFin :', row?.dateFin);
+      this.pendingEvent.set({ ...event, dateFin: row?.dateFin ?? '' });
+      this.showDateModal.set(true);
+      return;
     }
 
-    this.empruntService.mettreAJourStatut(event.rowId, event.statutId)
+    const confirmed = await this.notificationService.confirm('Voulez-vous vraiment changer le statut ?');
+    if (!confirmed) return;
+    this.soumettreMajStatut(event);
+  }
+
+  onDateConfirmed(date: string): void {
+    const event = this.pendingEvent();
+    if (!event) return;
+    this.showDateModal.set(false);
+    this.pendingEvent.set(null);
+    this.soumettreMajStatut({ ...event, date });
+  }
+
+  onDateCancelled(): void {
+    this.showDateModal.set(false);
+    this.pendingEvent.set(null);
+  }
+
+  soumettreMajStatut(event: DecisionEvent): void {
+    this.empruntService.mettreAJourStatut(event.rowId, event.statutId, event.date)
       .pipe(
-        switchMap(() =>
-          this.empruntService.obtenirListeEmpruntsActifs(),
-        ),
+        switchMap(() => this.empruntService.obtenirListeEmpruntsActifs()),
         takeUntilDestroyed(this.destroyRef),
       )
       .subscribe({
         next: () => this.notificationService.success('Statut mis à jour'),
-        error: (err) => this.notificationService.fromHttpError(err)
+        error: (err) => this.notificationService.fromHttpError(err),
       });
   }
 }

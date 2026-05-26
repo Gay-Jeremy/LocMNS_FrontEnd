@@ -76,7 +76,9 @@ export class EmpruntService {
     );
   }
 
-  mettreAJourStatut(empruntId: number, statutId: number): Observable<unknown> {
-    return this.apiService.put(`emprunts/${empruntId}/statut`, { statutId });
+  mettreAJourStatut(empruntId: number, statutId: number, date?: string): Observable<unknown> {
+    const body: any = { statutId };
+    if (date) body.date = date;
+    return this.apiService.put(`emprunts/${empruntId}/statut`, body);
   }
 }

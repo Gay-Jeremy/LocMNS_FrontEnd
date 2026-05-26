@@ -15,6 +15,14 @@
     [colonnes]="colonnesEmpruntsRecent"
     [data]="data()"
   />
+  @if (showDateModal()) {
+    <app-date-picker
+      [dateFin]="pendingEvent()?.dateFin ?? ''"
+      [code]="pendingEvent()?.code ?? ''"
+      (dateSelect)="onDateConfirmed($event)"
+      (cancel)="onDateCancelled()"
+    />
+  }
   <div class="quick-actions">
     <h2 class="section-title">Actions rapides</h2>
     <div class="actions-row">
