@@ -5,7 +5,7 @@ import {ColonneConfig} from '../../shared/models/colonne-config.model';
 import {EmpruntService} from '../../core/services/emprunt/emprunt.service';
 import {Table} from '../../shared/components/table/table';
 import {RouterLink} from '@angular/router';
-import {StatutEmprunt} from '../../core/services/statut-emprunt/statut-emprunt';
+import {StatutEmpruntService} from '../../core/services/statut-emprunt/statut-emprunt.service';
 import {DecisionEvent} from '../../shared/models/decision-event.model';
 import {forkJoin, switchMap} from 'rxjs';
 import {Auth} from '../../core/services/authentification/auth';
@@ -37,7 +37,7 @@ export class ListeDemande implements OnInit {
   ];
 
   empruntService = inject(EmpruntService)
-  statutEmpruntService = inject(StatutEmprunt)
+  statutEmpruntService = inject(StatutEmpruntService)
   authService = inject(Auth)
   notification = inject(NotificationService)
   private readonly destroyRef = inject(DestroyRef);

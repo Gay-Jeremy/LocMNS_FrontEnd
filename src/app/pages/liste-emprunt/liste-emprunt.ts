@@ -8,7 +8,10 @@ import {ActivatedRoute, Router, RouterLink} from '@angular/router';
 import {Auth} from '../../core/services/authentification/auth';
 import {NotificationService} from '../../core/services/notification/notification.service';
 import {Emprunts} from '../../core/models/emprunt';
-import {map, switchMap, tap} from 'rxjs';
+import {forkJoin, map, switchMap, tap} from 'rxjs';
+import {StatutEmpruntService} from '../../core/services/statut-emprunt/statut-emprunt.service';
+import {StatutEmprunt} from '../../core/models/statut-emprunt';
+import {DecisionEvent} from '../../shared/models/decision-event.model';
 
 @Component({
   selector: 'app-listEmprunt',
@@ -33,14 +36,19 @@ export class ListeEmprunt implements OnInit {
     { key: 'materiel.numSerie', label: 'NUM SÉRIE' },
     { key: 'dateDebut', label: 'DATE DE DÉBUT' },
     { key: 'dateFin', label: 'DATE DE FIN PRÉVUE' },
+    { key: 'dateRetourAnticipe', label: 'DATE RETOUR ANTICIPÉ' },
+    { key: 'dateProlongation', label: 'DATE PROLONGATION' },
     { key: 'statutEmprunt.libelle', label: 'STATUT' },
   ];
 
   empruntService = inject(EmpruntService)
   route = inject(ActivatedRoute);
   notificationService = inject(NotificationService);
+  statutEmpruntService = inject(StatutEmpruntService);
+
 
   filtre = signal<string>('actif');
+  listeStatut = signal<StatutEmprunt[]>([]);
 
   titre = computed(() =>
     this.filtre() === 'retard' ? 'Emprunts en retard' : 'Emprunts actif'
@@ -52,7 +60,12 @@ export class ListeEmprunt implements OnInit {
       : this.empruntService.listeEmpruntActif()
   );
 
+  erreurs = signal<Record<string, string>>({});
+
   ngOnInit(): void {
+
+    const onError = (err: unknown) => this.notificationService.fromHttpError(err);
+
     this.route.queryParams.pipe(
       map((params) => (params['filtre'] ?? 'actif') as string),
       tap((filtre) => this.filtre.set(filtre)),
@@ -64,6 +77,18 @@ export class ListeEmprunt implements OnInit {
       takeUntilDestroyed(this.destroyRef),
     ).subscribe({
       error: (err) => this.notificationService.fromHttpError(err),
+    });
+
+    this.statutEmpruntService.obtenirListeStatutEmpruntsAction().pipe(
+      map(statuts =>
+        this.authService.isAdmin()
+          ? statuts
+          : statuts.filter(s => s.code != null && ['DEMANDE_PROLONGATION', 'DEMANDE_RETOUR_ANTICIPE'].includes(s.code))
+      ),
+      takeUntilDestroyed(this.destroyRef),
+    ).subscribe({
+      next: (statuts) => this.listeStatut.set(statuts),
+      error: onError,
     });
   }
 
@@ -90,6 +115,29 @@ export class ListeEmprunt implements OnInit {
       .subscribe({
         next: () => this.notificationService.success('Emprunt supprimé'),
         error: (err) => this.notificationService.fromHttpError(err),
+      });
+  }
+
+  async onDecisionChange(event: DecisionEvent): Promise<void> {
+    this.erreurs.set({});
+    const confirmed = await this.notificationService.confirm('Voulez-vous vraiment changer le statut ?');
+
+    if (!confirmed) return;
+
+    if (event.code === "DEMANDE_PROLONGATION" || event.code === "DEMANDE_RETOUR_ANTICIPE" ) {
+
+    }
+
+    this.empruntService.mettreAJourStatut(event.rowId, event.statutId)
+      .pipe(
+        switchMap(() =>
+          this.empruntService.obtenirListeEmpruntsActifs(),
+        ),
+        takeUntilDestroyed(this.destroyRef),
+      )
+      .subscribe({
+        next: () => this.notificationService.success('Statut mis à jour'),
+        error: (err) => this.notificationService.fromHttpError(err)
       });
   }
 }

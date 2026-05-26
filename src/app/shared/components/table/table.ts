@@ -1,7 +1,6 @@
 import {Component, ElementRef, input, output, ViewChild,} from '@angular/core';
 import {ColonneConfig} from '../../models/colonne-config.model';
 import {FormsModule} from '@angular/forms';
-import {TableActionModel} from '../../models/table-action.model';
 import {DecisionEvent} from '../../models/decision-event.model';
 
 
@@ -31,9 +30,8 @@ export class Table {
   edit           = output<any>();
   delete         = output<any>();
 
-  onActionChange(row: any, statutId: number): void {
-    row.action = statutId;
-    this.decisionChange.emit({ rowId: row.id, statutId });
+  onActionChange(row: any, action: any): void {
+    this.decisionChange.emit({ rowId: row.id, statutId : action.id, code: action.code });
   }
 
 
