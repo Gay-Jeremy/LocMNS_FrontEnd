@@ -1,0 +1,25 @@
+<div class="modal-overlay" (click)="onCancel()">
+  <div class="modal-card" (click)="$event.stopPropagation()">
+
+    <div class="form-card-header">
+      <span class="form-card-title">Sélectionner une date</span>
+    </div>
+
+    <div class="form-body">
+      <div class="field-group">
+        <label class="field-label">Date <span class="asterisque">*</span></label>
+        <input class="field-input" type="date" [(ngModel)]="date" />
+      </div>
+
+      <hr class="form-divider" />
+
+      <div class="form-actions">
+        <button class="btn-annuler" (click)="onCancel()">Annuler</button>
+        <button class="btn-enregistrer" (click)="onConfirm()" [disabled]="!date">
+          Confirmer
+        </button>
+      </div>
+    </div>
+
+  </div>
+</div>
