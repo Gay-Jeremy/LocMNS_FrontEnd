@@ -53,11 +53,11 @@
               }
               @if (showAction()) {
                 <td>
-                  <select [ngModel]="row.action ?? ''"
+                  <select [ngModel]="selectValues()[row.id]?.id ?? ''"
                           (ngModelChange)="onActionChange(row, $event)">
-                    <option value="" disabled selected>{{ actionPlaceholder() }}</option>
+                    <option value="" disabled>{{ actionPlaceholder() }}</option>
                     @for (action of tableActions(); track action.id) {
-                      <option [ngValue]="action">{{ action.libelle }}</option>
+                      <option [ngValue]="action" [value]="action.id">{{ action.libelle }}</option>
                     }
                   </select>
                 </td>
