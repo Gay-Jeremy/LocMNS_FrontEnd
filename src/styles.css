@@ -118,9 +118,8 @@ body {
    ============================================= */
 .shell {
   display: flex;
-  height: calc(100vh - 60px - 36px);
+  height: calc(100vh - 60px);
   margin-top: 60px;
-  margin-bottom: 36px;
 }
 
 main {
@@ -198,15 +197,6 @@ main::-webkit-scrollbar-thumb {
 .avatar:hover {
   transform: scale(1.06);
   box-shadow: var(--shadow-glow);
-}
-
-/* =============================================
-   FOOTER
-   ============================================= */
-.footer-txt {
-  font-size: 11px;
-  color: var(--color-text-muted);
-  letter-spacing: 0.2px;
 }
 
 /* =============================================

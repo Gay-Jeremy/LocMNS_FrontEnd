@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import {Footer} from '../../../core/layouts/footer/footer';
 import {Header} from '../../../core/layouts/header/header';
 import {Sidebar} from '../../../core/layouts/sidebar/sidebar';
 
@@ -8,7 +7,7 @@ import {Sidebar} from '../../../core/layouts/sidebar/sidebar';
 @Component({
   selector: 'app-layout',
   standalone: true,
-  imports: [RouterOutlet, Footer, Header, Sidebar, Header, Sidebar, Footer],
+  imports: [RouterOutlet, Header, Sidebar],
   template: `
 
     <app-header (burgerClick)="toggleSidebar()"></app-header>
@@ -21,8 +20,6 @@ import {Sidebar} from '../../../core/layouts/sidebar/sidebar';
         <router-outlet></router-outlet>
       </main>
     </div>
-
-    <app-footer></app-footer>
 
   `,
 })
