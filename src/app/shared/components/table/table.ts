@@ -1,4 +1,4 @@
-import {Component, ElementRef, input, output, ViewChild,} from '@angular/core';
+import {Component, ElementRef, input, output, signal, ViewChild,} from '@angular/core';
 import {ColonneConfig} from '../../models/colonne-config.model';
 import {FormsModule} from '@angular/forms';
 import {DecisionEvent} from '../../models/decision-event.model';
@@ -30,7 +30,14 @@ export class Table {
   edit           = output<any>();
   delete         = output<any>();
 
+  readonly selectValues = signal<Record<number, any | null>>({});
+
+  resetRow(rowId: number): void {
+    this.selectValues.update(current => ({ ...current, [rowId]: null }));
+  }
+
   onActionChange(row: any, action: any): void {
+    this.selectValues.update(current => ({ ...current, [row.id]: action }));
     this.decisionChange.emit({ rowId: row.id, statutId : action.id, code: action.code });
   }
 
@@ -47,6 +54,7 @@ export class Table {
       this.tableScrollRef.nativeElement.scrollLeft = 0;
     }
   }
+
 
   getValeur(row: any, key: string): any {
     return key.split('.').reduce((obj, k) => obj?.[k], row);

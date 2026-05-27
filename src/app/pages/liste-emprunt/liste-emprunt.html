@@ -12,7 +12,7 @@
     [showNote]="true"
     (edit)="onEdit($event)"
     (delete)="onDelete($event)"
-    [colonnes]="colonnesEmpruntsRecent"
+    [colonnes]="colonnesEmpruntsRecent()"
     [data]="data()"
   />
   @if (showDateModal()) {
