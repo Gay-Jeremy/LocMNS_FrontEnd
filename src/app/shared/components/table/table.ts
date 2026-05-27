@@ -1,52 +1,63 @@
-import { Component, ElementRef, effect, input, output, signal, ViewChild } from '@angular/core';
-import { ColonneConfig } from '../../models/colonne-config.model';
-import { FormsModule } from '@angular/forms';
-import { DecisionEvent } from '../../models/decision-event.model';
+import {Component, ElementRef, input, output, ViewChild,} from '@angular/core';
+import {ColonneConfig} from '../../models/colonne-config.model';
+import {FormsModule} from '@angular/forms';
+import {DecisionEvent} from '../../models/decision-event.model';
+
+
+
 
 @Component({
   selector: 'app-table',
-  imports: [FormsModule],
+  imports: [
+    FormsModule
+  ],
   templateUrl: './table.html',
   styleUrl: './table.css',
 })
-export class Table {
 
-  titre             = input<string>('');
-  colonnes          = input<ColonneConfig[]>([]);
-  data              = input<any[]>([]);
-  showAction        = input<boolean>(true);
-  showEditDelete    = input<boolean>(true);
-  tableActions      = input<any[]>([]);
-  showNote          = input<boolean>(false);
+export class Table {
+  titre  = input<string>('');
+  colonnes = input<ColonneConfig[]>([]);
+  data   = input<any[]>([]);
+  showAction = input<boolean>(true);
+  showEditDelete = input<boolean>(true);
+  tableActions = input<any[]>([]);
+  showNote = input<boolean>(false);
   actionPlaceholder = input<string>('— Décision —');
 
   decisionChange = output<DecisionEvent>();
   edit           = output<any>();
   delete         = output<any>();
 
-  readonly selectValues = signal<Record<number, any | null>>({});
+  onActionChange(row: any, event: Event): void {
+    const selectElement = event.target as HTMLSelectElement | null;
+    const actionId = selectElement?.value ?? '';
 
-  constructor() {
-    // Quand data est rechargée (succès ou navigation), on remet tous les selects à zéro
-    effect(() => {
-      this.data(); // lecture pour s'abonner au signal
-      this.selectValues.set({});
-    });
+    if (!actionId) {
+      return;
+    }
+
+    const action = this.tableActions().find((item) => String(item.id) === String(actionId));
+    if (!action) {
+      return;
+    }
+
+    this.decisionChange.emit({ rowId: row.id, statutId : action.id, code: action.code });
+    setTimeout(() => {
+      row.__selectedActionId = '';
+      if (selectElement) {
+        selectElement.value = '';
+      }
+    }, 0);
   }
 
-  resetRow(rowId: number): void {
-    this.selectValues.update(current => ({ ...current, [rowId]: null }));
-  }
-
-  onActionChange(row: any, action: any): void {
-    this.selectValues.update(current => ({ ...current, [row.id]: action }));
-    this.decisionChange.emit({ rowId: row.id, statutId: action.id, code: action.code });
-  }
 
   onEdit(row: any): void   { this.edit.emit(row); }
   onDelete(row: any): void { this.delete.emit(row); }
 
+
   @ViewChild('tableScroll') tableScrollRef!: ElementRef<HTMLDivElement>;
+
 
   ngAfterViewInit() {
     if (this.tableScrollRef) {
@@ -57,4 +68,5 @@ export class Table {
   getValeur(row: any, key: string): any {
     return key.split('.').reduce((obj, k) => obj?.[k], row);
   }
+
 }

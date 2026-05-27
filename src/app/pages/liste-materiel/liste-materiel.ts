@@ -61,6 +61,7 @@ export class ListeMateriel implements OnInit {
       next: (statuts) => this.listeStatut.set(statuts),
       error: onError,
     });
+
   }
 
   async onDecisionChange(event: DecisionEvent): Promise<void> {
