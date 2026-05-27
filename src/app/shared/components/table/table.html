@@ -53,7 +53,7 @@
               }
               @if (showAction()) {
                 <td>
-                  <select [ngModel]="selectValues()[row.id]?.id ?? ''"
+                  <select [ngModel]="row.action ?? ''"
                           (ngModelChange)="onActionChange(row, $event)">
                     <option value="" disabled selected>{{ actionPlaceholder() }}</option>
                     @for (action of tableActions(); track action.id) {
