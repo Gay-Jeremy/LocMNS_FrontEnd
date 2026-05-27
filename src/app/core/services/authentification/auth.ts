@@ -1,6 +1,8 @@
 import {computed, inject, Injectable, signal} from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { tap } from 'rxjs';
+import {environment} from '../../../../environments/environment';
+
 
 type JwtInfo = {sub: string, id: string, role: string, nom: string, prenom: string};
 @Injectable({ providedIn: 'root' })
@@ -17,7 +19,7 @@ export class Auth {
 
   login(credentials: { email: string; password: string }) {
     return this.httpClient.post(
-      'http://localhost:8080/login',
+      `${environment.serverUrl}\`/login`,
       credentials,
       { responseType: 'text' }
     ).pipe(
