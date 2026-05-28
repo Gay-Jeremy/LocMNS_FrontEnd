@@ -13,6 +13,7 @@ import {adminGuard} from './guards/admin-guard';
 import {utilisateurGuard} from './guards/utilisateur-guard';
 
 export const routes: Routes = [
+  { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
 
   {
@@ -29,7 +30,7 @@ export const routes: Routes = [
       { path: 'demande/liste', component: ListeDemande, canActivate: [utilisateurGuard]},
       { path: 'historique/emprunt', component: HistoriqueEmprunt, canActivate: [utilisateurGuard]},
       { path: 'materiel/incident', component: ListeIncident, canActivate: [utilisateurGuard]},
-      { path: '**', redirectTo: '' },
+      { path: '**', redirectTo: 'accueil' },
     ]
   },
 
