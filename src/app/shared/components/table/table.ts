@@ -66,7 +66,22 @@ export class Table {
   }
 
   getValeur(row: any, key: string): any {
-    return key.split('.').reduce((obj, k) => obj?.[k], row);
+
+    const value = key.split('.').reduce((obj, k) => obj?.[k], row);
+
+    const champsDate = [
+      'dateCreation',
+      'dateDebut',
+      'dateFin',
+      'dateProlongation',
+      'dateRetourAnticipe'
+    ];
+
+    if (champsDate.includes(key) && value && !isNaN(Date.parse(value))) {
+      return new Date(value).toLocaleDateString('fr-FR');
+    }
+
+    return value;
   }
 
 }
