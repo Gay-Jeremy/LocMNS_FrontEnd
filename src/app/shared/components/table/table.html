@@ -5,7 +5,7 @@
   <div class="table-scroll" #tableScroll>
     @if (data().length === 0) {
       <tr>
-        <td [attr.colspan]="colonnes().length" class="table-empty">
+        <td [attr.colspan]="visibleColonnes().length" class="table-empty">
           Aucun résultat à afficher
         </td>
       </tr>
@@ -13,7 +13,7 @@
       <table class="loans-table">
         <thead>
         <tr>
-          @for (col of colonnes(); track col.key) {
+          @for (col of visibleColonnes(); track col.key) {
             <th>{{ col.label }}</th>
           }
           @if (showEditDelete()) {
@@ -30,7 +30,7 @@
         <tbody>
           @for (row of data(); track row.id) {
             <tr>
-              @for (col of colonnes(); track col.key) {
+              @for (col of visibleColonnes(); track col.key) {
                 <td>{{ getValeur(row, col.key) }}</td>
               }
               @if (showEditDelete()) {

@@ -1,4 +1,4 @@
-import {Component, ElementRef, input, output, ViewChild,} from '@angular/core';
+import {Component, computed, ElementRef, input, output, ViewChild,} from '@angular/core';
 import {ColonneConfig} from '../../models/colonne-config.model';
 import {FormsModule} from '@angular/forms';
 import {DecisionEvent} from '../../models/decision-event.model';
@@ -16,6 +16,7 @@ import {DecisionEvent} from '../../models/decision-event.model';
 })
 
 export class Table {
+
   titre  = input<string>('');
   colonnes = input<ColonneConfig[]>([]);
   data   = input<any[]>([]);
@@ -28,6 +29,22 @@ export class Table {
   decisionChange = output<DecisionEvent>();
   edit           = output<any>();
   delete         = output<any>();
+
+  visibleColonnes = computed(() => {
+    const rows = this.data();
+
+    return this.colonnes().filter(col => {
+      if (col.key === 'dateProlongation') {
+        return rows.some(r => r.dateProlongation);
+      }
+
+      if (col.key === 'dateRetourAnticipe') {
+        return rows.some(r => r.dateRetourAnticipe);
+      }
+
+      return true;
+    });
+  });
 
   onActionChange(row: any, event: Event): void {
     const selectElement = event.target as HTMLSelectElement | null;

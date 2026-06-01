@@ -144,6 +144,7 @@ export class ListeEmprunt implements OnInit {
     this.showDateModal.set(false);
     this.pendingEvent.set(null);
     this.soumettreMajStatut({ ...event, date });
+    console.log(date)
   }
 
   onDateCancelled(): void {

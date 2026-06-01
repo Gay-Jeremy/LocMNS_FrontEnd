@@ -33,6 +33,8 @@ export class ListeDemande implements OnInit {
     { key: 'materiel.numSerie', label: 'NUM SÉRIE' },
     { key: 'dateDebut', label: 'DATE DE DÉBUT' },
     { key: 'dateFin', label: 'DATE DE FIN PRÉVUE' },
+    { key: 'dateRetourAnticipe', label: 'DATE RETOUR ANTICIPÉ' },
+    { key: 'dateProlongation', label: 'DATE PROLONGATION' },
     { key: 'statutEmprunt.libelle', label: 'STATUT' },
   ];
 
