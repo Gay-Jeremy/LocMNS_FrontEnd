@@ -71,6 +71,7 @@ export class FormMateriel implements OnInit {
         this.modeleId.set(materiel.modele.id);
         this.numSerie.set(materiel.numSerie);
         this.statutMaterielId.set(materiel.statutMateriel?.id ?? null);
+        console.log(this.statutMaterielId())
       },
       error: (err) => this.notification.fromHttpError(err),
     });
@@ -170,6 +171,7 @@ export class FormMateriel implements OnInit {
     const categorieModeleId = this.categorieModeleId();
     const modeleId          = this.modeleId();
     const numSerie          = this.numSerie();
+    const statutId = this.statutMaterielId();
 
     if (!categorieModeleId || !modeleId || !numSerie) {
       this.erreurs.set({
@@ -183,10 +185,10 @@ export class FormMateriel implements OnInit {
     this.isLoading.set(true);
 
     const payload: MaterielDto = {
-      numSerie,
+      numSerie: this.numSerie(),
       categorieId: this.categorieModeleId(),
-      modeleId,
-      statutId: this.statutMaterielId(),
+      modeleId: this.modeleId(),
+      statutMaterielId: this.statutMaterielId(),
       salleId: null
     };
 
@@ -207,6 +209,7 @@ export class FormMateriel implements OnInit {
           form.reset();
           this.modeleService.listeModeleParCategorie.set([]);
         }
+        console.log(payload)
       },
       error: (err) => {
         this.isLoading.set(false);

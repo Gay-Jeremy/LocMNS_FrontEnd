@@ -85,7 +85,7 @@ export class ListeMateriel implements OnInit {
   }
 
   onEdit(row: Emprunts): void {
-    this.router.navigate(['/enregistrer/materiel', row.id]);
+    this.router.navigate(['materiel/modifier', row.id]);
   }
 
   async onDelete(row: Emprunts): Promise<void> {

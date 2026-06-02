@@ -1,7 +1,7 @@
 export interface MaterielDto {
   categorieId: number | null | 'new';
-  modeleId: number | 'new';
+  modeleId: number | 'new' | null;
   numSerie: string;
-  statutId: number | null;
+  statutMaterielId: number | null;
   salleId: number | null;
 }
