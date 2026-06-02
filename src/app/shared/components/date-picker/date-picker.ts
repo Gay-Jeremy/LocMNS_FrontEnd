@@ -1,11 +1,12 @@
 
 import {Component, input, output, computed, signal} from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import {DatePipe} from '@angular/common';
 
 @Component({
   selector: 'app-date-picker',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule, DatePipe],
   templateUrl: './date-picker.html',
   styleUrl: './date-picker.css',
 })
@@ -31,6 +32,24 @@ export class DatePicker {
     }
     return null;
   });
+
+  titreDatePicker = computed(() => {
+    if (this.code() === 'DEMANDE_PROLONGATION') {
+      return 'Demande de Prolongation'
+    }
+    return 'Demande retour Anticipé'
+  })
+
+  titreDate = computed(() => {
+    if (this.code() === 'DEMANDE_PROLONGATION') {
+      return 'Date de Prolongation souhaitée'
+    }
+    return 'Date de retour anticipé souhaitée'
+  })
+
+
+
+
 
   onConfirm(): void {
     if (this.date && !this.erreur()) this.dateSelect.emit(this.date());

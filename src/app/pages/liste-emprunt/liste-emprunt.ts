@@ -126,8 +126,6 @@ export class ListeEmprunt implements OnInit {
 
     if (event.code === 'DEMANDE_PROLONGATION' || event.code === 'DEMANDE_RETOUR_ANTICIPE') {
       const row = this.data().find(r => r.id === event.rowId);
-      console.log('row complet :', row);
-      console.log('dateFin :', row?.dateFin);
       this.pendingEvent.set({ ...event, dateFin: row?.dateFin ?? '' });
       this.showDateModal.set(true);
       return;
@@ -143,8 +141,21 @@ export class ListeEmprunt implements OnInit {
     if (!event) return;
     this.showDateModal.set(false);
     this.pendingEvent.set(null);
-    this.soumettreMajStatut({ ...event, date });
-    console.log(date)
+
+    const appel$ = event.code === 'DEMANDE_PROLONGATION'
+      ? this.empruntService.demanderProlongation(event.rowId, date)
+      : this.empruntService.demanderRetourAnticipe(event.rowId, date);
+
+    appel$.pipe(
+      switchMap(() => this.filtre() === 'retard'
+        ? this.empruntService.obtenirEmpruntEnRetard()
+        : this.empruntService.obtenirListeEmpruntsActifs()
+      ),
+      takeUntilDestroyed(this.destroyRef),
+    ).subscribe({
+      next: () => this.notificationService.success('Demande envoyée'),
+      error: (err) => this.notificationService.fromHttpError(err),
+    });
   }
 
   onDateCancelled(): void {
@@ -153,7 +164,7 @@ export class ListeEmprunt implements OnInit {
   }
 
   soumettreMajStatut(event: DecisionEvent): void {
-    this.empruntService.mettreAJourStatut(event.rowId, event.statutId, event.date)
+    this.empruntService.mettreAJourStatut(event.rowId, event.code!)
       .pipe(
         switchMap(() => this.empruntService.obtenirListeEmpruntsActifs()),
         takeUntilDestroyed(this.destroyRef),

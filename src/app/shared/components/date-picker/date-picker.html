@@ -2,12 +2,14 @@
   <div class="modal-card" (click)="$event.stopPropagation()">
 
     <div class="form-card-header">
-      <span class="form-card-title">Sélectionner une date</span>
+      <span class="form-card-title">{{ titreDatePicker() }}</span>
     </div>
 
     <div class="form-body">
       <div class="field-group">
-        <label class="field-label">Date <span class="asterisque">*</span></label>
+        <label class="field-label">Date de fin prévue</label>
+        <span>{{ dateFin() | date:'dd/MM/yyyy' }}</span>
+        <label class="field-label">{{ titreDate() }} <span class="asterisque">*</span></label>
         <input class="field-input" type="date" [ngModel]="date()"
                (ngModelChange)="date.set($event)" />
         @if (erreur()) {
@@ -19,7 +21,7 @@
 
       <div class="form-actions">
         <button class="btn-annuler" (click)="onCancel()">Annuler</button>
-        <button class="btn-enregistrer" (click)="onConfirm()" [disabled]="!date">
+        <button class="btn-enregistrer" (click)="onConfirm()" [disabled]="!date()">
           Confirmer
         </button>
       </div>

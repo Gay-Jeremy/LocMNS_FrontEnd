@@ -22,7 +22,6 @@ export class Table {
   data   = input<any[]>([]);
   showAction = input<boolean>(true);
   showEditDelete = input<boolean>(true);
-  tableActions = input<any[]>([]);
   showNote = input<boolean>(false);
   actionPlaceholder = input<string>('— Décision —');
 
@@ -46,6 +45,14 @@ export class Table {
     });
   });
 
+  tableActions = input<any[]>([]);
+  resolveActions = input<((row: any) => any[]) | null>(null);
+
+  getActionsForRow(row: any): any[] {
+    const resolver = this.resolveActions();
+    return resolver ? resolver(row) : this.tableActions();
+  }
+
   onActionChange(row: any, event: Event): void {
     const selectElement = event.target as HTMLSelectElement | null;
     const actionId = selectElement?.value ?? '';
@@ -54,7 +61,8 @@ export class Table {
       return;
     }
 
-    const action = this.tableActions().find((item) => String(item.id) === String(actionId));
+    const action = this.getActionsForRow(row)
+      .find(item => String(item.id) === String(actionId));
     if (!action) {
       return;
     }

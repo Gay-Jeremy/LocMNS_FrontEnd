@@ -9,6 +9,7 @@
       [showEditDelete]="authService.isAdmin()"
       [showNote]="true"
       [actionPlaceholder]="'— Décision —'"
+      [resolveActions]="resolveActionsForRow"
       [tableActions]="statutEmpruntService.listeStatutEmpruntDecision()"
       (decisionChange)="onDecisionChange($event)"
     />

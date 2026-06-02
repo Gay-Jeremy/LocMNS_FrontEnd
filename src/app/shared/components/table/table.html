@@ -56,7 +56,7 @@
                   <select [ngModel]="row.__selectedActionId ?? ''"
                           (change)="onActionChange(row, $event)">
                     <option value="">{{ actionPlaceholder() }}</option>
-                    @for (action of tableActions(); track action.id) {
+                    @for (action of getActionsForRow(row); track action.id) {
                       <option [value]="action.id">{{ action.libelle }}</option>
                     }
                   </select>
