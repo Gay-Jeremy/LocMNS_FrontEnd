@@ -1,3 +1,3 @@
 export const environment = {
-  serverUrl: 'http://locmns.com:8080'
+  serverUrl: 'http://192.168.23.22:8080'
 };
