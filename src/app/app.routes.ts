@@ -1,37 +1,70 @@
 import { Routes } from '@angular/router';
-import { Dashboard } from './pages/dashboard/dashboard';
-import { FormEmprunt } from './pages/form-emprunt/form-emprunt';
-import { ListeEmprunt } from './pages/liste-emprunt/liste-emprunt';
-import { ListeMateriel } from './pages/liste-materiel/liste-materiel';
-import { ListeDemande } from './pages/liste-demande/liste-demande';
-import { HistoriqueEmprunt } from './pages/historique-emprunt/historique-emprunt';
-import { ListeIncident } from './pages/liste-incident/liste-incident';
-import { FormMateriel } from './pages/form-materiel/form-materiel/form-materiel';
-import { LoginComponent } from './pages/login/login';
-import { LayoutComponent } from './shared/components/layout/layout-component';
-import {adminGuard} from './guards/admin-guard';
-import {utilisateurGuard} from './guards/utilisateur-guard';
+import { adminGuard } from './guards/admin-guard';
+import { utilisateurGuard } from './guards/utilisateur-guard';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
-  { path: 'login', component: LoginComponent },
+  {
+    path: 'login',
+    loadComponent: () => import('./pages/login/login').then(m => m.LoginComponent),
+  },
 
   {
     path: '',
-    component: LayoutComponent,
+    loadComponent: () => import('./shared/components/layout/layout-component').then(m => m.LayoutComponent),
     children: [
-      { path: 'accueil', component: Dashboard, canActivate: [utilisateurGuard] },
-      { path: 'enregistrer/emprunt', component: FormEmprunt, canActivate: [utilisateurGuard] },
-      { path: 'enregistrer/emprunt/:id', component: FormEmprunt, canActivate: [utilisateurGuard] },
-      { path: 'emprunt/liste', component: ListeEmprunt, canActivate: [utilisateurGuard] },
-      { path: 'materiel/liste', component: ListeMateriel, canActivate: [utilisateurGuard] },
-      { path: 'materiel/creer', component: FormMateriel, canActivate: [adminGuard] },
-      { path: 'materiel/modifier/:id', component: FormMateriel, canActivate: [adminGuard] },
-      { path: 'demande/liste', component: ListeDemande, canActivate: [utilisateurGuard]},
-      { path: 'historique/emprunt', component: HistoriqueEmprunt, canActivate: [utilisateurGuard]},
-      { path: 'materiel/incident', component: ListeIncident, canActivate: [utilisateurGuard]},
+      {
+        path: 'accueil',
+        loadComponent: () => import('./pages/dashboard/dashboard').then(m => m.Dashboard),
+        canActivate: [utilisateurGuard],
+      },
+      {
+        path: 'enregistrer/emprunt',
+        loadComponent: () => import('./pages/form-emprunt/form-emprunt').then(m => m.FormEmprunt),
+        canActivate: [utilisateurGuard],
+      },
+      {
+        path: 'enregistrer/emprunt/:id',
+        loadComponent: () => import('./pages/form-emprunt/form-emprunt').then(m => m.FormEmprunt),
+        canActivate: [utilisateurGuard],
+      },
+      {
+        path: 'emprunt/liste',
+        loadComponent: () => import('./pages/liste-emprunt/liste-emprunt').then(m => m.ListeEmprunt),
+        canActivate: [utilisateurGuard],
+      },
+      {
+        path: 'materiel/liste',
+        loadComponent: () => import('./pages/liste-materiel/liste-materiel').then(m => m.ListeMateriel),
+        canActivate: [utilisateurGuard],
+      },
+      {
+        path: 'materiel/creer',
+        loadComponent: () => import('./pages/form-materiel/form-materiel/form-materiel').then(m => m.FormMateriel),
+        canActivate: [adminGuard],
+      },
+      {
+        path: 'materiel/modifier/:id',
+        loadComponent: () => import('./pages/form-materiel/form-materiel/form-materiel').then(m => m.FormMateriel),
+        canActivate: [adminGuard],
+      },
+      {
+        path: 'demande/liste',
+        loadComponent: () => import('./pages/liste-demande/liste-demande').then(m => m.ListeDemande),
+        canActivate: [utilisateurGuard],
+      },
+      {
+        path: 'historique/emprunt',
+        loadComponent: () => import('./pages/historique-emprunt/historique-emprunt').then(m => m.HistoriqueEmprunt),
+        canActivate: [utilisateurGuard],
+      },
+      {
+        path: 'materiel/incident',
+        loadComponent: () => import('./pages/liste-incident/liste-incident').then(m => m.ListeIncident),
+        canActivate: [utilisateurGuard],
+      },
       { path: '**', redirectTo: 'accueil' },
-    ]
+    ],
   },
 
   { path: '**', redirectTo: 'login' },
