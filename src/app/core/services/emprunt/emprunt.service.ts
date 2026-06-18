@@ -7,9 +7,10 @@ import { forkJoin, Observable, tap, switchMap } from 'rxjs';
 @Injectable({
   providedIn: 'root',
 })
+
 export class EmpruntService {
 
-  private apiService = inject(ApiService);
+  private readonly apiService = inject(ApiService);
 
   // =====================
   // STATE
