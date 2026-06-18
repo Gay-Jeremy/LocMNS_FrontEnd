@@ -83,13 +83,6 @@ export class Table {
 
   @ViewChild('tableScroll') tableScrollRef!: ElementRef<HTMLDivElement>;
 
-
-  ngAfterViewInit() {
-    if (this.tableScrollRef) {
-      this.tableScrollRef.nativeElement.scrollLeft = 0;
-    }
-  }
-
   getValeur(row: any, key: string): any {
 
     const value = key.split('.').reduce((obj, k) => obj?.[k], row);
@@ -102,7 +95,7 @@ export class Table {
       'dateRetourAnticipe'
     ];
 
-    if (champsDate.includes(key) && value && !isNaN(Date.parse(value))) {
+    if (champsDate.includes(key) && value && !Number.isNaN(Date.parse(value))) {
       return new Date(value).toLocaleDateString('fr-FR');
     }
 

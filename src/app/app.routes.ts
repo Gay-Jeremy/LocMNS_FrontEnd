@@ -6,21 +6,36 @@ export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
   {
     path: 'login',
-    loadComponent: () => import('./pages/login/login').then(m => m.LoginComponent),
+    loadComponent: () =>
+      import('./pages/login/login').
+      then(m => m.LoginComponent),
   },
 
   {
     path: '',
-    loadComponent: () => import('./shared/components/layout/layout-component').then(m => m.LayoutComponent),
+    loadComponent: () =>
+      import('./shared/components/layout/layout-component')
+        .then(m => m.LayoutComponent),
     children: [
       {
         path: 'accueil',
-        loadComponent: () => import('./pages/dashboard/dashboard').then(m => m.Dashboard),
+        loadComponent: () =>
+          import('./pages/dashboard/dashboard')
+            .then(m => m.Dashboard),
         canActivate: [utilisateurGuard],
       },
       {
+        path: 'materiel/creer',
+        loadComponent: () =>
+          import('./pages/form-materiel/form-materiel/form-materiel')
+            .then(m => m.FormMateriel),
+        canActivate: [adminGuard],
+      },
+      {
         path: 'enregistrer/emprunt',
-        loadComponent: () => import('./pages/form-emprunt/form-emprunt').then(m => m.FormEmprunt),
+        loadComponent: () =>
+          import('./pages/form-emprunt/form-emprunt')
+            .then(m => m.FormEmprunt),
         canActivate: [utilisateurGuard],
       },
       {
@@ -37,11 +52,6 @@ export const routes: Routes = [
         path: 'materiel/liste',
         loadComponent: () => import('./pages/liste-materiel/liste-materiel').then(m => m.ListeMateriel),
         canActivate: [utilisateurGuard],
-      },
-      {
-        path: 'materiel/creer',
-        loadComponent: () => import('./pages/form-materiel/form-materiel/form-materiel').then(m => m.FormMateriel),
-        canActivate: [adminGuard],
       },
       {
         path: 'materiel/modifier/:id',

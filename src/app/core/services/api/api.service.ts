@@ -9,9 +9,9 @@ import {environment} from '../../../../environments/environment';
 
 export class ApiService {
 
-  private baseUrl = `${environment.serverUrl}/api`;
+  private readonly baseUrl = `${environment.serverUrl}/api`;
 
-  httpClient = inject(HttpClient)
+  private readonly httpClient = inject(HttpClient)
 
   get<T>(endpoint: string, params?: any): Observable<T> {
     return this.httpClient.get<T>(`${this.baseUrl}/${endpoint}`, { params });
@@ -32,7 +32,5 @@ export class ApiService {
   delete<T>(endpoint: string): Observable<T> {
     return this.httpClient.delete<T>(`${this.baseUrl}/${endpoint}`);
   }
-
-
 }
 
