@@ -27,7 +27,7 @@ jobs:
       run: |
         docker build -t jeremygaydev/locmns-front .
         docker push jeremygaydev/locmns-front
-        
+
     - name: Tag and push the Docker image
       run: |
         docker tag jeremygaydev/locmns-front jeremygaydev/locmns-front:${{ env.VERSION }}
