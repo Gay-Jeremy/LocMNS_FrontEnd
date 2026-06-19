@@ -25,7 +25,7 @@ jobs:
 
     - name: Build and push the Docker image
       run: |
-        docker build -t jeremygaydev/locmns-front .
+        docker build --build-arg BUILD_ENV=production -t jeremygaydev/locmns-front .
         docker push jeremygaydev/locmns-front
 
     - name: Tag and push the Docker image
