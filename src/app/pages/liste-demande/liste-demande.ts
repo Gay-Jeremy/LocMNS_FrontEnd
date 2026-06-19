@@ -8,7 +8,7 @@ import {RouterLink} from '@angular/router';
 import {StatutEmpruntService} from '../../core/services/statut-emprunt/statut-emprunt.service';
 import {DecisionEvent} from '../../shared/models/decision-event.model';
 import {Observable} from 'rxjs';
-import {Auth} from '../../core/services/authentification/auth';
+import {AuthService} from '../../core/services/authentification/auth.service';
 import {NotificationService} from '../../core/services/notification/notification.service';
 
 @Component({
@@ -36,7 +36,7 @@ export class ListeDemande implements OnInit {
 
   empruntService      = inject(EmpruntService);
   statutEmpruntService = inject(StatutEmpruntService);
-  authService         = inject(Auth);
+  authService         = inject(AuthService);
   notification        = inject(NotificationService);
   private destroyRef  = inject(DestroyRef);
 

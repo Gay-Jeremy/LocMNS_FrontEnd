@@ -12,10 +12,6 @@ export class EmpruntService {
 
   private readonly apiService = inject(ApiService);
 
-  // =====================
-  // STATE
-  // =====================
-
   readonly listeEmpruntActif    = signal<Emprunts[]>([]);
   readonly listeEmpruntRecent   = signal<Emprunts[]>([]);
   readonly listeDemandeEmprunt  = signal<Emprunts[]>([]);
@@ -67,11 +63,15 @@ export class EmpruntService {
   }
 
   obtenirListeEmpruntsActifs(): Observable<Emprunts[]> {
-    return this.loadList<Emprunts>(this.endpoints.actif, data => this.listeEmpruntActif.set(data));
+    return this.loadList<Emprunts>(
+      this.endpoints.actif,
+        data => this.listeEmpruntActif.set(data));
   }
 
   obtenirListeEmpruntsRecents(): Observable<Emprunts[]> {
-    return this.loadList<Emprunts>(this.endpoints.recent, data => this.listeEmpruntRecent.set(data));
+    return this.loadList<Emprunts>(
+      this.endpoints.recent,
+        data => this.listeEmpruntRecent.set(data));
   }
 
   obtenirListeDemandesEmprunt(): Observable<Emprunts[]> {

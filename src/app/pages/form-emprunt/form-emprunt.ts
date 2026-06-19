@@ -7,7 +7,7 @@ import {MaterielService} from '../../core/services/materiel/materiel.service';
 import {UtilisateurService} from '../../core/services/utilisateur/utilisateur.service';
 import {CategorieModeleService} from '../../core/services/categorie-modele/categorie-modele.service';
 import {EmpruntDto} from '../../core/models/emprunt-dto';
-import {Auth} from '../../core/services/authentification/auth';
+import {AuthService} from '../../core/services/authentification/auth.service';
 import {NotificationService} from '../../core/services/notification/notification.service';
 import {forkJoin, map, Subject, switchMap} from 'rxjs';
 
@@ -25,7 +25,7 @@ export class FormEmprunt implements OnInit {
   empruntService        = inject(EmpruntService);
   route                 = inject(ActivatedRoute);
   router                = inject(Router);
-  authService = inject(Auth)
+  authService = inject(AuthService)
   notification = inject(NotificationService)
 
   private readonly destroyRef = inject(DestroyRef);

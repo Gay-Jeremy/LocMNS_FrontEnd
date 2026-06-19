@@ -2,7 +2,7 @@ import { HttpErrorResponse, HttpInterceptorFn } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { catchError, throwError } from 'rxjs';
-import { Auth } from '../authentification/auth';
+import { AuthService } from '../authentification/auth.service';
 import { NotificationService } from './notification.service';
 
 function isLoginRequest(url: string): boolean {
@@ -22,7 +22,7 @@ function shouldNotifyGlobally(error: HttpErrorResponse, url: string): boolean {
 export const httpErrorInterceptor: HttpInterceptorFn = (req, next) => {
   const notification = inject(NotificationService);
   const router = inject(Router);
-  const auth = inject(Auth);
+  const auth = inject(AuthService);
 
   return next(req).pipe(
     catchError((error: HttpErrorResponse) => {

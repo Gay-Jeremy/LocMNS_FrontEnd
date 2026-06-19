@@ -4,7 +4,7 @@ import {Table} from '../../shared/components/table/table';
 import {ColonneConfig} from '../../shared/models/colonne-config.model';
 import {MaterielService} from '../../core/services/materiel/materiel.service';
 import {Router, RouterLink} from '@angular/router';
-import {Auth} from '../../core/services/authentification/auth';
+import {AuthService} from '../../core/services/authentification/auth.service';
 import {StatutMaterielService} from '../../core/services/statut-materiel/statut-materiel.service';
 import {StatutMateriel} from '../../core/models/statut-materiel';
 import {forkJoin, map, switchMap} from 'rxjs';
@@ -31,7 +31,7 @@ export class ListeMateriel implements OnInit {
 
   ];
 
-  authService = inject(Auth)
+  authService = inject(AuthService)
   materielService = inject(MaterielService)
   statutMaterielService = inject(StatutMaterielService)
   notification = inject(NotificationService);

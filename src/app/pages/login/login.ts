@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Auth } from '../../core/services/authentification/auth';
+import { AuthService } from '../../core/services/authentification/auth.service';
 import { NotificationService } from '../../core/services/notification/notification.service';
 
 @Component({
@@ -13,7 +13,7 @@ import { NotificationService } from '../../core/services/notification/notificati
 })
 export class LoginComponent {
 
-  authService = inject(Auth);
+  authService = inject(AuthService);
   formBuilder = inject(FormBuilder);
   router = inject(Router);
   notifications = inject(NotificationService);
@@ -30,7 +30,7 @@ export class LoginComponent {
         .subscribe({
           next: () => {
             this.notifications.success('Connexion réussie');
-            setTimeout(() => this.router.navigate(['/accueil']), 800);
+            setTimeout(() => this.router.navigate(['/accueil']), 300);
           },
           error: (err) => {
             this.notifications.fromHttpError(err, 'Mauvais login / mot de passe');
