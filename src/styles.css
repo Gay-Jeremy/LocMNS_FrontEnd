@@ -140,30 +140,20 @@ main::-webkit-scrollbar-thumb {
 /* =============================================
    HEADER
    ============================================= */
-.logo {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.logo-dot {
-  width: 28px;
-  height: 28px;
-  background: var(--color-accent);
-  border-radius: 7px;
-}
 
 .logo-text {
-  font-size: 16px;
+  font-size: 32px;
   font-weight: 700;
-  letter-spacing: -0.4px;
-  color: var(--color-text-primary);
+
+  color: var(--color-accent);
 }
 
 .header-right {
   display: flex;
-  align-items: center;
-  gap: 12px;
+  flex-direction: column;
+  align-items: flex-end;
+  text-align: right;
+  gap: 6px;
 }
 
 .badge-admin {

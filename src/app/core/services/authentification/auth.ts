@@ -19,7 +19,7 @@ export class Auth {
 
   login(credentials: { email: string; password: string }) {
     return this.httpClient.post(
-      `${environment.serverUrl}/login`,
+      `${environment.serverUrl}/api/login`,
       credentials,
       { responseType: 'text' }
     ).pipe(

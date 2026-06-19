@@ -7,12 +7,11 @@
       <span></span>
     </button>
     <div class="logo">
-      <div class="logo-dot"></div>
-      <span class="logo-text">ParcInfo</span>
+      <span class="logo-text">LOCMNS</span>
     </div>
   </div>
   <div class="header-right">
-    <span class="badge-admin">{{ authService.jwtInfo()?.role }}</span>
-    <div class="avatar">{{ authService.jwtInfo()?.nom?.[0] }} {{ authService.jwtInfo()?.prenom?.[0]}}</div>
+    <div>{{ authService.jwtInfo()?.nom }} {{ authService.jwtInfo()?.prenom }}</div>
+    <span>{{ authService.jwtInfo()?.role }}</span>
   </div>
 </header>
