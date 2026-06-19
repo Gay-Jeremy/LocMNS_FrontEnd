@@ -400,7 +400,8 @@ h2 {
 }
 
 .loans-table tbody tr:last-child { border-bottom: none; }
-.loans-table tbody tr:hover { background: rgba(255, 255, 255, 0.03); }
+.loans-table tbody tr:hover { background: rgba(255, 255, 255, 0.03);border-bottom-color: var(--color-accent) }
+
 
 .loans-table td {
   padding: 13px 14px;
