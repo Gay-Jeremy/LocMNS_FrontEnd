@@ -11,7 +11,7 @@
     </div>
   </div>
   <div class="header-right">
-    <div>{{ authService.jwtInfo()?.nom }} {{ authService.jwtInfo()?.prenom }}</div>
+    <div>{{ authService.utilisateurCourant()?.nom }} {{ authService.utilisateurCourant()?.prenom }}</div>
     <span>{{ authService.jwtInfo()?.role }}</span>
   </div>
 </header>

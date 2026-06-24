@@ -32,7 +32,7 @@
           </select>
         } @else {
           <input class="field-input" type="text" readonly
-                 value="{{ authService.jwtInfo()?.nom }} {{ authService.jwtInfo()?.prenom }}" />
+                 value="{{ authService.utilisateurCourant()?.nom }} {{ authService.utilisateurCourant()?.prenom }}" />
         }
         @if (erreurs()['utilisateurId']) {
           <p class="field-error">{{ erreurs()['utilisateurId'] }}</p>

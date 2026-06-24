@@ -3,23 +3,27 @@ import { HttpClient } from '@angular/common/http';
 import { tap } from 'rxjs';
 import {environment} from '../../../../environments/environment';
 
+type JwtInfo = {sub: string, id: string, role: string};
 
-type JwtInfo = {sub: string, id: string, role: string, nom: string, prenom: string};
+type UtilisateurInfo = {id: number, nom: string, prenom: string, email: string};
+
 @Injectable({ providedIn: 'root' })
 export class Auth {
 
   readonly jwtInfo = signal<JwtInfo | null>(null);
+  readonly utilisateurCourant = signal<UtilisateurInfo | null>(null);
 
   readonly isAdmin = computed(() => this.jwtInfo()?.role === 'Administrateur');
 
   httpClient = inject(HttpClient);
 
   constructor() {
-    this.decodeJwt() }
+    this.decodeJwt()
+  }
 
   login(credentials: { email: string; password: string }) {
     return this.httpClient.post(
-      `${environment.serverUrl}/api/login`,
+      `${environment.serverUrl}/login`,
       credentials,
       { responseType: 'text' }
     ).pipe(
@@ -41,6 +45,15 @@ export class Auth {
       const bodyJson = atob(padded);
       const body = JSON.parse(bodyJson);
       this.jwtInfo.set(body);
+      this.chargerUtilisateurCourant(body.id);
     }
+  }
+
+  private chargerUtilisateurCourant(id: number) {
+    this.httpClient.get<UtilisateurInfo>(`${environment.serverUrl}/api/utilisateurs/${id}`)
+      .subscribe({
+        next: (utilisateur) => this.utilisateurCourant.set(utilisateur),
+        error: () => this.utilisateurCourant.set(null),
+      });
   }
 }
