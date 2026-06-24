@@ -10,13 +10,20 @@ export const routes: Routes = [
       import('./pages/login/login').
       then(m => m.LoginComponent),
   },
-
   {
     path: '',
     loadComponent: () =>
       import('./shared/components/layout/layout-component')
         .then(m => m.LayoutComponent),
     children: [
+
+      {
+        path: 'enregistrer/emprunt',
+        loadComponent: () =>
+          import('./pages/form-emprunt/form-emprunt')
+            .then(m => m.FormEmprunt),
+        canActivate: [utilisateurGuard],
+      },
       {
         path: 'accueil',
         loadComponent: () =>
@@ -31,13 +38,7 @@ export const routes: Routes = [
             .then(m => m.FormMateriel),
         canActivate: [adminGuard],
       },
-      {
-        path: 'enregistrer/emprunt',
-        loadComponent: () =>
-          import('./pages/form-emprunt/form-emprunt')
-            .then(m => m.FormEmprunt),
-        canActivate: [utilisateurGuard],
-      },
+
       {
         path: 'enregistrer/emprunt/:id',
         loadComponent: () => import('./pages/form-emprunt/form-emprunt').then(m => m.FormEmprunt),

@@ -176,6 +176,14 @@ export class FormEmprunt implements OnInit {
       return;
     }
 
+    const dataEmprunt: EmpruntDto = {
+      utilisateurId,
+      materielId,
+      dateDebut: this.dateDebut(),
+      dateFin:   this.dateFin(),
+      note: this.note()
+    };
+
     const confirmed = await this.notification.confirm(
       this.estModification()
         ? 'Voulez-vous vraiment modifier cet emprunt ?'
@@ -186,13 +194,7 @@ export class FormEmprunt implements OnInit {
 
     this.isLoading.set(true);
 
-    const dataEmprunt: EmpruntDto = {
-      utilisateurId,
-      materielId,
-      dateDebut: this.dateDebut(),
-      dateFin:   this.dateFin(),
-      note: this.note()
-    };
+
 
     const handleError = (err: unknown) => {
       this.isLoading.set(false);
