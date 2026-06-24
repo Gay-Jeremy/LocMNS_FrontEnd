@@ -7,13 +7,10 @@ import { forkJoin, Observable, tap, switchMap } from 'rxjs';
 @Injectable({
   providedIn: 'root',
 })
+
 export class EmpruntService {
 
-  private apiService = inject(ApiService);
-
-  // =====================
-  // STATE
-  // =====================
+  private readonly apiService = inject(ApiService);
 
   readonly listeEmpruntActif    = signal<Emprunts[]>([]);
   readonly listeEmpruntRecent   = signal<Emprunts[]>([]);
@@ -66,11 +63,15 @@ export class EmpruntService {
   }
 
   obtenirListeEmpruntsActifs(): Observable<Emprunts[]> {
-    return this.loadList<Emprunts>(this.endpoints.actif, data => this.listeEmpruntActif.set(data));
+    return this.loadList<Emprunts>(
+      this.endpoints.actif,
+        data => this.listeEmpruntActif.set(data));
   }
 
   obtenirListeEmpruntsRecents(): Observable<Emprunts[]> {
-    return this.loadList<Emprunts>(this.endpoints.recent, data => this.listeEmpruntRecent.set(data));
+    return this.loadList<Emprunts>(
+      this.endpoints.recent,
+        data => this.listeEmpruntRecent.set(data));
   }
 
   obtenirListeDemandesEmprunt(): Observable<Emprunts[]> {

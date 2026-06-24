@@ -1,5 +1,5 @@
 import {Component, Output, EventEmitter, inject} from '@angular/core';
-import {Auth} from '../../services/authentification/auth';
+import {AuthService} from '../../services/authentification/auth.service';
 
 @Component({
   selector: 'app-header',
@@ -10,7 +10,7 @@ import {Auth} from '../../services/authentification/auth';
 export class Header {
   @Output() burgerClick = new EventEmitter<void>();
 
-  authService = inject(Auth)
+  authService = inject(AuthService)
 
   onBurgerClick() {
     this.burgerClick.emit();

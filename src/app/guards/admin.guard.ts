@@ -1,11 +1,11 @@
 import {CanActivateFn, Router, UrlTree} from '@angular/router';
 import {inject} from '@angular/core';
-import {Auth} from '../core/services/authentification/auth';
+import {AuthService} from '../core/services/authentification/auth.service';
 import {NotificationService} from '../core/services/notification/notification.service';
 
-export const adminGuard: CanActivateFn = (route, state) => {
+export const adminGuard: CanActivateFn = ()=> {
 
-  const authService = inject(Auth)
+  const authService = inject(AuthService)
 
   if(authService.jwtInfo() == null) {
     const router = inject(Router);

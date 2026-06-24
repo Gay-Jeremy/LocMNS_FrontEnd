@@ -5,7 +5,7 @@ import {CommonModule} from '@angular/common';
 import {ColonneConfig} from '../../shared/models/colonne-config.model';
 import {Table} from '../../shared/components/table/table';
 import {ActivatedRoute, Router, RouterLink} from '@angular/router';
-import {Auth} from '../../core/services/authentification/auth';
+import {AuthService} from '../../core/services/authentification/auth.service';
 import {NotificationService} from '../../core/services/notification/notification.service';
 import {Emprunts} from '../../core/models/emprunt';
 import { map, switchMap, tap} from 'rxjs';
@@ -24,7 +24,7 @@ import {DatePicker} from '../../shared/components/date-picker/date-picker';
 export class ListeEmprunt implements OnInit {
 
   router = inject(Router)
-  authService =inject(Auth)
+  authService =inject(AuthService)
   private readonly destroyRef = inject(DestroyRef);
 
   colonnesEmpruntsRecent: ColonneConfig[] = [

@@ -3,7 +3,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { EmpruntService } from '../../services/emprunt/emprunt.service';
 import {Router, RouterLink, RouterLinkActive} from '@angular/router';
 import {MaterielService} from '../../services/materiel/materiel.service';
-import {Auth} from '../../services/authentification/auth';
+import {AuthService} from '../../services/authentification/auth.service';
 import {NotificationService} from '../../services/notification/notification.service';
 
 @Component({
@@ -14,7 +14,7 @@ import {NotificationService} from '../../services/notification/notification.serv
 })
 export class Sidebar implements OnInit {
 
-  authService = inject(Auth)
+  authService = inject(AuthService)
   router = inject(Router)
   notification = inject(NotificationService)
 

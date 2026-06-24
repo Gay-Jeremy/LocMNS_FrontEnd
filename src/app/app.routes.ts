@@ -1,28 +1,44 @@
 import { Routes } from '@angular/router';
-import { adminGuard } from './guards/admin-guard';
-import { utilisateurGuard } from './guards/utilisateur-guard';
+import { adminGuard } from './guards/admin.guard';
+import { utilisateurGuard } from './guards/utilisateur.guard';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
   {
     path: 'login',
-    loadComponent: () => import('./pages/login/login').then(m => m.LoginComponent),
+    loadComponent: () =>
+      import('./pages/login/login').
+      then(m => m.LoginComponent),
   },
-
   {
     path: '',
-    loadComponent: () => import('./shared/components/layout/layout-component').then(m => m.LayoutComponent),
+    loadComponent: () =>
+      import('./shared/components/layout/layout-component')
+        .then(m => m.LayoutComponent),
     children: [
-      {
-        path: 'accueil',
-        loadComponent: () => import('./pages/dashboard/dashboard').then(m => m.Dashboard),
-        canActivate: [utilisateurGuard],
-      },
+
       {
         path: 'enregistrer/emprunt',
-        loadComponent: () => import('./pages/form-emprunt/form-emprunt').then(m => m.FormEmprunt),
+        loadComponent: () =>
+          import('./pages/form-emprunt/form-emprunt')
+            .then(m => m.FormEmprunt),
         canActivate: [utilisateurGuard],
       },
+      {
+        path: 'accueil',
+        loadComponent: () =>
+          import('./pages/dashboard/dashboard')
+            .then(m => m.Dashboard),
+        canActivate: [utilisateurGuard],
+      },
+      {
+        path: 'materiel/creer',
+        loadComponent: () =>
+          import('./pages/form-materiel/form-materiel/form-materiel')
+            .then(m => m.FormMateriel),
+        canActivate: [adminGuard],
+      },
+
       {
         path: 'enregistrer/emprunt/:id',
         loadComponent: () => import('./pages/form-emprunt/form-emprunt').then(m => m.FormEmprunt),
@@ -37,11 +53,6 @@ export const routes: Routes = [
         path: 'materiel/liste',
         loadComponent: () => import('./pages/liste-materiel/liste-materiel').then(m => m.ListeMateriel),
         canActivate: [utilisateurGuard],
-      },
-      {
-        path: 'materiel/creer',
-        loadComponent: () => import('./pages/form-materiel/form-materiel/form-materiel').then(m => m.FormMateriel),
-        canActivate: [adminGuard],
       },
       {
         path: 'materiel/modifier/:id',

@@ -8,7 +8,7 @@ type JwtInfo = {sub: string, id: string, role: string};
 type UtilisateurInfo = {id: number, nom: string, prenom: string, email: string};
 
 @Injectable({ providedIn: 'root' })
-export class Auth {
+export class AuthService {
 
   readonly jwtInfo = signal<JwtInfo | null>(null);
   readonly utilisateurCourant = signal<UtilisateurInfo | null>(null);
@@ -40,7 +40,8 @@ export class Auth {
     if (jwt) {
       const jwtParts = jwt.split('.');
       const bodyBase64 = jwtParts[1];
-      const base64 = bodyBase64.replace(/-/g, '+').replace(/_/g, '/');
+      const base64 = bodyBase64.replace(/-/g, '+')
+        .replace(/_/g, '/');
       const padded = base64.padEnd(base64.length + (4 - (base64.length % 4)) % 4, '=');
       const bodyJson = atob(padded);
       const body = JSON.parse(bodyJson);

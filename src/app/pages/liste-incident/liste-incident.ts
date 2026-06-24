@@ -8,7 +8,7 @@ import {RouterLink} from '@angular/router';
 import {StatutMaterielService} from '../../core/services/statut-materiel/statut-materiel.service';
 import {DecisionEvent} from '../../shared/models/decision-event.model';
 import {switchMap} from 'rxjs';
-import {Auth} from '../../core/services/authentification/auth';
+import {AuthService} from '../../core/services/authentification/auth.service';
 import {NotificationService} from '../../core/services/notification/notification.service';
 
 @Component({
@@ -32,7 +32,7 @@ export class ListeIncident implements OnInit{
   empruntService = inject(EmpruntService)
   materielService = inject(MaterielService)
   statutMaterielService = inject(StatutMaterielService)
-  authService = inject(Auth)
+  authService = inject(AuthService)
   notification = inject(NotificationService)
   private readonly destroyRef = inject(DestroyRef);
 

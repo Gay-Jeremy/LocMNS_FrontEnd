@@ -20,7 +20,6 @@ import {Sidebar} from '../../../core/layouts/sidebar/sidebar';
         <router-outlet></router-outlet>
       </main>
     </div>
-
   `,
 })
 export class LayoutComponent {

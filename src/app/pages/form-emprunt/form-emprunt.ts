@@ -7,7 +7,7 @@ import {MaterielService} from '../../core/services/materiel/materiel.service';
 import {UtilisateurService} from '../../core/services/utilisateur/utilisateur.service';
 import {CategorieModeleService} from '../../core/services/categorie-modele/categorie-modele.service';
 import {EmpruntDto} from '../../core/models/emprunt-dto';
-import {Auth} from '../../core/services/authentification/auth';
+import {AuthService} from '../../core/services/authentification/auth.service';
 import {NotificationService} from '../../core/services/notification/notification.service';
 import {forkJoin, map, Subject, switchMap} from 'rxjs';
 
@@ -25,9 +25,11 @@ export class FormEmprunt implements OnInit {
   empruntService        = inject(EmpruntService);
   route                 = inject(ActivatedRoute);
   router                = inject(Router);
-  authService = inject(Auth)
+  authService = inject(AuthService)
   notification = inject(NotificationService)
+
   private readonly destroyRef = inject(DestroyRef);
+
   private readonly rechercheMateriel$ = new Subject<{
     dateDebut: string;
     dateFin: string;
@@ -43,12 +45,13 @@ export class FormEmprunt implements OnInit {
   dateDebut        = signal<string>('');
   dateFin          = signal<string>('');
   note= signal<string>('');
-  erreurDates = signal<string>('');
+  erreurDates = signal<string[]>([]);
 
   erreurs = signal<Record<string, string>>({});
   isLoading = signal<boolean>(false);
 
   ngOnInit(): void {
+
     const onError = (err: unknown) => this.notification.fromHttpError(err);
 
     forkJoin([
@@ -124,23 +127,21 @@ export class FormEmprunt implements OnInit {
     const debut = this.dateDebut();
     const fin   = this.dateFin();
     const dateActuelle = new Date().toISOString().split('T')[0];
+    const erreurs: string[] = [];
 
     if (debut && debut < dateActuelle) {
-      this.erreurDates.set('La date de début ne peut pas être dans le passé');
-      return;
+      erreurs.push('La date de début ne peut pas être dans le passé');
     }
 
     if (fin && fin < dateActuelle) {
-      this.erreurDates.set('La date de fin ne peut pas être dans le passé');
-      return;
+      erreurs.push('La date de fin ne peut pas être dans le passé');
     }
 
     if (debut && fin && fin <= debut) {
-      this.erreurDates.set('La date de fin doit être supérieure à la date de début');
-      return;
+      erreurs.push('La date de fin doit être supérieure à la date de début');
     }
 
-    this.erreurDates.set('');
+    this.erreurDates.set(erreurs);
   }
 
   categorieModeleChange(id: number): void {
@@ -175,6 +176,14 @@ export class FormEmprunt implements OnInit {
       return;
     }
 
+    const dataEmprunt: EmpruntDto = {
+      utilisateurId,
+      materielId,
+      dateDebut: this.dateDebut(),
+      dateFin:   this.dateFin(),
+      note: this.note()
+    };
+
     const confirmed = await this.notification.confirm(
       this.estModification()
         ? 'Voulez-vous vraiment modifier cet emprunt ?'
@@ -185,13 +194,7 @@ export class FormEmprunt implements OnInit {
 
     this.isLoading.set(true);
 
-    const dataEmprunt: EmpruntDto = {
-      utilisateurId,
-      materielId,
-      dateDebut: this.dateDebut(),
-      dateFin:   this.dateFin(),
-      note: this.note()
-    };
+
 
     const handleError = (err: unknown) => {
       this.isLoading.set(false);
