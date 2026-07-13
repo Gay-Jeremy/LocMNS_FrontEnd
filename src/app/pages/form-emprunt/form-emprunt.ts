@@ -1,15 +1,15 @@
-import {Component, computed, DestroyRef, inject, OnInit, signal} from '@angular/core';
-import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
-import {FormsModule, NgForm} from '@angular/forms';
-import {ActivatedRoute, Router} from '@angular/router';
-import {EmpruntService} from '../../core/services/emprunt/emprunt.service';
-import {MaterielService} from '../../core/services/materiel/materiel.service';
-import {UtilisateurService} from '../../core/services/utilisateur/utilisateur.service';
-import {CategorieModeleService} from '../../core/services/categorie-modele/categorie-modele.service';
-import {EmpruntDto} from '../../core/models/emprunt-dto';
-import {AuthService} from '../../core/services/authentification/auth.service';
-import {NotificationService} from '../../core/services/notification/notification.service';
-import {forkJoin, map, Subject, switchMap} from 'rxjs';
+import { Component, computed, DestroyRef, inject, OnInit, signal } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { FormsModule, NgForm } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+import { EmpruntService } from '../../core/services/emprunt/emprunt.service';
+import { MaterielService } from '../../core/services/materiel/materiel.service';
+import { UtilisateurService } from '../../core/services/utilisateur/utilisateur.service';
+import { CategorieModeleService } from '../../core/services/categorie-modele/categorie-modele.service';
+import { EmpruntDto } from '../../core/models/emprunt-dto';
+import { AuthService } from '../../core/services/authentification/auth.service';
+import { NotificationService } from '../../core/services/notification/notification.service';
+import { forkJoin, map, Subject, switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-form-emprunt',
@@ -18,15 +18,14 @@ import {forkJoin, map, Subject, switchMap} from 'rxjs';
   styleUrl: './form-emprunt.css',
 })
 export class FormEmprunt implements OnInit {
-
-  materielService       = inject(MaterielService);
-  utilisateurService    = inject(UtilisateurService);
+  materielService = inject(MaterielService);
+  utilisateurService = inject(UtilisateurService);
   categorieModeleService = inject(CategorieModeleService);
-  empruntService        = inject(EmpruntService);
-  route                 = inject(ActivatedRoute);
-  router                = inject(Router);
-  authService = inject(AuthService)
-  notification = inject(NotificationService)
+  empruntService = inject(EmpruntService);
+  route = inject(ActivatedRoute);
+  router = inject(Router);
+  authService = inject(AuthService);
+  notification = inject(NotificationService);
 
   private readonly destroyRef = inject(DestroyRef);
 
@@ -39,19 +38,18 @@ export class FormEmprunt implements OnInit {
   empruntId = signal<number | null>(null);
   estModification = computed(() => this.empruntId() !== null);
 
-  utilisateurId    = signal<number | null>(null);
+  utilisateurId = signal<number | null>(null);
   categorieModeleId = signal<number | null>(null);
-  materielId       = signal<number | null>(null);
-  dateDebut        = signal<string>('');
-  dateFin          = signal<string>('');
-  note= signal<string>('');
+  materielId = signal<number | null>(null);
+  dateDebut = signal<string>('');
+  dateFin = signal<string>('');
+  note = signal<string>('');
   erreurDates = signal<string[]>([]);
 
   erreurs = signal<Record<string, string>>({});
   isLoading = signal<boolean>(false);
 
   ngOnInit(): void {
-
     const onError = (err: unknown) => this.notification.fromHttpError(err);
 
     forkJoin([
@@ -61,16 +59,18 @@ export class FormEmprunt implements OnInit {
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({ error: onError });
 
-    this.rechercheMateriel$.pipe(
-      switchMap(({ dateDebut, dateFin, categorieModeleId }) =>
-        this.materielService.obtenirListeMaterielsDisponiblePourPeridodeParIDCategorieModele(
-          dateDebut,
-          dateFin,
-          categorieModeleId,
+    this.rechercheMateriel$
+      .pipe(
+        switchMap(({ dateDebut, dateFin, categorieModeleId }) =>
+          this.materielService.obtenirListeMaterielsDisponiblePourPeridodeParIDCategorieModele(
+            dateDebut,
+            dateFin,
+            categorieModeleId,
+          ),
         ),
-      ),
-      takeUntilDestroyed(this.destroyRef),
-    ).subscribe({ error: onError });
+        takeUntilDestroyed(this.destroyRef),
+      )
+      .subscribe({ error: onError });
 
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
@@ -83,32 +83,40 @@ export class FormEmprunt implements OnInit {
   }
 
   chargerEmprunt(id: number): void {
-    this.empruntService.obtenirEmpruntParId(id).pipe(
-      switchMap((emprunt) => {
-        this.utilisateurId.set(emprunt.utilisateur.id);
-        this.dateDebut.set(emprunt.dateDebut);
-        this.dateFin.set(emprunt.dateFin);
-        this.categorieModeleId.set(emprunt.materiel.modele.categorieModele.id);
-        this.note.set(emprunt.note);
+    this.empruntService
+      .obtenirEmpruntParId(id)
+      .pipe(
+        switchMap((emprunt) => {
+          this.utilisateurId.set(emprunt.utilisateur.id);
+          this.dateDebut.set(emprunt.dateDebut);
+          this.dateFin.set(emprunt.dateFin);
+          this.categorieModeleId.set(emprunt.materiel.modele.categorieModele.id);
+          this.note.set(emprunt.note);
 
-        return this.materielService.obtenirListeMaterielsDisponiblePourPeridodeParIDCategorieModele(
-          emprunt.dateDebut,
-          emprunt.dateFin,
-          emprunt.materiel.modele.categorieModele.id,
-        ).pipe(map((listeMateriel) => ({ emprunt, listeMateriel })));
-      }),
-      takeUntilDestroyed(this.destroyRef),
-    ).subscribe({
-      next: ({ emprunt, listeMateriel }) => {
-        const dejaDansListe = listeMateriel.some((materiel) => materiel.id === emprunt.materiel.id);
-        if (!dejaDansListe) {
-          this.materielService.listeMaterielDisponiblePourPeriodeParIdCategorie
-            .update((liste) => [emprunt.materiel, ...liste]);
-        }
-        this.materielId.set(emprunt.materiel.id);
-      },
-      error: (err) => this.notification.fromHttpError(err),
-    });
+          return this.materielService
+            .obtenirListeMaterielsDisponiblePourPeridodeParIDCategorieModele(
+              emprunt.dateDebut,
+              emprunt.dateFin,
+              emprunt.materiel.modele.categorieModele.id,
+            )
+            .pipe(map((listeMateriel) => ({ emprunt, listeMateriel })));
+        }),
+        takeUntilDestroyed(this.destroyRef),
+      )
+      .subscribe({
+        next: ({ emprunt, listeMateriel }) => {
+          const dejaDansListe = listeMateriel.some(
+            (materiel) => materiel.id === emprunt.materiel.id,
+          );
+          if (!dejaDansListe) {
+            this.materielService.listeMaterielDisponiblePourPeriodeParIdCategorie.update(
+              (liste) => [emprunt.materiel, ...liste],
+            );
+          }
+          this.materielId.set(emprunt.materiel.id);
+        },
+        error: (err) => this.notification.fromHttpError(err),
+      });
   }
 
   dateDebutChange(date: string): void {
@@ -125,7 +133,7 @@ export class FormEmprunt implements OnInit {
 
   validerDates(): void {
     const debut = this.dateDebut();
-    const fin   = this.dateFin();
+    const fin = this.dateFin();
     const dateActuelle = new Date().toISOString().split('T')[0];
     const erreurs: string[] = [];
 
@@ -161,17 +169,23 @@ export class FormEmprunt implements OnInit {
   async onSubmit(form: NgForm): Promise<void> {
     this.erreurs.set({});
 
-    const utilisateurId     = this.utilisateurId();
-    const materielId        = this.materielId();
+    const utilisateurId = this.utilisateurId();
+    const materielId = this.materielId();
     const categorieModeleId = this.categorieModeleId();
 
-    if (!utilisateurId || !materielId || !categorieModeleId || !this.dateDebut() || !this.dateFin()) {
+    if (
+      !utilisateurId ||
+      !materielId ||
+      !categorieModeleId ||
+      !this.dateDebut() ||
+      !this.dateFin()
+    ) {
       this.erreurs.set({
-        ...(!utilisateurId      && { utilisateurId: "L'utilisateur est obligatoire" }),
-        ...(!categorieModeleId  && { categorieModeleId: "La catégorie matériel est obligatoire" }),
-        ...(!materielId         && { materielId: "Le matériel est obligatoire" }),
-        ...(!this.dateDebut()   && { dateDebut: "La date de début est obligatoire" }),
-        ...(!this.dateFin()     && { dateFin: "La date de fin est obligatoire" }),
+        ...(!utilisateurId && { utilisateurId: "L'utilisateur est obligatoire" }),
+        ...(!categorieModeleId && { categorieModeleId: 'La catégorie matériel est obligatoire' }),
+        ...(!materielId && { materielId: 'Le matériel est obligatoire' }),
+        ...(!this.dateDebut() && { dateDebut: 'La date de début est obligatoire' }),
+        ...(!this.dateFin() && { dateFin: 'La date de fin est obligatoire' }),
       });
       return;
     }
@@ -180,21 +194,19 @@ export class FormEmprunt implements OnInit {
       utilisateurId,
       materielId,
       dateDebut: this.dateDebut(),
-      dateFin:   this.dateFin(),
-      note: this.note()
+      dateFin: this.dateFin(),
+      note: this.note(),
     };
 
     const confirmed = await this.notification.confirm(
       this.estModification()
         ? 'Voulez-vous vraiment modifier cet emprunt ?'
         : 'Voulez-vous vraiment enregistrer cet emprunt ?',
-      this.estModification() ? 'Modification' : 'Confirmation'
+      this.estModification() ? 'Modification' : 'Confirmation',
     );
     if (!confirmed) return;
 
     this.isLoading.set(true);
-
-
 
     const handleError = (err: unknown) => {
       this.isLoading.set(false);
@@ -204,30 +216,32 @@ export class FormEmprunt implements OnInit {
     };
 
     if (this.estModification()) {
-      this.empruntService.modifierEmprunt(this.empruntId()!, dataEmprunt).pipe(
-        takeUntilDestroyed(this.destroyRef),
-      ).subscribe({
-        next: () => {
-          this.isLoading.set(false);
-          this.notification.success('Emprunt modifié avec succès');
-          setTimeout(() => this.router.navigate(['/emprunt/liste']), 1500);
-        },
-        error: handleError,
-      });
+      this.empruntService
+        .modifierEmprunt(this.empruntId()!, dataEmprunt)
+        .pipe(takeUntilDestroyed(this.destroyRef))
+        .subscribe({
+          next: () => {
+            this.isLoading.set(false);
+            this.notification.success('Emprunt modifié avec succès');
+            setTimeout(() => this.router.navigate(['/emprunt/liste']), 1500);
+          },
+          error: handleError,
+        });
       return;
     }
 
-    this.empruntService.creerEmprunt(dataEmprunt).pipe(
-      takeUntilDestroyed(this.destroyRef),
-    ).subscribe({
-      next: () => {
-        this.isLoading.set(false);
-        this.erreurs.set({});
-        this.notification.success('Emprunt enregistré avec succès');
-        form.reset();
-      },
-      error: handleError,
-    });
+    this.empruntService
+      .creerEmprunt(dataEmprunt)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: () => {
+          this.isLoading.set(false);
+          this.erreurs.set({});
+          this.notification.success('Emprunt enregistré avec succès');
+          form.reset();
+        },
+        error: handleError,
+      });
   }
 
   onAnnuler(): void {

@@ -40,8 +40,11 @@ export class AuthService {
     if (jwt) {
       const jwtParts = jwt.split('.');
       const bodyBase64 = jwtParts[1];
-      const base64 = bodyBase64.replace(/-/g, '+').replace(/_/g, '/');
-      const padded = base64.padEnd(base64.length + (4 - (base64.length % 4)) % 4, '=');
+      const base64 = bodyBase64
+        .replace(/-/g, '+')
+        .replace(/_/g, '/');
+      const padded = base64
+        .padEnd(base64.length + (4 - (base64.length % 4)) % 4, '=');
       const bodyJson = atob(padded);
       const body = JSON.parse(bodyJson);
       this.jwtInfo.set(body);
