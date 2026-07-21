@@ -26,12 +26,10 @@ export const httpErrorInterceptor: HttpInterceptorFn = (req, next) => {
 
   return next(req).pipe(
     catchError((error: HttpErrorResponse) => {
-      if (error instanceof HttpErrorResponse && shouldNotifyGlobally(error, req.url)) {
+      if (shouldNotifyGlobally(error, req.url)) {
         notification.fromHttpError(error);
-
         if (error.status === 401) {
-          localStorage.removeItem('jwt');
-          auth.jwtInfo.set(null);
+          auth.logout();
           router.navigate(['/login']);
         }
       }
