@@ -90,7 +90,7 @@ export class NotificationService {
       if (body && typeof body === 'object') {
         const record = body as Record<string, unknown>;
         const msg = record['message'] ?? record['error'] ?? record['detail'];
-        if (typeof msg === 'string' && msg.trim() && msg !== 'No message available') {
+        if (typeof msg === 'string' && msg.trim()) {
           return msg;
         }
       }
