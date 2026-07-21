@@ -59,4 +59,10 @@ export class AuthService {
         error: () => this.utilisateurCourant.set(null),
       });
   }
+
+  logout(): void {
+    localStorage.removeItem('jwt');
+    this.jwtInfo.set(null);
+    this.utilisateurCourant.set(null);
+  }
 }

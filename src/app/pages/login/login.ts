@@ -3,6 +3,7 @@ import { FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../core/services/authentification/auth.service';
 import { NotificationService } from '../../core/services/notification/notification.service';
+import {HttpErrorResponse} from '@angular/common/http';
 
 @Component({
   selector: 'app-login',
@@ -33,7 +34,11 @@ export class LoginComponent {
             setTimeout(() => this.router.navigate(['/accueil']), 300);
           },
           error: (err) => {
-            this.notifications.fromHttpError(err, 'Mauvais login / mot de passe');
+            if (err instanceof HttpErrorResponse && err.status === 401) {
+              this.notifications.error('Identifiants incorrects');
+            } else {
+              this.notifications.fromHttpError(err);
+            }
           },
         });
     } else {

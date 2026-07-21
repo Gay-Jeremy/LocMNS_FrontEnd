@@ -68,6 +68,21 @@ export class NotificationService {
 
   private extractMessage(error: unknown, fallback: string): string {
     if (error instanceof HttpErrorResponse) {
+      // Les statuts au sens fixe passent en premier, avant le message technique du back
+      if (error.status === 0) {
+        return 'Impossible de joindre le serveur';
+      }
+      if (error.status === 401) {
+        return 'Session expirée, veuillez vous reconnecter';
+      }
+      if (error.status === 403) {
+        return 'Accès refusé';
+      }
+      if (error.status === 409) {
+        return 'Impossible de supprimer ce matériel : il est lié à un emprunt.';
+      }
+
+      // Sinon, on tente de récupérer un message précis renvoyé par le back (validation, etc.)
       const body = error.error;
       if (typeof body === 'string' && body.trim()) {
         return body;
@@ -75,21 +90,9 @@ export class NotificationService {
       if (body && typeof body === 'object') {
         const record = body as Record<string, unknown>;
         const msg = record['message'] ?? record['error'] ?? record['detail'];
-        if (typeof msg === 'string' && msg.trim()) {
+        if (typeof msg === 'string' && msg.trim() && msg !== 'No message available') {
           return msg;
         }
-      }
-      if (error.status === 0) {
-        return 'Impossible de joindre le serveur';
-      }
-      if (error.status === 401) {
-        return 'Identifiants incorrects';
-      }
-      if (error.status === 403) {
-        return 'Accès refusé';
-      }
-      if (error.status === 409) {
-        return 'Impossible de supprimer ce matériel : il est lié à un emprunt.';
       }
     }
     if (error instanceof Error && error.message.trim()) {

@@ -48,9 +48,8 @@ export class Sidebar implements OnInit {
   }
 
   logout(): void {
-    localStorage.removeItem('jwt');
-    this.authService.jwtInfo.set(null);
-    this.notification.info('Vous êtes déconnecté'); // optionnel
+    this.authService.logout();
+    this.notification.info('Vous êtes déconnecté');
     this.router.navigate(['/login']);
   }
 }
