@@ -30,8 +30,7 @@ export class MaterielService {
   ) {
     return this.apiService
       .get<Materiel[]>(
-        `materiels/liste/disponible/categorie?
-      dateDebut=${dateDebut}&dateFin=${dateFin}&categorieModeleId=${id}`,
+        `materiels/liste/disponible/categorie?dateDebut=${dateDebut}&dateFin=${dateFin}&categorieModeleId=${id}`,
       )
       .pipe(
         tap((listeMaterielDisponiblePourPeriodeParIdCategorie) =>
