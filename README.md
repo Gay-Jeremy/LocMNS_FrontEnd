@@ -1,3 +1,5 @@
+[![Docker Image CI](https://github.com/Gay-Jeremy/LocMNS_FrontEnd/actions/workflows/docker-image.yml/badge.svg)](https://github.com/Gay-Jeremy/LocMNS_FrontEnd/actions/workflows/docker-image.yml)
+
 # LocMns — Frontend
 
 Interface web de gestion du parc de matériel empruntable de Metz Numeric School (LocMns).
