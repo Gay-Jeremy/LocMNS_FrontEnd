@@ -162,6 +162,7 @@ export class FormEmprunt implements OnInit {
     const dateFin = this.dateFin();
     const categorieModeleId = this.categorieModeleId();
     if (!dateDebut || !dateFin || !categorieModeleId) return;
+    if (this.erreurDates().length > 0) return;
 
     this.rechercheMateriel$.next({ dateDebut, dateFin, categorieModeleId });
   }
