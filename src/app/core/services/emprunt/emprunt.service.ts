@@ -90,7 +90,7 @@ export class EmpruntService {
   // CREATE
   // =====================
 
-  creerEmprunt(dto: EmpruntDto): Observable<any> {
+  creerEmprunt(dto: EmpruntDto): Observable<Emprunts> {
     return this.apiService.post(this.endpoints.base, dto).pipe(
       switchMap(() => this.refreshDemandes())
     );
