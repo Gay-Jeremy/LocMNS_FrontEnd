@@ -202,7 +202,7 @@ export class FormEmprunt implements OnInit {
     const confirmed = await this.notification.confirm(
       this.estModification()
         ? 'Voulez-vous vraiment modifier cet emprunt ?'
-        : 'Voulez-vous vraiment enregistrer cet emprunt ?',
+        : 'Voulez-vous vraiment enregistrer cette demande ?',
       this.estModification() ? 'Modification' : 'Confirmation',
     );
     if (!confirmed) return;
