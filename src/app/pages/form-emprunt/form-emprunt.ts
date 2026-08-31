@@ -50,6 +50,7 @@ export class FormEmprunt implements OnInit {
   isLoading = signal<boolean>(false);
 
   ngOnInit(): void {
+    this.materielService.listeMaterielDisponiblePourPeriodeParIdCategorie.set([]);
     const onError = (err: unknown) => this.notification.fromHttpError(err);
 
     forkJoin([
@@ -70,12 +71,7 @@ export class FormEmprunt implements OnInit {
         ),
         takeUntilDestroyed(this.destroyRef),
       )
-      .subscribe({
-        next: (listeMateriel) => {
-          this.materielService.listeMaterielDisponiblePourPeriodeParIdCategorie.set(listeMateriel);
-        },
-        error: onError
-      });
+      .subscribe({ error: onError });
 
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
