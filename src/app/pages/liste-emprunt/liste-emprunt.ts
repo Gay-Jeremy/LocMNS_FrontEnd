@@ -28,7 +28,6 @@ export class ListeEmprunt implements OnInit {
   private readonly destroyRef = inject(DestroyRef);
 
   colonnesEmpruntsRecent: ColonneConfig[] = [
-    { key: 'id', label: 'ID' },
     { key: 'dateCreation', label: 'DATE CREATION' },
     { key: 'utilisateur.nom', label: 'NOM' },
     { key: 'utilisateur.prenom', label: 'PRÉNOM' },
