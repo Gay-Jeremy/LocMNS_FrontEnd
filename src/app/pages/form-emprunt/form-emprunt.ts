@@ -50,6 +50,7 @@ export class FormEmprunt implements OnInit {
   isLoading = signal<boolean>(false);
 
   ngOnInit(): void {
+    this.materielService.listeMaterielDisponiblePourPeriodeParIdCategorie.set([]);
     const onError = (err: unknown) => this.notification.fromHttpError(err);
 
     forkJoin([
