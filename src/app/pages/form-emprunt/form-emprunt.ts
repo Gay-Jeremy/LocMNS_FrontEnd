@@ -243,6 +243,7 @@ export class FormEmprunt implements OnInit {
         },
         error: handleError,
       });
+    this.materielService.listeMaterielDisponiblePourPeriodeParIdCategorie.set([]);
   }
 
   onAnnuler(): void {
