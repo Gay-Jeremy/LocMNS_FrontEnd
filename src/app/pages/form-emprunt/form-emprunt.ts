@@ -70,7 +70,12 @@ export class FormEmprunt implements OnInit {
         ),
         takeUntilDestroyed(this.destroyRef),
       )
-      .subscribe({ error: onError });
+      .subscribe({
+        next: (listeMateriel) => {
+          this.materielService.listeMaterielDisponiblePourPeriodeParIdCategorie.set(listeMateriel);
+        },
+        error: onError
+      });
 
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
