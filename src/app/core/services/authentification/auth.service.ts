@@ -38,17 +38,23 @@ export class AuthService {
     const jwt = localStorage.getItem('jwt');
 
     if (jwt) {
-      const jwtParts = jwt.split('.');
-      const bodyBase64 = jwtParts[1];
-      const base64 = bodyBase64
-        .replace(/-/g, '+')
-        .replace(/_/g, '/');
-      const padded = base64
-        .padEnd(base64.length + (4 - (base64.length % 4)) % 4, '=');
-      const bodyJson = atob(padded);
-      const body = JSON.parse(bodyJson);
-      this.jwtInfo.set(body);
-      this.chargerUtilisateurCourant(body.id);
+      try {
+        const jwtParts = jwt.split('.');
+        const bodyBase64 = jwtParts[1];
+        const base64 = bodyBase64
+          .replace(/-/g, '+')
+          .replace(/_/g, '/');
+        const padded = base64
+          .padEnd(base64.length + (4 - (base64.length % 4)) % 4, '=');
+        const bodyJson = atob(padded);
+        const body = JSON.parse(bodyJson);
+        this.jwtInfo.set(body);
+        this.chargerUtilisateurCourant(body.id);
+      } catch {
+        // Jeton illisible (corrompu ou modifié à la main) : on repart d'une session vide
+        // plutôt que de bloquer le démarrage de l'application
+        this.logout();
+      }
     }
   }
 
