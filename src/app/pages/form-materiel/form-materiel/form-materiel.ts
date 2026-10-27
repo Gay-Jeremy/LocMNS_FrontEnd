@@ -71,7 +71,6 @@ export class FormMateriel implements OnInit {
         this.modeleId.set(materiel.modele.id);
         this.numSerie.set(materiel.numSerie);
         this.statutMaterielId.set(materiel.statutMateriel?.id ?? null);
-        console.log(this.statutMaterielId())
       },
       error: (err) => this.notification.fromHttpError(err),
     });
@@ -209,7 +208,6 @@ export class FormMateriel implements OnInit {
           form.reset();
           this.modeleService.listeModeleParCategorie.set([]);
         }
-        console.log(payload)
       },
       error: (err) => {
         this.isLoading.set(false);

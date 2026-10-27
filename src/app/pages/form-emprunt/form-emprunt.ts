@@ -163,6 +163,7 @@ export class FormEmprunt implements OnInit {
     const dateFin = this.dateFin();
     const categorieModeleId = this.categorieModeleId();
     if (!dateDebut || !dateFin || !categorieModeleId) return;
+    if (this.erreurDates().length > 0) return;
 
     this.rechercheMateriel$.next({ dateDebut, dateFin, categorieModeleId });
   }
@@ -202,7 +203,7 @@ export class FormEmprunt implements OnInit {
     const confirmed = await this.notification.confirm(
       this.estModification()
         ? 'Voulez-vous vraiment modifier cet emprunt ?'
-        : 'Voulez-vous vraiment enregistrer cet emprunt ?',
+        : 'Voulez-vous vraiment enregistrer cette demande ?',
       this.estModification() ? 'Modification' : 'Confirmation',
     );
     if (!confirmed) return;

@@ -1,59 +1,90 @@
-# LocmnsFrontend
+[![Docker Image CI](https://github.com/Gay-Jeremy/LocMNS_FrontEnd/actions/workflows/docker-image.yml/badge.svg)](https://github.com/Gay-Jeremy/LocMNS_FrontEnd/actions/workflows/docker-image.yml)
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.7.
+# LocMns — Frontend
 
-## Development server
+Interface web de gestion du parc de matériel empruntable de Metz Numeric School (LocMns).
+Elle permet aux utilisateurs de consulter le matériel et de gérer leurs emprunts, et aux
+gestionnaires d'administrer le parc, les utilisateurs et les demandes.
 
-To start a local development server, run:
+## Stack technique
+
+- **Angular 21** (TypeScript, Standalone Components, Signals)
+- **RxJS** (flux HTTP asynchrones)
+- **Angular Material** (composants d'interface)
+- **ngx-toastr** (notifications)
+- **nginx** (service des fichiers statiques en conteneur)
+- **Docker** (conteneurisation)
+
+## Prérequis
+
+- Node.js 24+
+- npm
+- Angular CLI (`npm install -g @angular/cli`)
+- Docker (pour un lancement conteneurisé)
+- L'API backend (LocMns) démarrée et accessible
+
+## Configuration
+
+L'URL de l'API est définie par environnement dans `src/environments/` :
+
+| Fichier                        | `serverUrl`                            | Usage                |
+|--------------------------------|----------------------------------------|----------------------|
+| `environment.development.ts`   | `http://localhost:8080`                | Développement local  |
+| `environment.production.ts`    | *(URL de l'API déployée)*              | Production           |
+
+Assurez-vous que l'API pointée par `serverUrl` est bien démarrée.
+
+## Lancer le projet
+
+### En développement
 
 ```bash
+npm install
 ng serve
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+L'application est disponible sur http://localhost:4200 et se recharge automatiquement
+à chaque modification.
 
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
+### Build de production
 
 ```bash
 ng build
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+Les fichiers optimisés sont générés dans `dist/locmns-frontend/`.
 
-## Running unit tests
+### Avec Docker
 
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
+L'image est construite en deux étapes (build Angular puis service via nginx) :
 
 ```bash
-ng e2e
+docker build -t locmns-front .
+docker run -p 80:80 locmns-front
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+Le conteneur sert l'application sur le port **80** et redirige les appels `/api/`
+vers le backend (voir `nginx-custom.conf`).
 
-## Additional Resources
+## Structure
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+- `core/services/` — services métier et techniques (API, authentification, notifications)
+- `core/services/jwt-interceptor/` — ajout automatique du jeton JWT aux requêtes
+- `guards/` — protection des routes selon le rôle (utilisateur / administrateur)
+- `pages/` — écrans de l'application
+
+## Tests
+
+```bash
+ng test                 # mode surveillance
+ng test --watch=false   # exécution unique (utilisée par la CI)
+```
+
+## Déploiement
+
+L'intégration continue est assurée par GitHub Actions :
+
+- à chaque push et pull request, les tests unitaires sont exécutés ;
+- après un push sur `main` (tests réussis), l'image Docker est construite et publiée sur Docker Hub.
+
+Le déploiement sur le serveur est déclenché par la pipeline du backend, qui récupère cette image.

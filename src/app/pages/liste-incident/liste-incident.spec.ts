@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ListeIncident } from './liste-incident';
+import { providersDeTest } from '../../../testing/providers-de-test';
 
 describe('ListeIncident', () => {
   let component: ListeIncident;
@@ -9,6 +10,7 @@ describe('ListeIncident', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [ListeIncident],
+      providers: providersDeTest,
     }).compileComponents();
 
     fixture = TestBed.createComponent(ListeIncident);

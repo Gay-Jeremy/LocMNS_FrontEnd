@@ -1,14 +1,14 @@
 <div class="page-emprunt">
 
   <div class="page-header">
-    <h1 class="page-title">{{ estModification() ? 'Modifier un emprunt' : 'Enregistrer un emprunt' }}</h1>
-    <p class="page-subtitle">{{ estModification() ? 'Modifiez les informations de l\'emprunt' : 'Remplissez le formulaire pour créer un nouvel emprunt' }}</p>
+    <h1 class="page-title">{{ estModification() ? 'Modifier un emprunt' : 'Enregistrer une demande d\'emprunt' }}</h1>
+    <p class="page-subtitle">{{ estModification() ? 'Modifiez les informations de l\'emprunt' : 'Remplissez le formulaire pour créer une nouvelle demande d\'emprunt' }}</p>
   </div>
 
   <div class="form-card">
 
     <div class="form-card-header">
-      <span class="form-card-title">Nouvel emprunt</span>
+      <span class="form-card-title">Nouvelle demande d'emprunt</span>
       <span class="badge-obligatoire">* Champs obligatoires</span>
     </div>
 
@@ -72,7 +72,7 @@
           }
         </div>
       </div>
-      @if (erreurDates()) {
+      @if (erreurDates().length > 0) {
         <p class="field-error">{{ erreurDates() }}</p>
       }
       <div class="field-group">
