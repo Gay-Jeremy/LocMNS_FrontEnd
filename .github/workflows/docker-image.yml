@@ -25,6 +25,10 @@ jobs:
     - name: Tests unitaires
       run: npx ng test --watch=false
 
+    - name: Audit de sécurité (code livré aux utilisateurs)
+      # Échoue si une vulnérabilité « high » ou « critical » touche une dépendance de production
+      run: npm audit --omit=dev --audit-level=high
+
   build:
     needs: test
     # L'image n'est publiée qu'après un push sur main, jamais pour une pull request

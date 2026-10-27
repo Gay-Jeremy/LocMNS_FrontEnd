@@ -39,7 +39,7 @@ Assurez-vous que l'API pointée par `serverUrl` est bien démarrée.
 ### En développement
 
 ```bash
-npm install
+npm ci
 ng serve
 ```
 
@@ -79,6 +79,41 @@ vers le backend (voir `nginx-custom.conf`).
 ng test                 # mode surveillance
 ng test --watch=false   # exécution unique (utilisée par la CI)
 ```
+
+## Sécurité des dépendances
+
+### Mises à jour automatiques (Dependabot)
+
+Dependabot (`.github/dependabot.yml`) ouvre chaque lundi une pull request vers `dev` :
+
+- les paquets `@angular/*` sont regroupés, car ils doivent toujours évoluer ensemble ;
+- seules les versions **mineures et correctives** sont proposées ; les versions majeures
+  (ex. Angular 22) se font à la main, avec les guides de migration ;
+- la CI exécute les tests sur chaque pull request avant toute fusion.
+
+Les alertes de sécurité urgentes de Dependabot visent directement `main`, quel que soit ce réglage.
+
+### Contrôle dans la CI
+
+La CI exécute `npm audit --omit=dev --audit-level=high` : elle échoue si une vulnérabilité
+grave touche le code livré aux utilisateurs. Les outils de développement (compilateur, serveur
+de dev, tests) ne bloquent pas la CI, mais doivent être suivis avec `npm audit`.
+
+### Correctif forcé : `undici`
+
+`package.json` contient un `overrides` sur `undici` (`^7.30.1`). `@angular/build` 21 impose une
+version vulnérable de cette dépendance, utilisée uniquement par les outils de développement,
+et la correction officielle n'existe qu'à partir d'Angular 22.
+
+**À supprimer lors du passage à Angular 22**, puis relancer `npm install` et `npm audit`.
+
+### Bonnes pratiques
+
+- Installer avec `npm ci`, qui respecte exactement `package-lock.json` (utilisé par la CI et Docker).
+- Corriger les vulnérabilités sur une branche dédiée, puis vérifier tests et build avant fusion :
+  ne jamais lancer `npm audit fix --force` sans contrôle (il peut changer de version majeure).
+- npm 11 bloque les scripts d'installation non approuvés : n'approuver que des paquets connus
+  (`npm install-scripts approve <paquet>`).
 
 ## Déploiement
 
