@@ -76,10 +76,15 @@ vers le backend (voir `nginx-custom.conf`).
 ## Tests
 
 ```bash
-ng test
+ng test                 # mode surveillance
+ng test --watch=false   # exécution unique (utilisée par la CI)
 ```
 
 ## Déploiement
 
-Le déploiement est automatisé via GitHub Actions : à chaque push sur `main`, l'image
-Docker est construite, publiée sur Docker Hub, puis déployée sur le serveur cible.
+L'intégration continue est assurée par GitHub Actions :
+
+- à chaque push et pull request, les tests unitaires sont exécutés ;
+- après un push sur `main` (tests réussis), l'image Docker est construite et publiée sur Docker Hub.
+
+Le déploiement sur le serveur est déclenché par la pipeline du backend, qui récupère cette image.

@@ -208,7 +208,6 @@ export class FormMateriel implements OnInit {
           form.reset();
           this.modeleService.listeModeleParCategorie.set([]);
         }
-        console.log(payload)
       },
       error: (err) => {
         this.isLoading.set(false);
