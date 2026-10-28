@@ -1,0 +1,37 @@
+# Mises à jour automatiques des dépendances (voir README, section « Sécurité des dépendances »)
+version: 2
+updates:
+  # Paquets npm : une pull request groupée par semaine, vers dev, testée par la CI
+  - package-ecosystem: "npm"
+    directory: "/"
+    target-branch: "dev"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    open-pull-requests-limit: 5
+    groups:
+      # Les paquets Angular doivent toujours évoluer ensemble
+      angular:
+        patterns:
+          - "@angular/*"
+        update-types:
+          - "minor"
+          - "patch"
+      autres-dependances:
+        patterns:
+          - "*"
+        update-types:
+          - "minor"
+          - "patch"
+    # Les versions majeures (ex. Angular 22) se font à la main, avec les guides de migration
+    ignore:
+      - dependency-name: "*"
+        update-types:
+          - "version-update:semver-major"
+
+  # Actions GitHub utilisées par la CI
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    target-branch: "dev"
+    schedule:
+      interval: "monthly"
