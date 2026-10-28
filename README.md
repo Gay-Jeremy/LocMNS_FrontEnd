@@ -91,7 +91,8 @@ Dependabot (`.github/dependabot.yml`) ouvre chaque lundi une pull request vers `
   (ex. Angular 22) se font à la main, avec les guides de migration ;
 - la CI exécute les tests sur chaque pull request avant toute fusion.
 
-Les alertes de sécurité urgentes de Dependabot visent directement `main`, quel que soit ce réglage.
+Les correctifs de sécurité urgents de Dependabot (*security updates*) ne suivent pas ce réglage :
+ils visent toujours la branche par défaut du dépôt, ici `dev`, et passent donc par la même CI.
 
 ### Contrôle dans la CI
 
