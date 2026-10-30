@@ -24,9 +24,9 @@ import {Emprunts} from '../../core/models/emprunt';
 export class ListeMateriel implements OnInit {
 
   colonnesMateriel: ColonneConfig[] = [
-    { key: 'modele.categorieModele.libelle', label: 'CATEGORIE' },
-    { key: 'modele.libelle', label: 'MODELE' },
-    { key: 'numSerie', label: 'NUMERO SERIE' },
+    { key: 'modele.categorieModele.libelle', label: 'CATÉGORIE' },
+    { key: 'modele.libelle', label: 'MODÈLE' },
+    { key: 'numSerie', label: 'NUM SÉRIE' },
     { key: 'statutMateriel.libelle', label: 'STATUT' },
 
   ];

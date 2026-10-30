@@ -30,7 +30,7 @@ export class Dashboard implements OnInit {
     { key: 'utilisateur.nom', label: 'NOM' },
     { key: 'utilisateur.prenom', label: 'PRÉNOM' },
     { key: 'utilisateur.promotion.libelle', label: 'PROMOTION' },
-    { key: 'materiel.modele.categorieModele.libelle', label: 'CATEGORIE' },
+    { key: 'materiel.modele.categorieModele.libelle', label: 'CATÉGORIE' },
     { key: 'materiel.numSerie', label: 'NUM SÉRIE' },
     { key: 'dateDebut', label: 'DATE DE DÉBUT' },
     { key: 'dateFin', label: 'DATE DE FIN PRÉVUE' },
