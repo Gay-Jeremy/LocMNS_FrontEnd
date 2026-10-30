@@ -28,11 +28,11 @@ export class ListeEmprunt implements OnInit {
   private readonly destroyRef = inject(DestroyRef);
 
   colonnesEmpruntsRecent: ColonneConfig[] = [
-    { key: 'dateCreation', label: 'DATE CREATION' },
+    { key: 'dateCreation', label: 'DATE CRÉATION' },
     { key: 'utilisateur.nom', label: 'NOM' },
     { key: 'utilisateur.prenom', label: 'PRÉNOM' },
     { key: 'utilisateur.promotion.libelle', label: 'PROMOTION' },
-    { key: 'materiel.modele.categorieModele.libelle', label: 'CATEGORIE' },
+    { key: 'materiel.modele.categorieModele.libelle', label: 'CATÉGORIE' },
     { key: 'materiel.numSerie', label: 'NUM SÉRIE' },
     { key: 'dateDebut', label: 'DATE DE DÉBUT' },
     { key: 'dateFin', label: 'DATE DE FIN PRÉVUE' },
@@ -53,7 +53,7 @@ export class ListeEmprunt implements OnInit {
   pendingEvent = signal<DecisionEvent | null>(null);
 
   titre = computed(() =>
-    this.filtre() === 'retard' ? 'Emprunts en retard' : 'Emprunts actif'
+    this.filtre() === 'retard' ? 'Emprunts en retard' : 'Emprunts actifs'
   );
 
   data = computed(() =>
