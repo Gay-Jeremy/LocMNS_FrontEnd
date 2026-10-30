@@ -11,6 +11,22 @@ d'Applications** (RNCP niveau 6), de la conception au déploiement.
 
 - API REST (Spring Boot) : [LocMNS_BackEnd](https://github.com/Gay-Jeremy/LocMNS_BackEnd)
 
+## Aperçu
+
+Captures réalisées avec le jeu d'essai (données fictives), connecté en administrateur.
+
+**Tableau de bord** : indicateurs et emprunts récents
+
+![Tableau de bord](docs/captures/tableau-de-bord.png)
+
+**Demande d'emprunt** : seul le matériel disponible sur la période choisie est proposé
+
+![Formulaire de demande d'emprunt](docs/captures/demande-emprunt.png)
+
+**Emprunts actifs** : modification, suppression et changement de statut
+
+![Liste des emprunts actifs](docs/captures/emprunts-actifs.png)
+
 ## Fonctionnalités
 
 | Écran | Contenu |
